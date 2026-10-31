@@ -7,14 +7,19 @@
   import TransversalCard from './transversal/TransversalCard.svelte';
 
   let theta = $state<number>(55);
-  let relation = $state<TransversalRelation>('alternos_internos');
+  // Ningún botón marcado por defecto según spec 05
+  let relation = $state<TransversalRelation | null>(null);
   let challengeIndex = $state<number | null>(null);
   let challengeFeedback = $state<string>('');
   let challengeSuccess = $state<boolean>(false);
+  let hasSubmitted = $state<boolean>(false);
 
   function handleRelationSelect(newRel: TransversalRelation) {
     relation = newRel;
-    checkChallenge();
+    if (hasSubmitted && !challengeSuccess) {
+      hasSubmitted = false;
+      challengeFeedback = '';
+    }
   }
 
   function handleThetaChange(newTheta: number) {
@@ -23,15 +28,21 @@
 
   function startChallenge() {
     challengeIndex = challengeIndex === null ? 0 : (challengeIndex + 1) % TRANSVERSAL_CHALLENGES.length;
-    const cur = TRANSVERSAL_CHALLENGES[challengeIndex];
-    relation = cur.relation;
+    relation = null; // Ningún botón seleccionado al iniciar desafío
     challengeSuccess = false;
     challengeFeedback = '';
-    checkChallenge();
+    hasSubmitted = false;
   }
 
-  function checkChallenge() {
+  function confirmAnswer() {
     if (challengeIndex === null) return;
+    if (!relation) {
+      hasSubmitted = true;
+      challengeSuccess = false;
+      challengeFeedback = 'Tocá una de las opciones de arriba para indicar qué relación tienen los ángulos.';
+      return;
+    }
+    hasSubmitted = true;
     const cur = TRANSVERSAL_CHALLENGES[challengeIndex];
     if (relation === cur.relation) {
       challengeSuccess = true;
@@ -46,6 +57,7 @@
     challengeIndex = null;
     challengeFeedback = '';
     challengeSuccess = false;
+    hasSubmitted = false;
   }
 </script>
 
@@ -67,15 +79,29 @@
   <!-- Banner de Desafío -->
   {#if challengeIndex !== null}
     {@const cur = TRANSVERSAL_CHALLENGES[challengeIndex]}
-    <div class="mx-4 mt-3 p-3 rounded-2xl border transition-all {challengeSuccess ? 'bg-emerald-50 border-emerald-300 text-emerald-900 dark:bg-emerald-950/50 dark:border-emerald-700 dark:text-emerald-200' : 'bg-amber-50 border-amber-300 text-amber-900 dark:bg-amber-950/50 dark:border-amber-700 dark:text-amber-200'}">
+    <div class="mx-4 mt-3 p-3 rounded-2xl border transition-all {hasSubmitted ? (challengeSuccess ? 'bg-emerald-50 border-emerald-300 text-emerald-900 dark:bg-emerald-950/50 dark:border-emerald-700 dark:text-emerald-200' : 'bg-rose-50 border-rose-300 text-rose-900 dark:bg-rose-950/50 dark:border-rose-700 dark:text-rose-200') : 'bg-amber-50 border-amber-300 text-amber-900 dark:bg-amber-950/50 dark:border-amber-700 dark:text-amber-200'}">
       <div class="flex items-center justify-between mb-1">
         <span class="text-xs font-bold uppercase tracking-wider">Desafío #{challengeIndex + 1} de {TRANSVERSAL_CHALLENGES.length}</span>
         <button onclick={startChallenge} class="text-xs underline font-semibold text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-          Siguiente ➔
+          Saltar ➔
         </button>
       </div>
       <p class="text-sm font-bold">{cur.title}</p>
-      <p class="text-xs mt-0.5 opacity-90">{challengeFeedback || cur.prompt}</p>
+      <p class="text-xs mt-0.5 opacity-90">{cur.prompt}</p>
+      {#if hasSubmitted}
+        <p class="text-xs mt-1.5 pt-1.5 border-t border-current/20 font-semibold">{challengeFeedback}</p>
+      {/if}
+      <div class="mt-2.5 flex justify-end">
+        {#if !hasSubmitted || !challengeSuccess}
+          <button onclick={confirmAnswer} class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95 touch-manipulation min-h-[38px]">
+            Confirmar respuesta
+          </button>
+        {:else}
+          <button onclick={startChallenge} class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95 touch-manipulation min-h-[38px]">
+            Siguiente Desafío ➔
+          </button>
+        {/if}
+      </div>
     </div>
   {/if}
 
@@ -91,4 +117,3 @@
   <!-- Ficha pedagógica -->
   <TransversalCard {relation} {theta} />
 </div>
-

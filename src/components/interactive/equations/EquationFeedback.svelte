@@ -11,6 +11,11 @@
   let { problem, currentStep, onnewproblem }: Props = $props();
 
   let showSteps = $state<boolean>(false);
+
+  function handleNew() {
+    showSteps = false;
+    onnewproblem();
+  }
 </script>
 
 <div class="p-4 mx-4 mb-4 rounded-2xl border bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 shadow-xs select-none space-y-3 transition-colors">
@@ -18,9 +23,14 @@
     <div class="p-3 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-700 rounded-xl text-emerald-900 dark:text-emerald-200 text-center space-y-1">
       <div class="text-2xl">🎉</div>
       <h4 class="font-extrabold text-sm">¡Ejercicio Resuelto Correctamente!</h4>
-      <p class="text-xs">
-        Obtuviste <Katex formula={`x = ${problem.xSolution}`} /> y el ángulo <Katex formula={`\\alpha = ${problem.alphaSolution}^\\circ`} />.
-      </p>
+      <div class="text-xs flex flex-wrap items-center justify-center gap-2 pt-1 font-semibold">
+        <span>Rta:</span>
+        <Katex formula={`x = ${problem.xSolution}`} />
+        <span>•</span>
+        <Katex formula={`\\alpha = ${problem.alphaSolution}^\\circ`} />
+        <span>•</span>
+        <Katex formula={`\\beta = ${problem.betaSolution}^\\circ`} />
+      </div>
     </div>
   {/if}
 
@@ -33,7 +43,7 @@
       {showSteps ? 'Ocultar Desarrollo' : '📖 Ver Paso a Paso'}
     </button>
     <button
-      onclick={onnewproblem}
+      onclick={handleNew}
       class="flex-1 py-2.5 px-3 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl shadow-xs transition active:scale-95 touch-manipulation min-h-[44px]"
     >
       🎲 Nuevo Ejercicio

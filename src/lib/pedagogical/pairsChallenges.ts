@@ -17,18 +17,18 @@ export const PAIRS_CHALLENGES: PairChallenge[] = [
     id: 'c1',
     type: 'complementarios',
     title: 'Complemento de 30°',
-    prompt: 'Ajustá el ángulo alfa a 30° y observá cuánto mide su complemento beta.',
-    formula: '\\alpha = 30^\\circ \\implies \\beta = 60^\\circ',
-    targetAlpha: 30,
+    prompt: '¿Cuánto mide el ángulo complementario de 30°? Ajustá alfa a su valor correcto.',
+    formula: '30^\\circ + \\alpha = 90^\\circ \\implies \\alpha = 60^\\circ',
+    targetAlpha: 60,
     tolerance: 1.5,
-    hint: 'Recordá que dos ángulos complementarios siempre suman 90° (un ángulo recto).',
-    successMessage: '¡Excelente! 30° + 60° = 90°. Son complementarios.'
+    hint: 'Dos ángulos complementarios suman 90°. Si uno mide 30°, pensá: 90° - 30°.',
+    successMessage: '¡Excelente! El complementario de 30° es 60°, ya que 30° + 60° = 90°.'
   },
   {
     id: 'c2',
     type: 'complementarios',
-    title: 'Ángulos Complementarios Iguales',
-    prompt: 'Buscá que ambos ángulos alfa y beta midan exactamente lo mismo.',
+    title: 'Complementarios Iguales',
+    prompt: '¿Cuánto deben medir dos ángulos complementarios para ser iguales? Ajustá alfa.',
     formula: '\\alpha = \\beta = 45^\\circ',
     targetAlpha: 45,
     tolerance: 1.5,
@@ -38,24 +38,23 @@ export const PAIRS_CHALLENGES: PairChallenge[] = [
   {
     id: 'c3',
     type: 'suplementarios',
-    title: 'Suplementarios y Adyacentes',
-    prompt: 'Ajustá alfa a 120° para ver qué sucede con beta.',
-    formula: '\\alpha = 120^\\circ \\implies \\beta = 60^\\circ',
+    title: 'Suplementario de 60°',
+    prompt: '¿Cuánto mide el ángulo suplementario de 60°? Ajustá alfa para completar el ángulo llano (180°).',
+    formula: '60^\\circ + \\alpha = 180^\\circ \\implies \\alpha = 120^\\circ',
     targetAlpha: 120,
     tolerance: 1.5,
-    hint: 'Los ángulos adyacentes comparten un lado y forman una línea recta continua de 180°.',
-    successMessage: '¡Correcto! 120° + 60° = 180°. Forman un ángulo llano continuo.'
+    hint: 'Los ángulos suplementarios forman una recta continua de 180°. Pensá: 180° - 60°.',
+    successMessage: '¡Correcto! El suplementario de 60° es 120°, porque 60° + 120° = 180°.'
   },
   {
     id: 'c4',
     type: 'opuestos',
     title: 'Opuestos por el Vértice',
-    prompt: 'Rotá la recta secante hasta que el ángulo 1 mida 70° y verificá el ángulo 3.',
-    formula: '\\hat{1} = \\hat{3} = 70^\\circ',
+    prompt: 'Si los ángulos adyacentes 2̂ y 4̂ miden 110°, ¿cuánto deben medir los opuestos 1̂ y 3̂? Ajustá la recta secante.',
+    formula: '\\hat{1} = 180^\\circ - 110^\\circ = 70^\\circ',
     targetAlpha: 70,
     tolerance: 1.5,
-    hint: 'Los ángulos opuestos por el vértice siempre son congruentes (tienen igual medida).',
-    successMessage: '¡Impecable! Los opuestos 1 y 3 miden 70°, y los adyacentes 2 y 4 miden 110°.'
+    hint: 'Como 1̂ y 2̂ son adyacentes sobre una misma recta, suman 180°: 180° - 110° = 70°.',
+    successMessage: '¡Impecable! 1̂ y 3̂ miden 70° (opuestos congruentes), y son suplementarios con 2̂ y 4̂ (110°).'
   }
 ];
-

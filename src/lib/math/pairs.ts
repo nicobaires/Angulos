@@ -7,33 +7,19 @@ export interface OppositeAnglesResult {
   angle4: number;
 }
 
-/**
- * Calcula el ángulo complementario (suma = 90°)
- */
 export function calculateComplementary(alpha: number): number {
   const clamped = Math.max(0, Math.min(90, Math.round(alpha)));
   return 90 - clamped;
 }
 
-/**
- * Calcula el ángulo suplementario (suma = 180°)
- */
 export function calculateSupplementary(alpha: number): number {
   const clamped = Math.max(0, Math.min(180, Math.round(alpha)));
   return 180 - clamped;
 }
 
-/**
- * Calcula los 4 ángulos generados por dos rectas secantes:
- * angle1 y angle3 son opuestos por el vértice (congruentes).
- * angle2 y angle4 son opuestos por el vértice (congruentes).
- * angle1 y angle2 son suplementarios (adyacentes).
- */
 export function calculateOppositeAngles(primaryAngle: number): OppositeAnglesResult {
-  // primaryAngle entre 15° y 165° para visualización geométrica clara
   const clamped = Math.max(15, Math.min(165, Math.round(primaryAngle)));
   const supplementary = 180 - clamped;
-
   return {
     angle1: clamped,
     angle2: supplementary,
@@ -42,3 +28,14 @@ export function calculateOppositeAngles(primaryAngle: number): OppositeAnglesRes
   };
 }
 
+export function getPairsPresets(mode: PairType): number[] {
+  if (mode === 'complementarios') return [15, 30, 45, 60, 75];
+  if (mode === 'suplementarios') return [30, 60, 90, 120, 150];
+  return [30, 45, 60, 90, 120, 135];
+}
+
+export function getPairsRange(mode: PairType): { min: number; max: number } {
+  if (mode === 'complementarios') return { min: 5, max: 85 };
+  if (mode === 'suplementarios') return { min: 5, max: 175 };
+  return { min: 15, max: 165 };
+}

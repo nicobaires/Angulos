@@ -19,7 +19,6 @@ export interface EquationProblem {
 }
 
 export function generateOppositeEquationProblem(): EquationProblem {
-  // a*x + b = c*x + d  con a > c
   const x = Math.floor(Math.random() * 8) + 12; // 12 a 19
   const c = Math.floor(Math.random() * 2) + 1;  // 1 a 2
   const a = c + Math.floor(Math.random() * 2) + 1; // 2 a 4
@@ -31,7 +30,7 @@ export function generateOppositeEquationProblem(): EquationProblem {
   const beta = c * x + d;
 
   return {
-    id: `opp_${Date.now()}`,
+    id: `opp_${Date.now()}_${Math.random()}`,
     type: 'opuestos',
     title: 'Ángulos Opuestos por el Vértice',
     diagramAngle: alpha,
@@ -46,14 +45,14 @@ export function generateOppositeEquationProblem(): EquationProblem {
       `\\text{Por ser opuestos por el vértice: } \\alpha = \\beta`,
       `${a}x ${b >= 0 ? '+' : '-'} ${Math.abs(b)}^\\circ = ${c}x + ${d}^\\circ`,
       `${a}x - ${c}x = ${d}^\\circ - ${b}^\\circ`,
-      `${a - c}x = ${d - b}^\\circ \\implies x = ${x}^\\circ`,
-      `\\alpha = ${a} \\cdot (${x}^\\circ) + ${b}^\\circ = ${alpha}^\\circ`
+      `${a - c}x = ${d - b}^\\circ \\implies x = ${x}`,
+      `\\alpha = ${a} \\cdot (${x}) + ${b}^\\circ = ${alpha}^\\circ \\implies \\beta = ${beta}^\\circ`,
+      `\\text{Rta: } x = ${x}, \\quad \\alpha = ${alpha}^\\circ, \\quad \\beta = ${beta}^\\circ`
     ]
   };
 }
 
 export function generateSupplementaryEquationProblem(): EquationProblem {
-  // (a*x + b) + (c*x + d) = 180
   const x = Math.floor(Math.random() * 8) + 10; // 10 a 17
   const a = Math.floor(Math.random() * 3) + 2;  // 2 a 4
   const c = Math.floor(Math.random() * 2) + 1;  // 1 a 2
@@ -67,7 +66,7 @@ export function generateSupplementaryEquationProblem(): EquationProblem {
   const beta = c * x + d;
 
   return {
-    id: `sup_${Date.now()}`,
+    id: `sup_${Date.now()}_${Math.random()}`,
     type: 'suplementarios',
     title: 'Ángulos Adyacentes y Suplementarios',
     diagramAngle: alpha,
@@ -82,8 +81,9 @@ export function generateSupplementaryEquationProblem(): EquationProblem {
       `\\text{Por ser adyacentes suplementarios: } \\alpha + \\beta = 180^\\circ`,
       `(${a}x + ${b}^\\circ) + (${c}x + ${d}^\\circ) = 180^\\circ`,
       `${a + c}x + ${b + d}^\\circ = 180^\\circ`,
-      `${a + c}x = 180^\\circ - ${b + d}^\\circ = ${180 - (b + d)}^\\circ`,
-      `x = ${x}^\\circ \\implies \\alpha = ${alpha}^\\circ, \\; \\beta = ${beta}^\\circ`
+      `${a + c}x = 180^\\circ - ${b + d}^\\circ = ${180 - (b + d)}^\\circ \\implies x = ${x}`,
+      `\\alpha = ${alpha}^\\circ, \\quad \\beta = 180^\\circ - ${alpha}^\\circ = ${beta}^\\circ`,
+      `\\text{Rta: } x = ${x}, \\quad \\alpha = ${alpha}^\\circ, \\quad \\beta = ${beta}^\\circ`
     ]
   };
 }
@@ -93,4 +93,3 @@ export function generateRandomProblem(): EquationProblem {
     ? generateOppositeEquationProblem()
     : generateSupplementaryEquationProblem();
 }
-

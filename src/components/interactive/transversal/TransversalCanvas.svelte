@@ -4,7 +4,7 @@
 
   interface Props {
     theta: number;
-    relation: TransversalRelation;
+    relation: TransversalRelation | null;
     onchange: (newTheta: number) => void;
   }
 
@@ -29,10 +29,11 @@
   const secBottom = $derived({ x: x2 - 35 * Math.cos(rad), y: y2 + 35 * Math.sin(rad) });
 
   // Pares destacados según la relación
-  const activePairs = $derived(RELATIONS_MAP[relation].pairs[0]);
-  const isCongruent = $derived(RELATIONS_MAP[relation].isCongruent);
+  const activePairs = $derived(relation ? RELATIONS_MAP[relation].pairs[0] : null);
+  const isCongruent = $derived(relation ? RELATIONS_MAP[relation].isCongruent : true);
 
   function getAngleColor(id: number): { fill: string; stroke: string; opacity: number } {
+    if (!activePairs) return { fill: '#94a3b8', stroke: '#cbd5e1', opacity: 0.12 };
     const isFirst = activePairs[0] === id;
     const isSecond = activePairs[1] === id;
 

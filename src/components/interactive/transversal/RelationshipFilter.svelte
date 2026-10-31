@@ -3,7 +3,7 @@
   import { RELATIONS_MAP } from '../../../lib/math/transversal';
 
   interface Props {
-    selected: TransversalRelation;
+    selected: TransversalRelation | null;
     onselect: (relation: TransversalRelation) => void;
   }
 
