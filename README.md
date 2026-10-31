@@ -9,6 +9,7 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
 - **Framework Web:** [Astro 5](https://astro.build/) (Generación de sitios estáticos - SSG).
 - **Interactividad UI:** [Svelte 5](https://svelte.dev/) utilizando la reactividad moderna con **Runes** (`$state`, `$derived`, `$props`).
 - **Diseño & Estilos:** [Tailwind CSS 3.4](https://tailwindcss.com/) con tema semántico y ergonomía táctil (zonas mínimas de 44x44 px).
+- **Modo Oscuro:** Soporte integral de tema Claro/Oscuro con persistencia en `localStorage`, script anti-FOUC y canvas SVG estilizados en modo blueprint/pizarrón técnico.
 - **Motor Matemático:** [KaTeX](https://katex.org/) para renderizado tipográfico seguro de fórmulas y ecuaciones.
 - **Gráficos:** SVG interactivo nativo y reactivo (sin librerías pesadas de canvas).
 - **Gestor de Paquetes:** `pnpm` con compatibilidad universal WebAssembly para Rollup.
@@ -42,7 +43,7 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
 
 ## 🏛️ Arquitectura del Proyecto
 
-El proyecto sigue una arquitectura estricta de **Responsabilidad Única (SRP)** y **Separación de Capas (SoC)**:
+El proyecto sigue una arquitectura estricta de **Responsabilidad Única (SRP)** y **Separación de Capas (SoC)** (límite de ~100-130 líneas por archivo):
 
 ```
 ├── .agents/                      # Sistema de especificaciones, subagentes y skills nativas
@@ -51,15 +52,18 @@ El proyecto sigue una arquitectura estricta de **Responsabilidad Única (SRP)** 
 │   └── subagents/                # Definiciones de roles especializados
 ├── src/
 │   ├── components/
-│   │   ├── common/               # Componentes transversales (Math.svelte, ModuleHeader.astro)
+│   │   ├── common/               # Componentes transversales (Math.svelte, ModuleHeader.astro, ThemeToggle.svelte)
 │   │   └── interactive/          # Módulos interactivos en Svelte 5
-│   │       ├── classifier/       # Subcomponentes atómicos (Protractor, Controls, Card)
+│   │       ├── classifier/       # Subcomponentes atómicos (Protractor, ProtractorTicks, Controls, Card)
+│   │       ├── pairs/            # Subcomponentes atómicos (AdjacentCanvas, OppositeCanvas, Tabs, Card)
+│   │       ├── transversal/      # Subcomponentes atómicos (TransversalCanvas, Controls, Card)
+│   │       ├── equations/        # Subcomponentes atómicos (EquationDiagram, StepSolver, Feedback)
 │   │       └── AngleClassifier.svelte # Orquestador delgado (< 120 líneas)
 │   ├── layouts/
-│   │   └── Layout.astro          # Contenedor responsive mobile-first
+│   │   └── Layout.astro          # Contenedor responsive mobile-first con anti-FOUC
 │   ├── lib/
-│   │   ├── math/                 # Lógica matemática pura y tipada (angles.ts)
-│   │   └── pedagogical/          # Bancos de preguntas, desafíos y pistas (classifierChallenges.ts)
+│   │   ├── math/                 # Lógica matemática pura y tipada (angles, pairs, transversal, equations)
+│   │   └── pedagogical/          # Bancos de preguntas, desafíos y pistas desacoplados
 │   ├── pages/                    # Enrutado estático SSG (/clasificacion, etc.)
 │   └── styles/                   # Configuración y directivas CSS globales
 ├── AGENTS.md                     # Regla arquitectónica del sistema multi-agente
@@ -102,4 +106,4 @@ pnpm run preview
 - Diseñado para funcionar de manera óptima en celulares pequeños (**360px a 420px de ancho**).
 - Todo control interactivo o botón respeta el tamaño táctil mínimo de **44px** (`touch-manipulation`).
 - Textos claros con alto contraste para proyección en pizarrón o aula escolar.
-
+- Soporte fluido de Modo Oscuro para reducir la fatiga visual en aulas y hogares.
