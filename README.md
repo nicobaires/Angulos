@@ -11,6 +11,7 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
 - **Diseño & Estilos:** [Tailwind CSS 3.4](https://tailwindcss.com/) con tema semántico y ergonomía táctil (zonas mínimas de 44x44 px).
 - **Modo Oscuro:** Soporte integral de tema Claro/Oscuro con persistencia en `localStorage`, script anti-FOUC y canvas SVG estilizados en modo blueprint/pizarrón técnico.
 - **Motor Matemático:** [KaTeX](https://katex.org/) para renderizado tipográfico seguro de fórmulas y ecuaciones.
+- **Testing Unitario:** [Vitest](https://vitest.dev/) para pruebas matemáticas automatizadas de congruencia, normalización y generación procedural de ecuaciones.
 - **Gráficos:** SVG interactivo nativo y reactivo (sin librerías pesadas de canvas).
 - **Gestor de Paquetes:** `pnpm` con compatibilidad universal WebAssembly para Rollup.
 - **Despliegue Continuo:** [Netlify](https://www.netlify.com/) (`netlify.toml`).
@@ -38,6 +39,7 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
 
 4. **[x] Módulo 4: Ecuaciones con Ángulos (`/ecuaciones`)**
    - Generación procedural de problemas algebraicos con soluciones enteras y limpias.
+   - Prevención de desajuste de hidratación SSG mediante render determinista inicial y sorteo en `onMount`.
    - Coherencia visual estricta entre etiquetas SVG ($\alpha$ y $\beta$) e insignias inferiores.
    - Resolución guiada en 3 pasos con reseteo automático de inputs al cambiar de ejercicio.
    - Respuesta final completa y explícita ($\text{Rta: } x, \alpha, \beta$) tanto en el banner de éxito como en el desarrollo analítico.
@@ -66,6 +68,8 @@ El proyecto sigue una arquitectura estricta de **Responsabilidad Única (SRP)** 
 │   │   └── Layout.astro          # Contenedor responsive mobile-first con anti-FOUC
 │   ├── lib/
 │   │   ├── math/                 # Lógica matemática pura y tipada (angles, pairs, transversal, equations)
+│   │   │   ├── angles.test.ts    # Tests unitarios Vitest
+│   │   │   └── equations.test.ts # Tests unitarios y stress testing Vitest
 │   │   └── pedagogical/          # Bancos de preguntas, desafíos y pistas desacoplados
 │   ├── pages/                    # Enrutado estático SSG (/clasificacion, etc.)
 │   └── styles/                   # Configuración y directivas CSS globales
@@ -96,10 +100,13 @@ pnpm install
 # 3. Iniciar servidor de desarrollo local
 pnpm run dev
 
-# 4. Compilar para producción (validación SSG)
+# 4. Ejecutar tests unitarios (Vitest)
+pnpm test
+
+# 5. Compilar para producción (validación SSG)
 pnpm run build
 
-# 5. Vista previa de la compilación
+# 6. Vista previa de la compilación
 pnpm run preview
 ```
 

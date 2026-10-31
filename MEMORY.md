@@ -1,8 +1,8 @@
 # MEMORY.md - Estado del Proyecto
 
 ## Estado Actual
-- **Fase:** Todos los 4 módulos temáticos interactivos completados, modulares y validados en producción con Modo Oscuro y correcciones pedagógicas (Spec 05).
-- **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX, pnpm, Netlify.
+- **Fase:** Todos los 4 módulos temáticos interactivos completados, modulares, validados en producción con Modo Oscuro, correcciones pedagógicas (Spec 05) y suite de pruebas unitarias automatizadas con Vitest (27/27 tests pasando).
+- **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX, Vitest, pnpm, Netlify.
 
 ## Módulos de Aprendizaje
 - [x] Módulo 1: Clasificación según medida (.agents/specs/01_clasificacion_angulos.md)
@@ -11,8 +11,11 @@
 - [x] Módulo 4: Ecuaciones con ángulos (.agents/specs/04_ecuaciones_angulos.md)
 - [x] Soporte Global: Modo Oscuro con persistencia en localStorage y switch accesible en encabezados.
 - [x] Refinamiento Didáctico: Correcciones de desafíos, botón de confirmación y coherencia espacial de respuestas (.agents/specs/05_correcciones_desafios.md).
+- [x] Testing y Calidad: Vitest con 27 tests unitarios en `angles.test.ts` y `equations.test.ts`, PRNG mulberry32 inyectable y prevención de mismatch de hidratación en SSG.
 
 ## Registro de Decisiones Técnicas
+- **Testing Unitario (Vitest):** Cobertura exhaustiva de funciones matemáticas puras (`angles.ts`, `pairs.ts`, `equations.ts`). 500 iteraciones aleatorias de validación para garantizar soluciones enteras positivas y consistencia analítica.
+- **Hidratación Determinista (SSG / Módulo 4):** Para evitar desajustes de hidratación entre el HTML estático de Astro y el cliente, `EquationSolver.svelte` inicializa con semilla fija (`createSeededRng(2024)`) y genera un nuevo ejercicio aleatorio en `onMount()`.
 - **Botón de Confirmar Respuesta en Desafíos (Spec 05):** Se desacopló la validación continua en arrastre para permitir la exploración táctil libre; la consigna permanece fija y la retroalimentación solo se despliega tras accionar "Confirmar respuesta".
 - **Estado Inicial en Módulo 1 y Módulo 3 (Spec 05):** Módulo 1 inicializa en 0°; Módulo 3 inicializa con relación `null` (ningún botón seleccionado por defecto).
 - **Coherencia Espacial en Módulo 4 (Spec 05):** Alineación geométrica de las etiquetas SVG ($\alpha$ y $\beta$) con sus insignias inferiores y presentación estandarizada de respuestas con ambas amplitudes ($\text{Rta: } x, \alpha, \beta$).
