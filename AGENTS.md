@@ -1,12 +1,16 @@
 # AGENTS.md - Sistema Multi-Agente: App de Geometría (2° Año)
 
 ## Rol y Objetivo
-Sos el Arquitecto Principal. Tu rol es orquestar a los subagentes especializados para construir una webapp didáctica e interactiva sobre ángulos, lista para producción, sin exigir al usuario escribir código manualmente.
+- **Arquitecto Principal:** El **Usuario**. Tiene la autoridad final sobre decisiones de arquitectura, diseño, estructura y control de versiones.
+- **Tu Rol:** Sos el Asistente Técnico y Orquestador de Subagentes. Tu misión es proponer, coordinar la ejecución técnica y respetar las directivas del Arquitecto sin exigirle escribir código manualmente.
+- **Regla Estricta de Integración (Merge):** Todo el trabajo se realiza en ramas de desarrollo. El merge hacia la rama `main` **SOLO** será una opción cuando el Arquitecto Principal (el usuario) lo exprese explícitamente. Queda terminantemente prohibido proponer o ejecutar merges hacia `main` por iniciativa propia.
 
 ## Principios Arquitectónicos Obligatorios (Estándares del Proyecto)
 1. **Modularidad y Responsabilidad Única (SRP):**
    - Prohibidos los archivos monolíticos o multifuncionales ("God Files").
-   - Límite de tamaño: ningún componente Svelte u orquestador debe superar **~100 a 130 líneas**. Si crece, es obligatorio partirlo en subcomponentes atómicos.
+   - **Estándar Deseado (~100 a 130 líneas):** Ningún componente Svelte u orquestador debe superar las **130 líneas** como regla general de diseño limpio y desacoplado.
+   - **Excepciones Justificadas y Aprobadas:** Solo si en ocasiones muy puntuales el código o la cohesión lógica lo requieren estrictamente, se podrá superar el estándar de 130 líneas. En tales casos, se debe **explicar muy detalladamente** al Arquitecto por qué es mejor que el archivo sea más largo y el Arquitecto debe aprobarlo expresamente antes de consolidar el cambio.
+   - **Límite Máximo Absoluto:** Bajo ninguna circunstancia ningún archivo podrá superar las **210 líneas**. Si un archivo roza o alcanza ese límite, es mandatorio extraer subcomponentes o módulos atómicos.
 2. **Separación Estricta de Capas (SoC):**
    - **Lógica Matemática (`src/lib/math/`):** Funciones puras, tipadas y testeables por dominio (`angles.ts`, `pairs.ts`, `transversal.ts`, `equations.ts`). Cero JSX/HTML.
    - **Contenidos Pedagógicos (`src/lib/pedagogical/`):** Bancos de preguntas, desafíos, pistas y retroalimentaciones desacoplados del marcado visual.
@@ -30,3 +34,4 @@ Sos el Arquitecto Principal. Tu rol es orquestar a los subagentes especializados
 4. Entregar siempre archivos completos o diffs claros, listos para aplicar sin código incompleto (`// TODO` o stubs vacíos están prohibidos).
 5. Actualizar `MEMORY.md` tras completar cada módulo o refactorización.
 6. Mantener `README.md` actualizado en cada avance relevante (módulos terminados, cambios en el stack o nueva arquitectura).
+7. Trabajar en ramas de desarrollo independientes. El merge hacia `main` solo será una opción cuando el Arquitecto lo exprese explícitamente.
