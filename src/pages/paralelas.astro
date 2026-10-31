@@ -1,0 +1,41 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ModuleHeader from '../components/common/ModuleHeader.astro';
+import ParallelTransversal from '../components/interactive/ParallelTransversal.svelte';
+---
+
+<Layout title="Módulo 3: Paralelas y Secante">
+  <!-- Barra de Navegación Modular Reutilizable -->
+  <ModuleHeader
+    moduleNumber={3}
+    prevHref="/pares"
+    prevLabel="Pares"
+    nextHref="/ecuaciones"
+    nextLabel="Ecuaciones"
+  />
+
+  <!-- Componente Interactivo Svelte -->
+  <main class="flex-1 flex flex-col">
+    <ParallelTransversal client:load />
+
+    <!-- Guía de Repaso para la carpeta escolar -->
+    <section class="p-4 mx-4 mb-6 bg-slate-50 rounded-2xl border border-slate-200 text-xs space-y-2 select-none">
+      <h4 class="font-bold text-slate-800 flex items-center gap-1.5 text-sm">
+        <span>📖</span>
+        <span>Resumen para tu carpeta de 2° año</span>
+      </h4>
+      <p class="text-slate-600">Al cortar dos rectas paralelas con una transversal se forman 8 ángulos con dos propiedades clave:</p>
+      <ul class="space-y-1.5 text-slate-600 pl-1">
+        <li>• <strong class="text-slate-900">Congruentes (Miden lo mismo):</strong>
+          <br />- <em>Alternos internos:</em> Adentro y cruzados (3̂=5̂, 4̂=6̂).
+          <br />- <em>Alternos externos:</em> Afuera y cruzados (1̂=7̂, 2̂=8̂).
+          <br />- <em>Correspondientes:</em> Misma posición relativa (1̂=5̂, 2̂=6̂, 3̂=7̂, 4̂=8̂).
+        </li>
+        <li>• <strong class="text-slate-900">Suplementarios (Suman 180°):</strong>
+          <br />- <em>Conjugados internos:</em> Adentro y del mismo lado (3̂+6̂=180°, 4̂+5̂=180°).
+          <br />- <em>Conjugados externos:</em> Afuera y del mismo lado (1̂+8̂=180°, 2̂+7̂=180°).
+        </li>
+      </ul>
+    </section>
+  </main>
+</Layout>

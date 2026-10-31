@@ -28,9 +28,10 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
    - Rectas secantes y ángulos opuestos por el vértice con congruencia visual pareada ($\hat{1} = \hat{3}$ y $\hat{2} = \hat{4}$).
    - Modo desafío didáctico y ficha interactiva con KaTeX.
 
-3. **[ ] Módulo 3: Paralelas cortadas por una Secante (`/paralelas`)**
-   - Rotación libre de secante entre dos rectas horizontales fijas.
-   - Identificación interactiva de los 8 sectores: alternos internos/externos, correspondientes y conjugados.
+3. **[x] Módulo 3: Paralelas cortadas por una Secante (`/paralelas`)**
+   - Rotación táctil de la secante con inclinación regulable entre dos paralelas fijas ($R_1 \parallel R_2$).
+   - Identificación y resaltado de los 8 sectores: alternos internos/externos, correspondientes y conjugados.
+   - Ficha didáctica con fórmulas KaTeX y distinción inmediata entre pares congruentes y suplementarios.
 
 4. **[ ] Módulo 4: Ecuaciones con Ángulos (`/ecuaciones`)**
    - Generación procedural de problemas algebraicos con soluciones enteras limpias.
