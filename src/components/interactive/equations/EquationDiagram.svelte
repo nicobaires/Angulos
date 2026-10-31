@@ -30,7 +30,7 @@
   );
 </script>
 
-<div class="relative w-full aspect-[4/3] max-w-[320px] mx-auto p-1 select-none">
+<div class="relative w-full aspect-[4/3] max-w-[320px] lg:max-w-[480px] mx-auto p-1 select-none">
   <svg viewBox="0 0 320 270" class="w-full h-full drop-shadow-xs" role="region" aria-label="Diagrama del problema con ecuaciones">
     <circle cx={cx} cy={cy} r={radius} class="fill-slate-50 stroke-slate-200 dark:fill-slate-900/90 dark:stroke-slate-800 transition-colors" stroke-width="1.5" stroke-dasharray="3 3" />
 

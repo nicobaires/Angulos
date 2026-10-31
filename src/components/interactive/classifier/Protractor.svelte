@@ -56,7 +56,7 @@
   }
 </script>
 
-<div class="relative w-full aspect-square max-w-[340px] mx-auto p-2 select-none">
+<div class="relative w-full aspect-square max-w-[340px] lg:max-w-[480px] mx-auto p-2 select-none">
   <svg
     bind:this={svgElement}
     viewBox="0 0 320 320"

@@ -40,21 +40,21 @@ const modules = [
 ---
 
 <Layout title="Inicio">
-  <!-- Header Mobile con botón de tema -->
-  <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-5 text-center shadow relative">
-    <div class="absolute top-4 right-4">
+  <!-- Header con botón de tema -->
+  <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white p-5 lg:p-8 text-center shadow relative">
+    <div class="absolute top-4 right-4 lg:top-6 lg:right-6">
       <ThemeToggle client:load />
     </div>
     <div class="inline-block bg-white/20 text-xs font-semibold px-2.5 py-0.5 rounded-full mb-2">
       Matemática • 2° Año
     </div>
-    <h1 class="text-2xl font-bold tracking-tight">Geometría de Ángulos</h1>
-    <p class="text-blue-100 text-sm mt-1">Explorá, manipulá y resolvé desafíos interactivos</p>
+    <h1 class="text-2xl lg:text-3xl font-bold tracking-tight">Geometría de Ángulos</h1>
+    <p class="text-blue-100 text-sm lg:text-base mt-1">Explorá, manipulá y resolvé desafíos interactivos</p>
   </header>
 
   <!-- Módulos Cards -->
-  <main class="flex-1 p-4 space-y-3.5 overflow-y-auto">
-    <div class="p-3 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 rounded-xl text-blue-900 dark:text-blue-200 text-sm flex items-center gap-2">
+  <main class="flex-1 p-4 lg:p-8 space-y-3.5 lg:space-y-6 overflow-y-auto">
+    <div class="p-3 lg:p-4 bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-900/60 rounded-xl text-blue-900 dark:text-blue-200 text-sm flex items-center gap-2">
       <span class="text-xl">📐</span>
       <div>
         <span>Fórmulas interactivas:</span>
@@ -64,7 +64,7 @@ const modules = [
 
     <h2 class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider px-1">Módulos de Aprendizaje</h2>
 
-    <div class="grid grid-cols-1 gap-3">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4">
       {
         modules.map((m) => (
           <a

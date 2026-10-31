@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { generateRandomProblem, createSeededRng, type EquationProblem } from '../../lib/math/equations';
+  import ModuleSplit from '../common/ModuleSplit.svelte';
   import EquationDiagram from './equations/EquationDiagram.svelte';
   import StepSolver from './equations/StepSolver.svelte';
   import EquationFeedback from './equations/EquationFeedback.svelte';
@@ -36,13 +37,17 @@
     </span>
   </div>
 
-  <!-- Diagrama Geométrico SVG con Expresiones -->
-  <EquationDiagram {problem} />
+  <ModuleSplit>
+    {#snippet visual()}
+      <!-- Diagrama Geométrico SVG con Expresiones -->
+      <EquationDiagram {problem} />
+    {/snippet}
+    {#snippet panel()}
+      <!-- Asistente de Pasos -->
+      <StepSolver {problem} {currentStep} onadvance={handleAdvance} />
 
-  <!-- Asistente de Pasos -->
-  <StepSolver {problem} {currentStep} onadvance={handleAdvance} />
-
-  <!-- Feedback y Controles de Solución -->
-  <EquationFeedback {problem} {currentStep} onnewproblem={handleNewProblem} />
+      <!-- Feedback y Controles de Solución -->
+      <EquationFeedback {problem} {currentStep} onnewproblem={handleNewProblem} />
+    {/snippet}
+  </ModuleSplit>
 </div>
-

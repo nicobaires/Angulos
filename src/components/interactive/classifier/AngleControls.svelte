@@ -16,6 +16,16 @@
   function handlePresetClick(val: number) {
     onchange?.(val);
   }
+
+  function handleKeyDown(e: KeyboardEvent) {
+    if (e.shiftKey && (e.key === 'ArrowRight' || e.key === 'ArrowUp')) {
+      e.preventDefault();
+      onchange?.(Math.min(360, angle + 10));
+    } else if (e.shiftKey && (e.key === 'ArrowLeft' || e.key === 'ArrowDown')) {
+      e.preventDefault();
+      onchange?.(Math.max(0, angle - 10));
+    }
+  }
 </script>
 
 <div class="px-5 py-3 space-y-3 select-none">
@@ -35,7 +45,8 @@
       step="1"
       value={angle}
       oninput={handleSliderInput}
-      class="w-full h-3 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600 touch-manipulation"
+      onkeydown={handleKeyDown}
+      class="w-full h-3 bg-slate-200 dark:bg-slate-700 rounded-lg appearance-none cursor-pointer accent-blue-600 touch-manipulation focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none"
       aria-label="Control deslizante para ajustar el ángulo"
     />
   </div>
@@ -45,7 +56,7 @@
     {#each presets as val}
       <button
         onclick={() => handlePresetClick(val)}
-        class="px-2.5 py-1 text-xs font-bold rounded-lg border transition active:scale-95 touch-manipulation min-h-[38px] {angle === val ? 'bg-slate-900 text-white border-slate-900 dark:bg-blue-600 dark:border-blue-500' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700'}"
+        class="px-2.5 py-1 text-xs font-bold rounded-lg border transition active:scale-95 touch-manipulation min-h-[38px] focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none {angle === val ? 'bg-slate-900 text-white border-slate-900 dark:bg-blue-600 dark:border-blue-500' : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100 lg:hover:border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700 dark:hover:bg-slate-700'}"
       >
         {val}°
       </button>

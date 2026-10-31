@@ -12,8 +12,12 @@
 - [x] Soporte Global: Modo Oscuro con persistencia en localStorage y switch accesible en encabezados.
 - [x] Refinamiento Didáctico: Correcciones de desafíos, botón de confirmación y coherencia espacial de respuestas (.agents/specs/05_correcciones_desafios.md).
 - [x] Testing y Calidad: Vitest con 27 tests unitarios en `angles.test.ts` y `equations.test.ts`, PRNG mulberry32 inyectable y prevención de mismatch de hidratación en SSG.
+- [x] Vista de Escritorio: Adaptación aditiva a 2 columnas para pantallas grandes (`lg:`, $\ge 1024\text{ px}$) con `ModuleSplit.svelte`, escalado visual a 480px y cero regresión mobile (.agents/specs/06_vista_escritorio.md).
 
 ## Registro de Decisiones Técnicas
+- **Vista de Escritorio y Estrategia Aditiva `lg:` (Spec 06):** Mobile-first estricto donde no se alteran clases sin prefijo. En pantallas $\ge 1024\text{ px}$, el ancho contenedor crece a `max-w-6xl`, las 4 tarjetas de inicio pasan a 2 columnas (`lg:grid-cols-2`), y los módulos dividen pantalla con `ModuleSplit.svelte` (izquierda: visual SVG escalado a 480px; derecha: desafíos, controles y fichas; abajo: resumen de carpeta full-width).
+- **Extracción Atómica de Desafíos (SRP en Spec 06):** Para mantener los orquestadores dentro del límite del proyecto ($\le 120$ líneas) al incorporar `ModuleSplit`, se extrajeron los componentes `ClassifierChallenge.svelte`, `PairsChallenge.svelte` y `TransversalChallenge.svelte`.
+- **Accesibilidad y Navegación Teclado/Mouse:** Soporte nativo de Pointer Events en todos los gráficos interactivos, indicadores de foco accesible (`focus-visible:ring-2`), y manipulación por teclado en sliders con pasos finos de $\pm 1^\circ$ y saltos de $\pm 10^\circ$ mediante `Shift + Flechas`.
 - **Testing Unitario (Vitest):** Cobertura exhaustiva de funciones matemáticas puras (`angles.ts`, `pairs.ts`, `equations.ts`). 500 iteraciones aleatorias de validación para garantizar soluciones enteras positivas y consistencia analítica.
 - **Hidratación Determinista (SSG / Módulo 4):** Para evitar desajustes de hidratación entre el HTML estático de Astro y el cliente, `EquationSolver.svelte` inicializa con semilla fija (`createSeededRng(2024)`) y genera un nuevo ejercicio aleatorio en `onMount()`.
 - **Botón de Confirmar Respuesta en Desafíos (Spec 05):** Se desacopló la validación continua en arrastre para permitir la exploración táctil libre; la consigna permanece fija y la retroalimentación solo se despliega tras accionar "Confirmar respuesta".

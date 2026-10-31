@@ -112,8 +112,16 @@ pnpm run preview
 
 ---
 
-## 📱 Criterios de Accesibilidad Móvil
-- Diseñado para funcionar de manera óptima en celulares pequeños (**360px a 420px de ancho**).
-- Todo control interactivo o botón respeta el tamaño táctil mínimo de **44px** (`touch-manipulation`).
-- Textos claros con alto contraste para proyección en pizarrón o aula escolar.
-- Soporte fluido de Modo Oscuro para reducir la fatiga visual en aulas y hogares.
+## 💻📱 Experiencia Multi-Dispositivo (Mobile-First y Vista Escritorio)
+
+- **Mobile & Tablets (< 1024px):** Diseñado con layout vertical ergonómico para celulares pequeños (**360px a 420px de ancho**).
+- **Escritorio & Proyector de Aula (≥ 1024px):** En pantallas grandes se activa automáticamente una presentación a 2 columnas con contenedor `max-w-6xl`:
+  - **Columna izquierda:** Diagrama visual interactivo escalado con precisión vectorial hasta **480px**.
+  - **Columna derecha:** Controles, tarjetas de desafíos y feedback paso a paso.
+  - **Pie a todo el ancho:** Guía de repaso para la carpeta escolar de 2° año.
+- **Interacción y Accesibilidad:**
+  - Todo control interactivo o botón respeta el tamaño táctil mínimo de **44px** (`touch-manipulation`).
+  - Arrastre interactivo con soporte de Pointer Events (dedo, lápiz y mouse).
+  - Operación accesible por teclado: sliders ajustables con flechas ($\pm 1^\circ$) y saltos rápidos con `Shift + Flechas` ($\pm 10^\circ$).
+  - Indicadores claros de foco accesible (`focus-visible`).
+- **Modo Oscuro:** Soporte integral de tema Claro/Oscuro con persistencia en `localStorage`, script anti-FOUC y canvas SVG estilizados en modo blueprint/pizarrón técnico.
