@@ -45,20 +45,28 @@ Este documento registra los hitos estratégicos acordados con el Arquitecto Prin
 
 ---
 
-### 3. 🎓 Examen Integrador Final con Certificado - [PRÓXIMO PASO ⏳]
-- [ ] Crear ruta `/examen` accesible desde la portada con quiz de 5 ejercicios mixtos aleatorios:
-  - 1 ejercicio de clasificación con transportador.
-  - 1 ejercicio de pares de ángulos.
-  - 1 ejercicio de paralelas y secante.
-  - 2 ejercicios de ecuaciones con ángulos.
-- [ ] Calificación escolar numérica sobre 10 (con escala argentina: 1-10, aprobado $\ge 6$).
-- [ ] Generación de diploma/certificado imprimible y descargable con nombre del alumno y fecha.
-- [ ] Integración con el sistema de medallas (`🎖️ Graduado de Geometría 2°`).
+### 3. 🎓 Examen Integrador Final con Certificado - [COMPLETADO ✅]
+- [x] **Generador Procedural de Examen (`examGenerator.ts` - 99 líneas):**
+  - [x] 5 preguntas balanceadas de opción múltiple representando los 4 módulos temáticos.
+  - [x] Algoritmo de barajado y selección aleatoria con soporte determinista para SSR.
+  - [x] Suite de tests unitarios en Vitest (`examGenerator.test.ts`) con 2/2 tests pasando.
+- [x] **Flujo Interactivo y Calificación (`ExamQuiz.svelte` - 107 líneas):**
+  - [x] Preguntas con insignias de módulo, fórmulas KaTeX y 4 opciones accesibles.
+  - [x] Calificación automática sobre 10 puntos (escala escolar argentina).
+  - [x] Explicación pedagógica desplegada al confirmar cada respuesta.
+- [x] **Diploma Escolar Imprimible (`ExamCertificate.svelte` - 89 líneas):**
+  - [x] Campo editable para ingresar nombre y apellido del estudiante.
+  - [x] Nivel de logro académico (Sobresaliente, Distinguido, Aprobado o A seguir practicando).
+  - [x] Formato estético con marco escolar, fecha automática y sello simbólico.
+  - [x] Botón de impresión/exportación directa (`window.print()`) optimizado para papel o PDF.
+- [x] **Página y Enlace en Portada:**
+  - [x] Ruta `/examen` (`examen.astro`) con layout unificado y header accesible.
+  - [x] Tarjeta destacada del examen final agregada en la portada principal (`index.astro`).
 
 ---
 
-### 4. 📱 PWA Offline (Uso Escolar sin Conexión) - [RESERVADO PARA EL FINAL 📌]
-*(Postergado para el cierre por indicación expresa del Arquitecto)*
+### 4. 📱 PWA Offline (Uso Escolar sin Conexión) - [SIGUIENTE PASO ⏳]
+*(Reservado para el cierre por indicación expresa del Arquitecto)*
 - [ ] Crear `public/manifest.webmanifest` con iconos, colores escolares y nombre de la app.
 - [ ] Configurar Service Worker liviano para cachear el bundle estático (HTML, CSS, JS y KaTeX).
 - [ ] Validar funcionamiento 100% offline desconectando la red en DevTools.

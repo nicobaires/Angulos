@@ -1,7 +1,7 @@
 # MEMORY.md - Estado del Proyecto
 
 ## Estado Actual
-- **Fase:** Todos los 4 módulos temáticos interactivos completados, modulares, validados en producción con Modo Oscuro, correcciones pedagógicas (Spec 05), ampliación curricular de Ecuaciones (Spec 07 / Módulo 4), sistema de Gamificación y Progreso Escolar Local (Hito 2 del Roadmap completado) y suite de pruebas unitarias automatizadas con Vitest (37/37 tests pasando).
+- **Fase:** Todos los 4 módulos temáticos interactivos completados, modulares, validados en producción con Modo Oscuro, correcciones pedagógicas (Spec 05), ampliación curricular de Ecuaciones (Spec 07 / Módulo 4), sistema de Gamificación y Progreso Escolar Local (Hito 2), Examen Integrador Final con Diploma Escolar Imprimible (Hito 3) y suite de pruebas unitarias automatizadas con Vitest (39/39 tests pasando).
 - **Rama Activa:** `dev` (Gobernanza estricta: merge a `main` solo con orden explícita del Arquitecto Principal).
 - **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX, Vitest, pnpm, Netlify.
 
@@ -17,8 +17,9 @@
   - [x] Nueva Variante: paralelas con conjugados internos ($\alpha + \beta = 180^\circ$)
 - [x] Soporte Global: Modo Oscuro con persistencia en localStorage y switch accesible en encabezados.
 - [x] Gamificación y Progreso Escolar Local: Store con suscriptores (`progressStore.ts`), persistencia en `localStorage`, contador de estrellas (`⭐`), racha (`🔥`), vitrina de 7 medallas escolares (`ProgressWidget.svelte`) y badges de avance en la portada (`ProgressBadge.svelte`).
+- [x] Examen Integrador Final y Diploma: Ruta `/examen` (`examen.astro`), generador procedural (`examGenerator.ts`), quiz dinámico de 5 preguntas (`ExamQuiz.svelte`), diploma escolar con calificación 1-10 y botón de impresión optimizado para papel o PDF (`ExamCertificate.svelte`).
 - [x] Refinamiento Didáctico: Correcciones de desafíos, botón de confirmación y coherencia espacial de respuestas (.agents/specs/05_correcciones_desafios.md).
-- [x] Testing y Calidad: Vitest con 37 tests unitarios en `angles.test.ts`, `pairsChallenges.test.ts`, `equations.test.ts` y `progressStore.test.ts`, PRNG mulberry32 inyectable y prevención de mismatch de hidratación en SSG.
+- [x] Testing y Calidad: Vitest con 39 tests unitarios en `angles.test.ts`, `pairsChallenges.test.ts`, `equations.test.ts`, `progressStore.test.ts` y `examGenerator.test.ts`, PRNG mulberry32 inyectable y prevención de mismatch de hidratación en SSG.
 - [x] Vista de Escritorio: Adaptación aditiva a 2 columnas para pantallas grandes (`lg:`, $\ge 1024\text{ px}$) con `ModuleSplit.svelte`, escalado visual a 480px y cero regresión mobile (.agents/specs/06_vista_escritorio.md).
 - [x] Despliegue en Netlify: Publicado y operativo en producción en https://angulos2.netlify.app/
 - [x] Modo Desafío Dinámico y Entrada Manual: Aleatorización de preguntas en Módulo 1 y Módulo 2 (valores variados en complementarios, suplementarios y opuestos), gráficos ciegos en desafíos (ocultamiento de la medida dada en la consigna) e inputs numéricos manuales por teclado sincronizados en Módulos 1, 2 y 3.
@@ -26,6 +27,7 @@
 - [x] Límite de Líneas Flexible con Justificación: Estándar deseado fijado en $\le 130$ líneas. Excepciones justificadas y aprobadas por el Arquitecto con un tope máximo absoluto e inviolable de 210 líneas.
 
 ## Registro de Decisiones Técnicas
+- **Examen Integrador y Certificado (Hito 3):** Generador `examGenerator.ts` (99 líneas) con 5 preguntas balanceadas de los 4 módulos temáticos. `ExamQuiz.svelte` (107 líneas) con retroalimentación explicativa y cálculo de nota 1-10. `ExamCertificate.svelte` (89 líneas) con nombre del estudiante, fecha automática, diseño ceremonial apto para imprimir vía `window.print()` (`print:border-black`, `print:bg-white`, `print:hidden` en botones) y `ExamRunner.svelte` (58 líneas) como orquestador.
 - **Gamificación y Progreso Escolar Local (Hito 2):** Store `progressStore.ts` (128 líneas) con patrón de suscriptores y persistencia local sin servidor. Cada desafío acertado suma 1 estrella (`⭐`) e incrementa la racha (`🔥`). Las fallas pedagógicas no restan estrellas. Desbloqueo automático de 7 medallas escolares. Modal `ProgressWidget.svelte` (97 líneas) en la barra superior de todos los módulos y la portada. Badges dinámicos `ProgressBadge.svelte` (29 líneas) en las tarjetas de inicio.
 - **Nuevas Variantes Curriculares de Módulo 4 (Spec 07):**
   - Se agregaron 3 nuevos generadores algebraicos en `equations.ts`: `generateComplementaryEquationProblem` ($\alpha + \beta = 90^\circ$), `generateAlternateInteriorEquationProblem` ($\alpha = \beta$), y `generateConsecutiveInteriorEquationProblem` ($\alpha + \beta = 180^\circ$).
