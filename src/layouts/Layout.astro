@@ -1,0 +1,32 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content="App Interactiva de Geometría y Ángulos para 2° Año" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} | Geometría 2° Año</title>
+    <!-- KaTeX CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col items-center">
+    <div class="w-full max-w-md min-h-screen flex flex-col bg-white shadow-sm border-x border-slate-200">
+      <slot />
+    </div>
+  </body>
+</html>
+

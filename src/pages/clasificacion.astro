@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import AngleClassifier from '../components/interactive/AngleClassifier.svelte';
+---
+
+<Layout title="Módulo 1: Clasificación de Ángulos">
+  <!-- Barra de Navegación Superior -->
+  <header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-20">
+    <a
+      href="/"
+      class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl transition active:scale-95 touch-manipulation min-h-[44px]"
+    >
+      <span>←</span>
+      <span>Inicio</span>
+    </a>
+
+    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+      Módulo 1 de 4
+    </span>
+
+    <a
+      href="/pares"
+      class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-xl transition active:scale-95 touch-manipulation min-h-[44px]"
+    >
+      <span>Pares</span>
+      <span>→</span>
+    </a>
+  </header>
+
+  <!-- Componente Interactivo Svelte -->
+  <main class="flex-1 flex flex-col">
+    <AngleClassifier client:load />
+
+    <!-- Guía de Repaso Rápido al Pie -->
+    <section class="p-4 mx-4 mb-6 bg-slate-50 rounded-2xl border border-slate-200 text-xs space-y-2">
+      <h4 class="font-bold text-slate-800 flex items-center gap-1.5 text-sm">
+        <span>📖</span>
+        <span>Resumen para tu carpeta de 2° año</span>
+      </h4>
+      <ul class="space-y-1.5 text-slate-600 pl-1">
+        <li>• <strong class="text-slate-900">Agudo:</strong> Mayor a 0° y menor a 90°.</li>
+        <li>• <strong class="text-slate-900">Recto:</strong> Exactamente 90° (rayos perpendiculares).</li>
+        <li>• <strong class="text-slate-900">Obtuso:</strong> Mayor a 90° y menor a 180°.</li>
+        <li>• <strong class="text-slate-900">Llano:</strong> Exactamente 180° (media vuelta).</li>
+        <li>• <strong class="text-slate-900">Cóncavo:</strong> Mayor a 180° y menor a 360°.</li>
+        <li>• <strong class="text-slate-900">Completo:</strong> Exactamente 360° (giro total).</li>
+      </ul>
+    </section>
+  </main>
+</Layout>
+

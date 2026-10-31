@@ -1,0 +1,99 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Math from '../components/common/Math.svelte';
+
+const modules = [
+  {
+    num: '1',
+    title: 'Clasificación de Ángulos',
+    desc: 'Agudos, rectos, obtusos, llanos y cóncavos con transportador interactivo.',
+    href: '/clasificacion',
+    color: 'bg-amber-500',
+    tag: '0° a 360°'
+  },
+  {
+    num: '2',
+    title: 'Pares de Ángulos',
+    desc: 'Complementarios, suplementarios y opuestos por el vértice.',
+    href: '/pares',
+    color: 'bg-emerald-500',
+    tag: 'Suma y congruencia'
+  },
+  {
+    num: '3',
+    title: 'Paralelas y Secante',
+    desc: 'Alternos, conjugados y correspondientes con rayos interactivos.',
+    href: '/paralelas',
+    color: 'bg-indigo-500',
+    tag: '8 ángulos clave'
+  },
+  {
+    num: '4',
+    title: 'Ecuaciones con Ángulos',
+    desc: 'Resolución de problemas algebraicos paso a paso.',
+    href: '/ecuaciones',
+    color: 'bg-violet-500',
+    tag: 'Álgebra aplicada'
+  }
+];
+---
+
+<Layout title="Inicio">
+  <!-- Header Mobile -->
+  <header class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-5 text-center shadow">
+    <div class="inline-block bg-white/20 text-xs font-semibold px-2.5 py-0.5 rounded-full mb-2">
+      Matemática • 2° Año
+    </div>
+    <h1 class="text-2xl font-bold tracking-tight">Geometría de Ángulos</h1>
+    <p class="text-blue-100 text-sm mt-1">Explorá, manipulá y resolvé desafíos interactivos</p>
+  </header>
+
+  <!-- Módulos Cards -->
+  <main class="flex-1 p-4 space-y-3.5 overflow-y-auto">
+    <div class="p-3 bg-blue-50 border border-blue-200 rounded-xl text-blue-900 text-sm flex items-center gap-2">
+      <span class="text-xl">📐</span>
+      <div>
+        <span>Fórmulas interactivas:</span>
+        <Math client:visible formula="\alpha + \beta = 180^\circ" />
+      </div>
+    </div>
+
+    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider px-1">Módulos de Aprendizaje</h2>
+
+    <div class="grid grid-cols-1 gap-3">
+      {
+        modules.map((m) => (
+          <a
+            href={m.href}
+            class="group block p-4 bg-white rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition active:scale-[0.98] touch-manipulation"
+          >
+            <div class="flex items-start gap-3.5">
+              <div class={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-sm ${m.color}`}>
+                {m.num}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between gap-1 mb-1">
+                  <h3 class="font-bold text-slate-900 text-base group-hover:text-blue-600 transition">
+                    {m.title}
+                  </h3>
+                  <span class="text-[11px] font-medium px-2 py-0.5 bg-slate-100 text-slate-600 rounded-full shrink-0">
+                    {m.tag}
+                  </span>
+                </div>
+                <p class="text-slate-600 text-xs line-clamp-2 leading-relaxed">
+                  {m.desc}
+                </p>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </main>
+
+  <!-- Footer didáctico -->
+  <footer class="p-3 bg-slate-50 border-t border-slate-200 text-center text-xs text-slate-500">
+    Diseñado para aprender jugando • Mobile-First
+  </footer>
+</Layout>
+
