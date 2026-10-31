@@ -17,6 +17,9 @@
 - [x] Despliegue en Netlify: Publicado y operativo en producción en https://angulos2.netlify.app/
 - [x] Modo Desafío Dinámico y Entrada Manual: Aleatorización de preguntas en Módulo 1 y Módulo 2 (valores variados en complementarios, suplementarios y opuestos), gráficos ciegos en desafíos (ocultamiento de la medida dada en la consigna) e inputs numéricos manuales por teclado sincronizados en Módulos 1, 2 y 3.
 
+- [x] Gestión de Ramas y Gobernanza (`AGENTS.md`): Establecido que el usuario es el Arquitecto Principal. Creación de la rama `dev` para futuros desarrollos. La integración (merge) hacia `main` queda reservada estrictamente a la orden explícita del Arquitecto.
+- [x] Límite de Líneas Flexible con Justificación: Estándar deseado fijado en $\le 130$ líneas. Excepciones justificadas y aprobadas por el Arquitecto con un tope máximo absoluto e inviolable de 210 líneas.
+
 ## Registro de Decisiones Técnicas
 - **Desafíos Aleatorios y Procedurales (Módulo 1 y 2):** En Módulo 1 se implementó un barajado Fisher-Yates de los 6 tipos de ángulos. En Módulo 2 se creó un generador procedural (`generatePairsChallengesDeck`) con pools de ángulos limpios ($20^\circ$ a $150^\circ$) para complementarios, suplementarios y opuestos por el vértice, con selección aleatoria por partida.
 - **Gráficos Ciegos en Desafíos (Módulo 2):** Para evitar regalar la respuesta o permitir que el alumno busque números coincidentes sin pensar, `AdjacentCanvas.svelte` y `OppositeCanvas.svelte` ocultan la medida en grados del ángulo dado en la consigna durante los desafíos (`hideBetaDegrees` y `hideAdjacentDegrees`), mostrando únicamente los símbolos algebraicos ($\beta$, $\hat{2}$, $\hat{4}$). `PairsCard.svelte` oculta la sustitución numérica en tiempo real durante los desafíos.
