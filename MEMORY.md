@@ -14,7 +14,10 @@
 - [x] Testing y Calidad: Vitest con 27 tests unitarios en `angles.test.ts` y `equations.test.ts`, PRNG mulberry32 inyectable y prevención de mismatch de hidratación en SSG.
 - [x] Vista de Escritorio: Adaptación aditiva a 2 columnas para pantallas grandes (`lg:`, $\ge 1024\text{ px}$) con `ModuleSplit.svelte`, escalado visual a 480px y cero regresión mobile (.agents/specs/06_vista_escritorio.md).
 
+- [x] Despliegue en Netlify: Configuración para CI/CD continuo con Node 20, frozen lockfile, caché inmutable en `_astro/`, favicon SVG y página 404 personalizada.
+
 ## Registro de Decisiones Técnicas
+- **Despliegue Continuo en Netlify:** Archivo `netlify.toml` endurecido con `NODE_VERSION = "20"`, `PNPM_FLAGS = "--frozen-lockfile"` y cabeceras de caché inmutable para `/_astro/*`. Inclusión de `public/favicon.svg` y `src/pages/404.astro` para eliminar errores 404 en navegadores y crawlers. Preconnect de `cdn.jsdelivr.net` en `Layout.astro` para carga instantánea de tipografías KaTeX.
 - **Vista de Escritorio y Estrategia Aditiva `lg:` (Spec 06):** Mobile-first estricto donde no se alteran clases sin prefijo. En pantallas $\ge 1024\text{ px}$, el ancho contenedor crece a `max-w-6xl`, las 4 tarjetas de inicio pasan a 2 columnas (`lg:grid-cols-2`), y los módulos dividen pantalla con `ModuleSplit.svelte` (izquierda: visual SVG escalado a 480px; derecha: desafíos, controles y fichas; abajo: resumen de carpeta full-width).
 - **Extracción Atómica de Desafíos (SRP en Spec 06):** Para mantener los orquestadores dentro del límite del proyecto ($\le 120$ líneas) al incorporar `ModuleSplit`, se extrajeron los componentes `ClassifierChallenge.svelte`, `PairsChallenge.svelte` y `TransversalChallenge.svelte`.
 - **Accesibilidad y Navegación Teclado/Mouse:** Soporte nativo de Pointer Events en todos los gráficos interactivos, indicadores de foco accesible (`focus-visible:ring-2`), y manipulación por teclado en sliders con pasos finos de $\pm 1^\circ$ y saltos de $\pm 10^\circ$ mediante `Shift + Flechas`.
