@@ -28,7 +28,8 @@ export interface AngleClassificationInfo {
 export function normalizeAngle(angle: number): number {
   let normalized = angle % 360;
   if (normalized < 0) normalized += 360;
-  return normalized;
+  // Evita devolver -0 (p. ej. -360 % 360), que se comporta distinto con Object.is
+  return normalized === 0 ? 0 : normalized;
 }
 
 /**

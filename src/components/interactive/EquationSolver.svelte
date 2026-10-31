@@ -1,15 +1,22 @@
 <script lang="ts">
-  import { generateRandomProblem, type EquationProblem } from '../../lib/math/equations';
+  import { onMount } from 'svelte';
+  import { generateRandomProblem, createSeededRng, type EquationProblem } from '../../lib/math/equations';
   import EquationDiagram from './equations/EquationDiagram.svelte';
   import StepSolver from './equations/StepSolver.svelte';
   import EquationFeedback from './equations/EquationFeedback.svelte';
 
-  let problem = $state<EquationProblem>(generateRandomProblem());
+  // Ejercicio inicial determinista: el HTML del build (SSG) y la hidratación del cliente
+  // coinciden. Recién al montar se sortea uno aleatorio para el alumno.
+  let problem = $state<EquationProblem>(generateRandomProblem(createSeededRng(2024)));
   let currentStep = $state<1 | 2 | 3 | 'done'>(1);
 
   function handleAdvance(nextStep: 1 | 2 | 3 | 'done') {
     currentStep = nextStep;
   }
+
+  onMount(() => {
+    problem = generateRandomProblem();
+  });
 
   function handleNewProblem() {
     problem = generateRandomProblem();

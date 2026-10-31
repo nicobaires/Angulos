@@ -18,11 +18,25 @@ export interface EquationProblem {
   steps: string[];
 }
 
-export function generateOppositeEquationProblem(): EquationProblem {
-  const x = Math.floor(Math.random() * 8) + 12; // 12 a 19
-  const c = Math.floor(Math.random() * 2) + 1;  // 1 a 2
-  const a = c + Math.floor(Math.random() * 2) + 1; // 2 a 4
-  const b = Math.floor(Math.random() * 15) + 5;   // 5 a 19
+/** Generador de números en [0, 1). Inyectable para tests y para render determinista (SSR). */
+export type Rng = () => number;
+
+/** PRNG determinista (mulberry32): misma semilla, mismos ejercicios. */
+export function createSeededRng(seed: number): Rng {
+  let t = seed >>> 0;
+  return () => {
+    t = (t + 0x6d2b79f5) >>> 0;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r = (r + Math.imul(r ^ (r >>> 7), 61 | r)) ^ r;
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+export function generateOppositeEquationProblem(rng: Rng = Math.random): EquationProblem {
+  const x = Math.floor(rng() * 8) + 12; // 12 a 19
+  const c = Math.floor(rng() * 2) + 1;  // 1 a 2
+  const a = c + Math.floor(rng() * 2) + 1; // 2 a 4
+  const b = Math.floor(rng() * 15) + 5;   // 5 a 19
   const diff = (a - c) * x;
   const d = b + diff;
 
@@ -30,7 +44,7 @@ export function generateOppositeEquationProblem(): EquationProblem {
   const beta = c * x + d;
 
   return {
-    id: `opp_${Date.now()}_${Math.random()}`,
+    id: `opp_${Math.floor(rng() * 1e9)}`,
     type: 'opuestos',
     title: 'Ángulos Opuestos por el Vértice',
     diagramAngle: alpha,
@@ -52,10 +66,10 @@ export function generateOppositeEquationProblem(): EquationProblem {
   };
 }
 
-export function generateSupplementaryEquationProblem(): EquationProblem {
-  const x = Math.floor(Math.random() * 8) + 10; // 10 a 17
-  const a = Math.floor(Math.random() * 3) + 2;  // 2 a 4
-  const c = Math.floor(Math.random() * 2) + 1;  // 1 a 2
+export function generateSupplementaryEquationProblem(rng: Rng = Math.random): EquationProblem {
+  const x = Math.floor(rng() * 8) + 10; // 10 a 17
+  const a = Math.floor(rng() * 3) + 2;  // 2 a 4
+  const c = Math.floor(rng() * 2) + 1;  // 1 a 2
   const totalCoeff = a + c;
   const targetLinear = totalCoeff * x;
   const remainder = 180 - targetLinear;
@@ -66,7 +80,7 @@ export function generateSupplementaryEquationProblem(): EquationProblem {
   const beta = c * x + d;
 
   return {
-    id: `sup_${Date.now()}_${Math.random()}`,
+    id: `sup_${Math.floor(rng() * 1e9)}`,
     type: 'suplementarios',
     title: 'Ángulos Adyacentes y Suplementarios',
     diagramAngle: alpha,
@@ -88,8 +102,8 @@ export function generateSupplementaryEquationProblem(): EquationProblem {
   };
 }
 
-export function generateRandomProblem(): EquationProblem {
-  return Math.random() > 0.5
-    ? generateOppositeEquationProblem()
-    : generateSupplementaryEquationProblem();
+export function generateRandomProblem(rng: Rng = Math.random): EquationProblem {
+  return rng() > 0.5
+    ? generateOppositeEquationProblem(rng)
+    : generateSupplementaryEquationProblem(rng);
 }
