@@ -59,18 +59,18 @@
 
   {:else}
     <div class="flex items-center justify-between mb-1">
-      <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Propiedad</span>
-      <span class="text-xs px-2 py-0.5 rounded-full font-bold bg-emerald-50 text-emerald-800">Congruencia</span>
+      <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Propiedad</span>
+      <span class="text-xs px-2 py-0.5 rounded-full font-bold bg-blue-50 text-blue-800">Congruencia</span>
     </div>
     <h3 class="text-base font-black text-slate-900">Opuestos por el Vértice</h3>
 
-    <div class="my-2 p-2 bg-slate-50 rounded-xl flex flex-col items-center gap-1 text-sm font-semibold text-slate-800">
+    <div class="my-2 p-2 bg-slate-50 rounded-xl flex flex-col items-center gap-1.5 text-sm font-semibold text-slate-800">
       <div class="flex items-center gap-2">
-        <span class="text-xs text-blue-600 font-bold">Pares iguales:</span>
+        <span class="text-xs text-blue-600 font-bold bg-blue-50 px-2 py-0.5 rounded-md">Par Azul:</span>
         <Katex formula={`\\hat{1} = \\hat{3} = ${alpha}^\\circ`} />
       </div>
       <div class="flex items-center gap-2">
-        <span class="text-xs text-emerald-600 font-bold">Pares iguales:</span>
+        <span class="text-xs text-amber-700 font-bold bg-amber-50 px-2 py-0.5 rounded-md">Par Ámbar:</span>
         <Katex formula={`\\hat{2} = \\hat{4} = ${180 - alpha}^\\circ`} />
       </div>
     </div>

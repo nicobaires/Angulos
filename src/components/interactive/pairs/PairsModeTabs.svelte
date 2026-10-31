@@ -15,18 +15,17 @@
   ];
 </script>
 
-<div class="px-4 py-2 border-b border-slate-100 flex gap-2 overflow-x-auto select-none no-scrollbar">
+<div class="px-3 py-2 border-b border-slate-100 grid grid-cols-3 gap-1.5 select-none">
   {#each tabs as t}
     <button
       onclick={() => onselect(t.type)}
-      class="flex-1 min-w-[100px] p-2 rounded-xl text-left border transition active:scale-95 touch-manipulation min-h-[44px] {activeMode === t.type ? 'bg-blue-50 border-blue-400 text-blue-900 shadow-xs' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}"
+      class="flex flex-col items-center justify-center p-1.5 rounded-xl text-center border transition active:scale-95 touch-manipulation min-h-[48px] {activeMode === t.type ? 'bg-blue-50 border-blue-400 text-blue-900 shadow-xs ring-1 ring-blue-300' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}"
     >
-      <div class="flex items-center gap-1.5">
-        <span class="text-base">{t.icon}</span>
-        <span class="text-xs font-bold">{t.label}</span>
+      <div class="flex items-center justify-center gap-1 w-full">
+        <span class="text-sm shrink-0">{t.icon}</span>
+        <span class="text-[11px] font-bold tracking-tight truncate">{t.label}</span>
       </div>
-      <p class="text-[10px] font-medium opacity-75 mt-0.5">{t.sum}</p>
+      <p class="text-[9px] font-semibold opacity-75 mt-0.5 whitespace-nowrap">{t.sum}</p>
     </button>
   {/each}
 </div>
-
