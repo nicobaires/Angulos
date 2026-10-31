@@ -12,14 +12,14 @@
 <div class="p-4 mx-4 mb-4 rounded-2xl border shadow-sm transition-all select-none {info.badgeClass}">
   <div class="flex items-center justify-between mb-1.5">
     <span class="text-xs font-bold uppercase tracking-wider">Clasificación</span>
-    <span class="text-xs px-2 py-0.5 rounded-full font-bold bg-white/70 shadow-xs">
+    <span class="text-xs px-2 py-0.5 rounded-full font-bold bg-white/70 dark:bg-slate-900/70 shadow-xs">
       {info.colorName}
     </span>
   </div>
 
   <h3 class="text-lg font-black tracking-tight">{info.name}</h3>
 
-  <div class="my-1.5 py-1 px-2.5 bg-white/80 rounded-lg inline-flex items-center text-sm font-semibold">
+  <div class="my-1.5 py-1 px-2.5 bg-white/80 dark:bg-slate-900/80 rounded-lg inline-flex items-center text-sm font-semibold">
     {#if info.type === 'nulo'}
       <Katex formula="\alpha = 0^\circ" />
     {:else if info.type === 'agudo'}

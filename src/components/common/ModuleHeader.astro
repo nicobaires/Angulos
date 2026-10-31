@@ -1,4 +1,6 @@
 ---
+import ThemeToggle from './ThemeToggle.svelte';
+
 interface Props {
   moduleNumber: number;
   totalModules?: number;
@@ -18,31 +20,33 @@ const {
 } = Astro.props;
 ---
 
-<header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-20 select-none">
+<header class="bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 px-4 py-3 flex items-center justify-between sticky top-0 z-20 select-none transition-colors">
   <a
     href={prevHref}
-    class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl transition active:scale-95 touch-manipulation min-h-[44px]"
+    class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 px-3 py-2 rounded-xl transition active:scale-95 touch-manipulation min-h-[44px]"
   >
     <span>←</span>
     <span>{prevLabel}</span>
   </a>
 
-  <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">
-    Módulo {moduleNumber} de {totalModules}
-  </span>
+  <div class="flex items-center gap-2">
+    <span class="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
+      Módulo {moduleNumber} de {totalModules}
+    </span>
+    <ThemeToggle client:load />
+  </div>
 
   {
     nextHref ? (
       <a
         href={nextHref}
-        class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-xl transition active:scale-95 touch-manipulation min-h-[44px]"
+        class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 dark:text-blue-300 bg-blue-50 hover:bg-blue-100 dark:bg-blue-950/60 dark:hover:bg-blue-900/60 px-3 py-2 rounded-xl transition active:scale-95 touch-manipulation min-h-[44px]"
       >
         <span>{nextLabel || 'Siguiente'}</span>
         <span>→</span>
       </a>
     ) : (
-      <div class="w-16" />
+      <div class="w-11" />
     )
   }
 </header>
-

@@ -93,3 +93,4 @@ export function generateRandomProblem(): EquationProblem {
     ? generateOppositeEquationProblem()
     : generateSupplementaryEquationProblem();
 }
+

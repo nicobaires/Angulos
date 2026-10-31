@@ -19,12 +19,12 @@
 
 <div class="flex flex-col w-full select-none">
   <!-- Cabecera -->
-  <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+  <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between transition-colors">
     <div>
-      <span class="text-xs font-semibold text-blue-600 uppercase tracking-wide">Módulo 4</span>
-      <h2 class="text-lg font-bold text-slate-900">Ecuaciones con Ángulos</h2>
+      <span class="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide">Módulo 4</span>
+      <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">Ecuaciones con Ángulos</h2>
     </div>
-    <span class="text-xs font-bold px-2.5 py-1 bg-violet-50 text-violet-700 rounded-full border border-violet-200">
+    <span class="text-xs font-bold px-2.5 py-1 bg-violet-50 dark:bg-violet-950/60 text-violet-700 dark:text-violet-300 rounded-full border border-violet-200 dark:border-violet-800/60">
       {problem.title}
     </span>
   </div>
@@ -38,3 +38,4 @@
   <!-- Feedback y Controles de Solución -->
   <EquationFeedback {problem} {currentStep} onnewproblem={handleNewProblem} />
 </div>
+

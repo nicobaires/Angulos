@@ -18,11 +18,11 @@
   ];
 </script>
 
-<div class="px-3 py-2 border-b border-slate-100 flex gap-1.5 overflow-x-auto select-none no-scrollbar">
+<div class="px-3 py-2 border-b border-slate-100 dark:border-slate-800 flex gap-1.5 overflow-x-auto select-none no-scrollbar transition-colors">
   {#each relations as r}
     <button
       onclick={() => onselect(r.id)}
-      class="shrink-0 px-2.5 py-1.5 rounded-xl text-left border transition active:scale-95 touch-manipulation min-h-[44px] {selected === r.id ? 'bg-blue-50 border-blue-400 text-blue-900 shadow-xs ring-1 ring-blue-300' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50'}"
+      class="shrink-0 px-2.5 py-1.5 rounded-xl text-left border transition active:scale-95 touch-manipulation min-h-[44px] {selected === r.id ? 'bg-blue-50 border-blue-400 text-blue-900 shadow-xs ring-1 ring-blue-300 dark:bg-blue-950/60 dark:border-blue-500 dark:text-blue-200 dark:ring-blue-800' : 'bg-white border-slate-200 text-slate-600 hover:bg-slate-50 dark:bg-slate-900 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800'}"
     >
       <div class="flex items-center gap-1">
         <span class="text-xs">{r.icon}</span>

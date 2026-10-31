@@ -16,6 +16,23 @@ const { title } = Astro.props;
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{title} | Geometría 2° Año</title>
+    <!-- Script Anti-FOUC para Modo Oscuro -->
+    <script is:inline>
+      const theme = (() => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'dark';
+        }
+        return 'light';
+      })();
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    </script>
     <!-- KaTeX CSS -->
     <link
       rel="stylesheet"
@@ -23,10 +40,9 @@ const { title } = Astro.props;
       crossorigin="anonymous"
     />
   </head>
-  <body class="bg-slate-100 text-slate-900 min-h-screen flex flex-col items-center">
-    <div class="w-full max-w-md min-h-screen flex flex-col bg-white shadow-sm border-x border-slate-200">
+  <body class="bg-slate-100 dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col items-center transition-colors duration-200">
+    <div class="w-full max-w-md min-h-screen flex flex-col bg-white dark:bg-slate-900 shadow-sm border-x border-slate-200 dark:border-slate-800 transition-colors duration-200">
       <slot />
     </div>
   </body>
 </html>
-

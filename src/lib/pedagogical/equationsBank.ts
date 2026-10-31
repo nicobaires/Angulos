@@ -27,3 +27,4 @@ export const COMMON_ALGEBRA_TIPS = [
   'La incógnita "x" es solo una variable auxiliar: no te olvides de reemplazarla para hallar el ángulo real en grados.',
   'En ángulos físicos geométricos, el resultado final siempre tiene que dar positivo y menor a 180°.'
 ];
+

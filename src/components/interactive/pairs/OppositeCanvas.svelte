@@ -69,7 +69,7 @@
     role="region"
     aria-label="Rectas secantes y ángulos opuestos por el vértice"
   >
-    <circle cx={cx} cy={cy} r={radius} fill="#f8fafc" stroke="#e2e8f0" stroke-width="1.5" stroke-dasharray="3 3" />
+    <circle cx={cx} cy={cy} r={radius} class="fill-slate-50 stroke-slate-200 dark:fill-slate-900/90 dark:stroke-slate-800 transition-colors" stroke-width="1.5" stroke-dasharray="3 3" />
 
     <!-- Par 1: Azul vibrante (#3b82f6) para 1̂ y 3̂ -->
     {#if sector1}<path d={sector1} fill="#3b82f6" fill-opacity="0.32" />{/if}
@@ -84,17 +84,17 @@
     {#if arc4}<path d={arc4} fill="none" stroke="#d97706" stroke-width="2.5" />{/if}
 
     <!-- Recta 1 (fija horizontal) y Recta 2 (secante) -->
-    <line x1={cx - radius} y1={cy} x2={cx + radius} y2={cy} stroke="#334155" stroke-width="3" stroke-linecap="round" />
+    <line x1={cx - radius} y1={cy} x2={cx + radius} y2={cy} class="stroke-slate-700 dark:stroke-slate-300" stroke-width="3" stroke-linecap="round" />
     <line x1={p3.x} y1={p3.y} x2={p1.x} y2={p1.y} stroke="#4f46e5" stroke-width="3" stroke-linecap="round" />
 
     <!-- Etiquetas con alto contraste -->
-    <text x={pos1.x} y={pos1.y + 4} font-size="11" font-weight="900" fill="#1d4ed8" text-anchor="middle">1̂: {alpha}°</text>
-    <text x={pos3.x} y={pos3.y + 4} font-size="11" font-weight="900" fill="#1d4ed8" text-anchor="middle">3̂: {alpha}°</text>
-    <text x={pos2.x} y={pos2.y + 4} font-size="11" font-weight="900" fill="#b45309" text-anchor="middle">2̂: {supplementary}°</text>
-    <text x={pos4.x} y={pos4.y + 4} font-size="11" font-weight="900" fill="#b45309" text-anchor="middle">4̂: {supplementary}°</text>
+    <text x={pos1.x} y={pos1.y + 4} font-size="11" font-weight="900" class="fill-blue-700 dark:fill-blue-400 select-none" text-anchor="middle">1̂: {alpha}°</text>
+    <text x={pos3.x} y={pos3.y + 4} font-size="11" font-weight="900" class="fill-blue-700 dark:fill-blue-400 select-none" text-anchor="middle">3̂: {alpha}°</text>
+    <text x={pos2.x} y={pos2.y + 4} font-size="11" font-weight="900" class="fill-amber-700 dark:fill-amber-400 select-none" text-anchor="middle">2̂: {supplementary}°</text>
+    <text x={pos4.x} y={pos4.y + 4} font-size="11" font-weight="900" class="fill-amber-700 dark:fill-amber-400 select-none" text-anchor="middle">4̂: {supplementary}°</text>
 
     <!-- Vértice y Tirador de Arrastre -->
-    <circle cx={cx} cy={cy} r={6} fill="#0f172a" stroke="#ffffff" stroke-width="2" />
+    <circle cx={cx} cy={cy} r={6} class="fill-slate-900 dark:fill-slate-100 stroke-white dark:stroke-slate-800" stroke-width="2" />
     <g transform={`translate(${p1.x}, ${p1.y})`}>
       <circle cx="0" cy="0" r="24" fill="transparent" class="cursor-grab active:cursor-grabbing" />
       <circle cx="0" cy="0" r="14" fill="#4f46e5" fill-opacity={isDragging ? '0.4' : '0.15'} />

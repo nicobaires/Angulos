@@ -82,10 +82,10 @@
     aria-label="Dos rectas paralelas cortadas por una secante"
   >
     <!-- Paralela 1 (R1) y Paralela 2 (R2) -->
-    <line x1="20" y1={y1} x2="300" y2={y1} stroke="#334155" stroke-width="2.5" stroke-linecap="round" />
-    <line x1="20" y1={y2} x2="300" y2={y2} stroke="#334155" stroke-width="2.5" stroke-linecap="round" />
-    <text x="290" y={y1 - 6} font-size="10" font-weight="bold" fill="#64748b">R₁</text>
-    <text x="290" y={y2 - 6} font-size="10" font-weight="bold" fill="#64748b">R₂</text>
+    <line x1="20" y1={y1} x2="300" y2={y1} class="stroke-slate-700 dark:stroke-slate-300" stroke-width="2.5" stroke-linecap="round" />
+    <line x1="20" y1={y2} x2="300" y2={y2} class="stroke-slate-700 dark:stroke-slate-300" stroke-width="2.5" stroke-linecap="round" />
+    <text x="290" y={y1 - 6} font-size="10" font-weight="bold" class="fill-slate-500 dark:fill-slate-400">R₁</text>
+    <text x="290" y={y2 - 6} font-size="10" font-weight="bold" class="fill-slate-500 dark:fill-slate-400">R₂</text>
 
     <!-- 8 Sectores circulares numerados -->
     {#each anglesData as a}
@@ -94,7 +94,7 @@
       {@const arc = describeArcLine(a.vx, a.vy, radius, a.start, a.end)}
       {#if sector}<path d={sector} fill={c.fill} fill-opacity={c.opacity} />{/if}
       {#if arc}<path d={arc} fill="none" stroke={c.stroke} stroke-width="1.8" />{/if}
-      <text x={a.labelPos.x} y={a.labelPos.y + 3} font-size="10" font-weight="bold" fill="#0f172a" text-anchor="middle">
+      <text x={a.labelPos.x} y={a.labelPos.y + 3} font-size="10" font-weight="bold" class="fill-slate-900 dark:fill-slate-100 select-none" text-anchor="middle">
         {a.id}̂
       </text>
     {/each}
@@ -104,8 +104,8 @@
     <text x={secTop.x + 8} y={secTop.y} font-size="10" font-weight="bold" fill="#4f46e5">S</text>
 
     <!-- Vértices -->
-    <circle cx={x1} cy={y1} r="4" fill="#0f172a" />
-    <circle cx={x2} cy={y2} r="4" fill="#0f172a" />
+    <circle cx={x1} cy={y1} r="4" class="fill-slate-900 dark:fill-slate-100" />
+    <circle cx={x2} cy={y2} r="4" class="fill-slate-900 dark:fill-slate-100" />
 
     <!-- Tirador de Arrastre Táctil -->
     <g transform={`translate(${secTop.x}, ${secTop.y})`}>

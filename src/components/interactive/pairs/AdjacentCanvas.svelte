@@ -64,25 +64,25 @@
     role="region"
     aria-label="Gráfico interactivo de ángulos complementarios o suplementarios"
   >
-    <circle cx={cx} cy={cy} r={radius} fill="#f8fafc" stroke="#e2e8f0" stroke-width="2" />
+    <circle cx={cx} cy={cy} r={radius} class="fill-slate-50 stroke-slate-200 dark:fill-slate-900/90 dark:stroke-slate-800 transition-colors" stroke-width="2" />
 
     {#if sectorAlpha}<path d={sectorAlpha} fill="#3b82f6" fill-opacity="0.25" />{/if}
     {#if sectorBeta}<path d={sectorBeta} fill="#f59e0b" fill-opacity="0.25" />{/if}
     {#if arcAlpha}<path d={arcAlpha} fill="none" stroke="#2563eb" stroke-width="2.5" />{/if}
     {#if arcBeta}<path d={arcBeta} fill="none" stroke="#d97706" stroke-width="2.5" />{/if}
 
-    <text x={labelAlphaPos.x} y={labelAlphaPos.y + 4} font-size="11" font-weight="bold" fill="#1d4ed8" text-anchor="middle">
+    <text x={labelAlphaPos.x} y={labelAlphaPos.y + 4} font-size="11" font-weight="bold" class="fill-blue-700 dark:fill-blue-400 select-none" text-anchor="middle">
       α: {alpha}°
     </text>
-    <text x={labelBetaPos.x} y={labelBetaPos.y + 4} font-size="11" font-weight="bold" fill="#b45309" text-anchor="middle">
+    <text x={labelBetaPos.x} y={labelBetaPos.y + 4} font-size="11" font-weight="bold" class="fill-amber-700 dark:fill-amber-400 select-none" text-anchor="middle">
       β: {beta}°
     </text>
 
-    <line x1={cx} y1={cy} x2={cx + radius} y2={cy} stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
-    <line x1={cx} y1={cy} x2={boundaryPoint.x} y2={boundaryPoint.y} stroke="#0f172a" stroke-width="3" stroke-linecap="round" />
+    <line x1={cx} y1={cy} x2={cx + radius} y2={cy} class="stroke-slate-900 dark:stroke-slate-100" stroke-width="3" stroke-linecap="round" />
+    <line x1={cx} y1={cy} x2={boundaryPoint.x} y2={boundaryPoint.y} class="stroke-slate-900 dark:stroke-slate-100" stroke-width="3" stroke-linecap="round" />
     <line x1={cx} y1={cy} x2={dividerPoint.x} y2={dividerPoint.y} stroke="#4f46e5" stroke-width="3.5" stroke-linecap="round" />
 
-    <circle cx={cx} cy={cy} r={6} fill="#0f172a" stroke="#ffffff" stroke-width="2" />
+    <circle cx={cx} cy={cy} r={6} class="fill-slate-900 dark:fill-slate-100 stroke-white dark:stroke-slate-800" stroke-width="2" />
 
     <g transform={`translate(${dividerPoint.x}, ${dividerPoint.y})`}>
       <circle cx="0" cy="0" r="24" fill="transparent" class="cursor-grab active:cursor-grabbing" />
