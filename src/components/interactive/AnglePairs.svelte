@@ -1,6 +1,7 @@
 <script lang="ts">
   import { type PairType, getPairsPresets, getPairsRange } from '../../lib/math/pairs';
   import { generatePairsChallengesDeck, type PairChallenge } from '../../lib/pedagogical/pairsChallenges';
+  import { progressStore } from '../../lib/pedagogical/progressStore';
   import ModuleSplit from '../common/ModuleSplit.svelte';
   import PairsModeTabs from './pairs/PairsModeTabs.svelte';
   import AdjacentCanvas from './pairs/AdjacentCanvas.svelte';
@@ -62,6 +63,11 @@
     const isCorrect = activeMode === activeChallenge.type && Math.abs(alpha - activeChallenge.targetAlpha) <= activeChallenge.tolerance;
     challengeSuccess = isCorrect;
     challengeFeedback = isCorrect ? activeChallenge.successMessage : activeChallenge.hint;
+    if (isCorrect) {
+      progressStore.recordSuccess('pares', currentStep ?? 0);
+    } else {
+      progressStore.recordFailure();
+    }
   }
 
   function exitChallenge() {

@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { EquationProblem, EquationRelationType } from '../../../lib/math/equations';
   import { STEP_GUIDES } from '../../../lib/pedagogical/equationsBank';
+  import { progressStore } from '../../../lib/pedagogical/progressStore';
   import Katex from '../../common/Math.svelte';
 
   interface Props {
@@ -29,12 +30,15 @@
     if (userRelation === problem.relationType) {
       errorMessage = '';
       onadvance(2);
-    } else if (problem.relationType === 'suma90') {
-      errorMessage = 'Observá el ángulo recto: forman 90°, por lo tanto son complementarios (suman 90°).';
-    } else if (problem.relationType === 'suma180') {
-      errorMessage = 'Observá la recta o posición interna: son suplementarios (suman 180°).';
     } else {
-      errorMessage = 'Observá su posición: son congruentes (opuestos por el vértice o alternos internos, son iguales).';
+      progressStore.recordFailure();
+      if (problem.relationType === 'suma90') {
+        errorMessage = 'Observá el ángulo recto: forman 90°, por lo tanto son complementarios (suman 90°).';
+      } else if (problem.relationType === 'suma180') {
+        errorMessage = 'Observá la recta o posición interna: son suplementarios (suman 180°).';
+      } else {
+        errorMessage = 'Observá su posición: son congruentes (opuestos por el vértice o alternos internos, son iguales).';
+      }
     }
   }
 
@@ -43,6 +47,7 @@
       errorMessage = '';
       onadvance(3);
     } else {
+      progressStore.recordFailure();
       errorMessage = 'Valor de x incorrecto. Revisá el despeje pasando términos con signo opuesto.';
     }
   }
@@ -52,6 +57,7 @@
       errorMessage = '';
       onadvance('done');
     } else {
+      progressStore.recordFailure();
       errorMessage = `Reemplazá x = ${problem.xSolution} en la fórmula de alfa: ${problem.exprAlpha}.`;
     }
   }

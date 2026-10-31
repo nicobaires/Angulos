@@ -37,6 +37,11 @@
   <p class="text-xs mt-0.5 opacity-90">{challenge.prompt}</p>
   {#if hasSubmitted}
     <p class="text-xs mt-1.5 pt-1.5 border-t border-current/20 font-semibold">{challengeFeedback}</p>
+    {#if challengeSuccess}
+      <div class="mt-1 text-[11px] font-black text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5">
+        <span>⭐ +1 Estrella conseguida</span>
+      </div>
+    {/if}
   {/if}
   <div class="mt-2.5 flex justify-end">
     {#if !hasSubmitted || !challengeSuccess}

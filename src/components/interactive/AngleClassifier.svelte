@@ -1,6 +1,7 @@
 <script lang="ts">
   import { getAngleClassification } from '../../lib/math/angles';
   import { CLASSIFIER_CHALLENGES, getShuffledClassifierIndices } from '../../lib/pedagogical/classifierChallenges';
+  import { progressStore } from '../../lib/pedagogical/progressStore';
   import ModuleSplit from '../common/ModuleSplit.svelte';
   import Protractor from './classifier/Protractor.svelte';
   import AngleControls from './classifier/AngleControls.svelte';
@@ -48,9 +49,11 @@
     if (info.type === activeChallenge.target) {
       challengeSuccess = true;
       challengeFeedback = `¡Genial! 🎉 ${info.name}: lograste la apertura correcta.`;
+      progressStore.recordSuccess('clasificacion', currentStep ?? 0);
     } else {
       challengeSuccess = false;
       challengeFeedback = activeChallenge.hint;
+      progressStore.recordFailure();
     }
   }
 

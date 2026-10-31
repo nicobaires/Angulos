@@ -4,9 +4,9 @@ Este documento registra los hitos estratégicos acordados con el Arquitecto Prin
 
 ---
 
-## 📋 Checklist de Seguimiento
+## 📋 Checklist de Seguimiento y Estado
 
-### 1. 📐 Ampliación Curricular de Ecuaciones (Módulo 4) - [COMPLETADO]
+### 1. 📐 Ampliación Curricular de Ecuaciones (Módulo 4) - [COMPLETADO ✅]
 - [x] **Variante 1 - Ángulos Complementarios:**
   - [x] Generador procedural `generateComplementaryEquationProblem` ($\alpha + \beta = 90^\circ$).
   - [x] Representación visual en `SingleVertexDiagram.svelte` (ángulo recto con rayo divisor y símbolo de 90°).
@@ -22,14 +22,43 @@ Este documento registra los hitos estratégicos acordados con el Arquitecto Prin
   - [x] Pasos analíticos y comprobación algebraica completa.
 - [x] **Arquitectura Modular y Límites de Tamaño:**
   - [x] `EquationDiagram.svelte`: orquestador de 36 líneas.
-  - [x] `SingleVertexDiagram.svelte`: 75 líneas.
-  - [x] `ParallelDiagram.svelte`: 68 líneas.
-  - [x] `StepSolver.svelte`: 118 líneas ($\le 130$ líneas).
+  - [x] `SingleVertexDiagram.svelte`: 76 líneas.
+  - [x] `ParallelDiagram.svelte`: 69 líneas.
+  - [x] `StepSolver.svelte`: 124 líneas ($\le 130$ líneas).
   - [x] `equations.ts`: 205 líneas ($\le 210$ líneas tope).
 
 ---
 
-### 2. 📱 PWA Offline (Uso Escolar sin Conexión) - [PENDIENTE]
+### 2. ⭐ Gamificación y Progreso Escolar Local - [COMPLETADO ✅]
+- [x] **Store de Progreso Local (`progressStore.ts`):**
+  - [x] Estado reactivo con suscriptores Svelte y persistencia en `localStorage`.
+  - [x] Contador de estrellas (`⭐`), racha activa (`🔥`) y mejor racha histórica (`⚡`).
+  - [x] Vitrina de 7 medallas escolares con desbloqueo automático.
+  - [x] Botón seguro de reinicio de progreso escolar para préstamo del dispositivo en el aula.
+  - [x] Suite de pruebas unitarias (`progressStore.test.ts`) con 5/5 tests pasando.
+- [x] **Integración Visual en la App:**
+  - [x] `ProgressWidget.svelte` (97 líneas) en la barra superior de todos los módulos y la portada.
+  - [x] Modal interactivo con desglose de estadísticas, medallas y confirmación de reseteo.
+  - [x] `ProgressBadge.svelte` (29 líneas) con indicador dinámico de avance en las 4 tarjetas de la portada.
+  - [x] Banners de recompensa `⭐ +1 Estrella conseguida` en cada módulo al acertar un desafío.
+  - [x] Registro de errores pedagógicos sin pérdida de estrellas acumuladas.
+
+---
+
+### 3. 🎓 Examen Integrador Final con Certificado - [PRÓXIMO PASO ⏳]
+- [ ] Crear ruta `/examen` accesible desde la portada con quiz de 5 ejercicios mixtos aleatorios:
+  - 1 ejercicio de clasificación con transportador.
+  - 1 ejercicio de pares de ángulos.
+  - 1 ejercicio de paralelas y secante.
+  - 2 ejercicios de ecuaciones con ángulos.
+- [ ] Calificación escolar numérica sobre 10 (con escala argentina: 1-10, aprobado $\ge 6$).
+- [ ] Generación de diploma/certificado imprimible y descargable con nombre del alumno y fecha.
+- [ ] Integración con el sistema de medallas (`🎖️ Graduado de Geometría 2°`).
+
+---
+
+### 4. 📱 PWA Offline (Uso Escolar sin Conexión) - [RESERVADO PARA EL FINAL 📌]
+*(Postergado para el cierre por indicación expresa del Arquitecto)*
 - [ ] Crear `public/manifest.webmanifest` con iconos, colores escolares y nombre de la app.
 - [ ] Configurar Service Worker liviano para cachear el bundle estático (HTML, CSS, JS y KaTeX).
 - [ ] Validar funcionamiento 100% offline desconectando la red en DevTools.
@@ -37,23 +66,7 @@ Este documento registra los hitos estratégicos acordados con el Arquitecto Prin
 
 ---
 
-### 3. ⭐ Gamificación y Progreso Escolar Local - [PENDIENTE]
-- [ ] Store reactivo en Svelte 5 con persistencia en `localStorage` (sin backend).
-- [ ] Registro de desafíos completados por módulo (estrellas y medallas).
-- [ ] Indicador de progreso visual en la portada (`index.astro`): ej. `4/6 Desafíos logrados ⭐`.
-- [ ] Contador de racha de respuestas correctas consecutivas (`🔥`).
-- [ ] Botón de *"Reiniciar progreso"* para prestar el dispositivo o reintentar.
-
----
-
-### 4. 🎓 Examen Integrador Final con Certificado - [PENDIENTE]
-- [ ] Crear ruta `/examen` con quiz de 5 ejercicios mixtos aleatorios (1 de clasificación, 1 de pares, 1 de paralelas, 2 de ecuaciones).
-- [ ] Calificación numérica escolar sobre 10.
-- [ ] Generación de diploma/certificado visual de 2° año imprimible o descargable como imagen.
-
----
-
-## Reglas de Ejecución en `dev`
+## Reglas de Gobernanza en `dev`
 - **Autoridad:** El Arquitecto Principal (el usuario) valida cada etapa.
 - **Merge hacia `main`:** Exclusivamente por orden explícita del Arquitecto.
 - **Límites de archivo:** Estándar deseado $\le 130$ líneas. Excepciones justificadas con aprobación previa. Tope máximo absoluto de 210 líneas.

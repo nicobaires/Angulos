@@ -36,6 +36,11 @@
   <p class="text-sm font-bold">{challenge.title}</p>
   {#if hasSubmitted}
     <p class="text-xs mt-0.5 opacity-90">{challengeFeedback}</p>
+    {#if challengeSuccess}
+      <div class="mt-1 text-[11px] font-black text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5">
+        <span>⭐ +1 Estrella conseguida</span>
+      </div>
+    {/if}
   {:else}
     <p class="text-xs mt-0.5 opacity-80">Ajustá el transportador a la apertura pedida y tocá confirmar.</p>
   {/if}

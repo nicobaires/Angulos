@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { TransversalRelation } from '../../lib/math/transversal';
   import { TRANSVERSAL_CHALLENGES } from '../../lib/pedagogical/transversalChallenges';
+  import { progressStore } from '../../lib/pedagogical/progressStore';
   import ModuleSplit from '../common/ModuleSplit.svelte';
   import RelationshipFilter from './transversal/RelationshipFilter.svelte';
   import TransversalCanvas from './transversal/TransversalCanvas.svelte';
@@ -49,9 +50,11 @@
     if (relation === cur.relation) {
       challengeSuccess = true;
       challengeFeedback = cur.explanation;
+      progressStore.recordSuccess('paralelas', challengeIndex);
     } else {
       challengeSuccess = false;
       challengeFeedback = cur.hint;
+      progressStore.recordFailure();
     }
   }
 

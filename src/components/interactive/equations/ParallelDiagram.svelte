@@ -66,3 +66,4 @@
   <text x={labelAlpha.x} y={labelAlpha.y + 4} font-size="12" font-weight="900" class="fill-blue-700 dark:fill-blue-400 select-none" text-anchor="middle">α</text>
   <text x={labelBeta.x} y={labelBeta.y + 4} font-size="12" font-weight="900" class="{isAlternos ? 'fill-blue-700 dark:fill-blue-400' : 'fill-amber-700 dark:fill-amber-400'} select-none" text-anchor="middle">β</text>
 </svg>
+

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { generateRandomProblem, createSeededRng, type EquationProblem } from '../../lib/math/equations';
+  import { progressStore } from '../../lib/pedagogical/progressStore';
   import ModuleSplit from '../common/ModuleSplit.svelte';
   import EquationDiagram from './equations/EquationDiagram.svelte';
   import StepSolver from './equations/StepSolver.svelte';
@@ -13,6 +14,9 @@
 
   function handleAdvance(nextStep: 1 | 2 | 3 | 'done') {
     currentStep = nextStep;
+    if (nextStep === 'done') {
+      progressStore.recordSuccess('ecuaciones');
+    }
   }
 
   onMount(() => {

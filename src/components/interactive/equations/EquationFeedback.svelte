@@ -23,6 +23,9 @@
     <div class="p-3 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-300 dark:border-emerald-700 rounded-xl text-emerald-900 dark:text-emerald-200 text-center space-y-1">
       <div class="text-2xl">🎉</div>
       <h4 class="font-extrabold text-sm">¡Ejercicio Resuelto Correctamente!</h4>
+      <div class="text-[11px] font-black text-emerald-800 dark:text-emerald-300">
+        ⭐ +1 Estrella conseguida
+      </div>
       <div class="text-xs flex flex-wrap items-center justify-center gap-2 pt-1 font-semibold">
         <span>Rta:</span>
         <Katex formula={`x = ${problem.xSolution}`} />
