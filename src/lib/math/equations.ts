@@ -1,4 +1,11 @@
-export type EquationProblemType = 'opuestos' | 'suplementarios' | 'complementarios';
+export type EquationProblemType =
+  | 'opuestos'
+  | 'suplementarios'
+  | 'complementarios'
+  | 'paralelas_alternos'
+  | 'paralelas_conjugados';
+
+export type EquationRelationType = 'igualdad' | 'suma180' | 'suma90';
 
 export interface EquationProblem {
   id: string;
@@ -11,17 +18,15 @@ export interface EquationProblem {
   d: number;
   exprAlpha: string;
   exprBeta: string;
-  relationType: 'igualdad' | 'suma180' | 'suma90';
+  relationType: EquationRelationType;
   xSolution: number;
   alphaSolution: number;
   betaSolution: number;
   steps: string[];
 }
 
-/** Generador de números en [0, 1). Inyectable para tests y para render determinista (SSR). */
 export type Rng = () => number;
 
-/** PRNG determinista (mulberry32): misma semilla, mismos ejercicios. */
 export function createSeededRng(seed: number): Rng {
   let t = seed >>> 0;
   return () => {
@@ -32,14 +37,42 @@ export function createSeededRng(seed: number): Rng {
   };
 }
 
+function formatSigned(n: number): string {
+  return n >= 0 ? `+ ${n}^\\circ` : `- ${Math.abs(n)}^\\circ`;
+}
+
+function buildEqualitySteps(
+  rule: string, a: number, b: number, c: number, d: number, x: number, alpha: number, beta: number
+): string[] {
+  return [
+    `\\text{${rule}: } \\alpha = \\beta`,
+    `${a}x ${formatSigned(b)} = ${c}x + ${d}^\\circ`,
+    `${a}x - ${c}x = ${d}^\\circ - ${b}^\\circ`,
+    `${a - c}x = ${d - b}^\\circ \\implies x = ${x}`,
+    `\\alpha = ${a} \\cdot (${x}) ${formatSigned(b)} = ${alpha}^\\circ \\implies \\beta = ${beta}^\\circ`,
+    `\\text{Rta: } x = ${x}, \\quad \\alpha = ${alpha}^\\circ, \\quad \\beta = ${beta}^\\circ`
+  ];
+}
+
+function buildSumSteps(
+  rule: string, a: number, b: number, c: number, d: number, total: number, x: number, alpha: number, beta: number
+): string[] {
+  return [
+    `\\text{${rule}: } \\alpha + \\beta = ${total}^\\circ`,
+    `(${a}x ${formatSigned(b)}) + (${c}x ${formatSigned(d)}) = ${total}^\\circ`,
+    `${a + c}x + ${b + d}^\\circ = ${total}^\\circ`,
+    `${a + c}x = ${total}^\\circ - ${b + d}^\\circ = ${total - (b + d)}^\\circ \\implies x = ${x}`,
+    `\\alpha = ${alpha}^\\circ, \\quad \\beta = ${total}^\\circ - ${alpha}^\\circ = ${beta}^\\circ`,
+    `\\text{Rta: } x = ${x}, \\quad \\alpha = ${alpha}^\\circ, \\quad \\beta = ${beta}^\\circ`
+  ];
+}
+
 export function generateOppositeEquationProblem(rng: Rng = Math.random): EquationProblem {
   const x = Math.floor(rng() * 8) + 12; // 12 a 19
-  const c = Math.floor(rng() * 2) + 1;  // 1 a 2
-  const a = c + Math.floor(rng() * 2) + 1; // 2 a 4
-  const b = Math.floor(rng() * 15) + 5;   // 5 a 19
-  const diff = (a - c) * x;
-  const d = b + diff;
-
+  const c = Math.floor(rng() * 2) + 1;
+  const a = c + Math.floor(rng() * 2) + 1;
+  const b = Math.floor(rng() * 15) + 5;
+  const d = b + (a - c) * x;
   const alpha = a * x + b;
   const beta = c * x + d;
 
@@ -49,33 +82,23 @@ export function generateOppositeEquationProblem(rng: Rng = Math.random): Equatio
     title: 'Ángulos Opuestos por el Vértice',
     diagramAngle: alpha,
     a, b, c, d,
-    exprAlpha: `${a}x ${b >= 0 ? '+' : '-'} ${Math.abs(b)}^\\circ`,
+    exprAlpha: `${a}x ${formatSigned(b)}`,
     exprBeta: `${c}x + ${d}^\\circ`,
     relationType: 'igualdad',
     xSolution: x,
     alphaSolution: alpha,
     betaSolution: beta,
-    steps: [
-      `\\text{Por ser opuestos por el vértice: } \\alpha = \\beta`,
-      `${a}x ${b >= 0 ? '+' : '-'} ${Math.abs(b)}^\\circ = ${c}x + ${d}^\\circ`,
-      `${a}x - ${c}x = ${d}^\\circ - ${b}^\\circ`,
-      `${a - c}x = ${d - b}^\\circ \\implies x = ${x}`,
-      `\\alpha = ${a} \\cdot (${x}) + ${b}^\\circ = ${alpha}^\\circ \\implies \\beta = ${beta}^\\circ`,
-      `\\text{Rta: } x = ${x}, \\quad \\alpha = ${alpha}^\\circ, \\quad \\beta = ${beta}^\\circ`
-    ]
+    steps: buildEqualitySteps('Por ser opuestos por el vértice', a, b, c, d, x, alpha, beta)
   };
 }
 
 export function generateSupplementaryEquationProblem(rng: Rng = Math.random): EquationProblem {
   const x = Math.floor(rng() * 8) + 10; // 10 a 17
-  const a = Math.floor(rng() * 3) + 2;  // 2 a 4
-  const c = Math.floor(rng() * 2) + 1;  // 1 a 2
-  const totalCoeff = a + c;
-  const targetLinear = totalCoeff * x;
-  const remainder = 180 - targetLinear;
+  const a = Math.floor(rng() * 3) + 2;
+  const c = Math.floor(rng() * 2) + 1;
+  const remainder = 180 - (a + c) * x;
   const b = Math.floor(remainder / 2);
   const d = remainder - b;
-
   const alpha = a * x + b;
   const beta = c * x + d;
 
@@ -85,25 +108,98 @@ export function generateSupplementaryEquationProblem(rng: Rng = Math.random): Eq
     title: 'Ángulos Adyacentes y Suplementarios',
     diagramAngle: alpha,
     a, b, c, d,
-    exprAlpha: `${a}x ${b >= 0 ? '+' : '-'} ${Math.abs(b)}^\\circ`,
-    exprBeta: `${c}x ${d >= 0 ? '+' : '-'} ${Math.abs(d)}^\\circ`,
+    exprAlpha: `${a}x ${formatSigned(b)}`,
+    exprBeta: `${c}x ${formatSigned(d)}`,
     relationType: 'suma180',
     xSolution: x,
     alphaSolution: alpha,
     betaSolution: beta,
-    steps: [
-      `\\text{Por ser adyacentes suplementarios: } \\alpha + \\beta = 180^\\circ`,
-      `(${a}x + ${b}^\\circ) + (${c}x + ${d}^\\circ) = 180^\\circ`,
-      `${a + c}x + ${b + d}^\\circ = 180^\\circ`,
-      `${a + c}x = 180^\\circ - ${b + d}^\\circ = ${180 - (b + d)}^\\circ \\implies x = ${x}`,
-      `\\alpha = ${alpha}^\\circ, \\quad \\beta = 180^\\circ - ${alpha}^\\circ = ${beta}^\\circ`,
-      `\\text{Rta: } x = ${x}, \\quad \\alpha = ${alpha}^\\circ, \\quad \\beta = ${beta}^\\circ`
-    ]
+    steps: buildSumSteps('Por ser adyacentes suplementarios', a, b, c, d, 180, x, alpha, beta)
+  };
+}
+
+export function generateComplementaryEquationProblem(rng: Rng = Math.random): EquationProblem {
+  const x = Math.floor(rng() * 6) + 6; // 6 a 11
+  const a = Math.floor(rng() * 2) + 2;
+  const c = Math.floor(rng() * 2) + 1;
+  const remainder = 90 - (a + c) * x;
+  const b = Math.floor(remainder / 2);
+  const d = remainder - b;
+  const alpha = a * x + b;
+  const beta = c * x + d;
+
+  return {
+    id: `comp_${Math.floor(rng() * 1e9)}`,
+    type: 'complementarios',
+    title: 'Ángulos Complementarios (90°)',
+    diagramAngle: alpha,
+    a, b, c, d,
+    exprAlpha: `${a}x ${formatSigned(b)}`,
+    exprBeta: `${c}x ${formatSigned(d)}`,
+    relationType: 'suma90',
+    xSolution: x,
+    alphaSolution: alpha,
+    betaSolution: beta,
+    steps: buildSumSteps('Por ser complementarios', a, b, c, d, 90, x, alpha, beta)
+  };
+}
+
+export function generateAlternateInteriorEquationProblem(rng: Rng = Math.random): EquationProblem {
+  const x = Math.floor(rng() * 7) + 10; // 10 a 16
+  const c = Math.floor(rng() * 2) + 1;
+  const a = c + Math.floor(rng() * 2) + 1;
+  const b = Math.floor(rng() * 12) + 8;
+  const d = b + (a - c) * x;
+  const alpha = a * x + b;
+  const beta = c * x + d;
+
+  return {
+    id: `alt_${Math.floor(rng() * 1e9)}`,
+    type: 'paralelas_alternos',
+    title: 'Paralelas y Secante: Alternos Internos',
+    diagramAngle: alpha > 140 ? 120 : (alpha < 40 ? 55 : alpha),
+    a, b, c, d,
+    exprAlpha: `${a}x ${formatSigned(b)}`,
+    exprBeta: `${c}x + ${d}^\\circ`,
+    relationType: 'igualdad',
+    xSolution: x,
+    alphaSolution: alpha,
+    betaSolution: beta,
+    steps: buildEqualitySteps('Por ser alternos internos entre paralelas', a, b, c, d, x, alpha, beta)
+  };
+}
+
+export function generateConsecutiveInteriorEquationProblem(rng: Rng = Math.random): EquationProblem {
+  const x = Math.floor(rng() * 8) + 10; // 10 a 17
+  const a = Math.floor(rng() * 2) + 2;
+  const c = Math.floor(rng() * 2) + 1;
+  const remainder = 180 - (a + c) * x;
+  const b = Math.floor(remainder / 2);
+  const d = remainder - b;
+  const alpha = a * x + b;
+  const beta = c * x + d;
+
+  return {
+    id: `conj_${Math.floor(rng() * 1e9)}`,
+    type: 'paralelas_conjugados',
+    title: 'Paralelas y Secante: Conjugados Internos',
+    diagramAngle: alpha,
+    a, b, c, d,
+    exprAlpha: `${a}x ${formatSigned(b)}`,
+    exprBeta: `${c}x ${formatSigned(d)}`,
+    relationType: 'suma180',
+    xSolution: x,
+    alphaSolution: alpha,
+    betaSolution: beta,
+    steps: buildSumSteps('Por ser conjugados internos entre paralelas', a, b, c, d, 180, x, alpha, beta)
   };
 }
 
 export function generateRandomProblem(rng: Rng = Math.random): EquationProblem {
-  return rng() > 0.5
-    ? generateOppositeEquationProblem(rng)
-    : generateSupplementaryEquationProblem(rng);
+  const roll = rng();
+  if (roll < 0.22) return generateComplementaryEquationProblem(rng);
+  if (roll < 0.44) return generateAlternateInteriorEquationProblem(rng);
+  if (roll < 0.66) return generateConsecutiveInteriorEquationProblem(rng);
+  if (roll < 0.83) return generateOppositeEquationProblem(rng);
+  return generateSupplementaryEquationProblem(rng);
 }

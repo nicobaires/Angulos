@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { EquationProblem } from '../../../lib/math/equations';
+  import type { EquationProblem, EquationRelationType } from '../../../lib/math/equations';
   import { STEP_GUIDES } from '../../../lib/pedagogical/equationsBank';
   import Katex from '../../common/Math.svelte';
 
@@ -11,7 +11,7 @@
 
   let { problem, currentStep, onadvance }: Props = $props();
 
-  let userRelation = $state<'igualdad' | 'suma180' | null>(null);
+  let userRelation = $state<EquationRelationType | null>(null);
   let userX = $state<string>('');
   let userAlpha = $state<string>('');
   let errorMessage = $state<string>('');
@@ -29,8 +29,12 @@
     if (userRelation === problem.relationType) {
       errorMessage = '';
       onadvance(2);
+    } else if (problem.relationType === 'suma90') {
+      errorMessage = 'Observá el ángulo recto: forman 90°, por lo tanto son complementarios (suman 90°).';
+    } else if (problem.relationType === 'suma180') {
+      errorMessage = 'Observá la recta o posición interna: son suplementarios (suman 180°).';
     } else {
-      errorMessage = 'Fijate bien si están enfrentados (iguales) o sobre la recta (suman 180°).';
+      errorMessage = 'Observá su posición: son congruentes (opuestos por el vértice o alternos internos, son iguales).';
     }
   }
 
@@ -57,14 +61,27 @@
   {#if currentStep === 1}
     <div class="p-3 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-xs space-y-2 transition-colors">
       <p class="text-xs font-bold text-slate-800 dark:text-slate-100">{STEP_GUIDES[1].instruction}</p>
-      <div class="grid grid-cols-2 gap-2">
-        <button onclick={() => { userRelation = 'igualdad'; checkStep1(); }} class="p-2.5 rounded-xl border text-center transition active:scale-95 touch-manipulation min-h-[44px] {userRelation === 'igualdad' ? 'bg-blue-50 border-blue-400 dark:bg-blue-950/60 dark:border-blue-500' : 'bg-slate-50 border-slate-200 dark:bg-slate-800 dark:border-slate-700'}">
+      <div class="grid grid-cols-3 gap-1.5">
+        <button
+          onclick={() => { userRelation = 'igualdad'; checkStep1(); }}
+          class="p-2 rounded-xl border text-center transition active:scale-95 touch-manipulation min-h-[44px] {userRelation === 'igualdad' ? 'bg-blue-50 border-blue-400 dark:bg-blue-950/60 dark:border-blue-500' : 'bg-slate-50 border-slate-200 dark:bg-slate-800 dark:border-slate-700'}"
+        >
           <Katex formula="\alpha = \beta" />
-          <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Opuestos (Iguales)</p>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Iguales</p>
         </button>
-        <button onclick={() => { userRelation = 'suma180'; checkStep1(); }} class="p-2.5 rounded-xl border text-center transition active:scale-95 touch-manipulation min-h-[44px] {userRelation === 'suma180' ? 'bg-blue-50 border-blue-400 dark:bg-blue-950/60 dark:border-blue-500' : 'bg-slate-50 border-slate-200 dark:bg-slate-800 dark:border-slate-700'}">
+        <button
+          onclick={() => { userRelation = 'suma180'; checkStep1(); }}
+          class="p-2 rounded-xl border text-center transition active:scale-95 touch-manipulation min-h-[44px] {userRelation === 'suma180' ? 'bg-blue-50 border-blue-400 dark:bg-blue-950/60 dark:border-blue-500' : 'bg-slate-50 border-slate-200 dark:bg-slate-800 dark:border-slate-700'}"
+        >
           <Katex formula="\alpha + \beta = 180^\circ" />
-          <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Adyacentes (180°)</p>
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Suman 180°</p>
+        </button>
+        <button
+          onclick={() => { userRelation = 'suma90'; checkStep1(); }}
+          class="p-2 rounded-xl border text-center transition active:scale-95 touch-manipulation min-h-[44px] {userRelation === 'suma90' ? 'bg-blue-50 border-blue-400 dark:bg-blue-950/60 dark:border-blue-500' : 'bg-slate-50 border-slate-200 dark:bg-slate-800 dark:border-slate-700'}"
+        >
+          <Katex formula="\alpha + \beta = 90^\circ" />
+          <p class="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Suman 90°</p>
         </button>
       </div>
     </div>

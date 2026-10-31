@@ -6,21 +6,26 @@ Este documento registra los hitos estratégicos acordados con el Arquitecto Prin
 
 ## 📋 Checklist de Seguimiento
 
-### 1. 📐 Ampliación Curricular de Ecuaciones (Módulo 4) - [EN PROGRESO]
-- [ ] **Variante 1 - Ángulos Complementarios:**
-  - [ ] Generador procedural `generateComplementaryEquationProblem` ($\alpha + \beta = 90^\circ$).
-  - [ ] Representación visual en `EquationDiagram.svelte` (ángulo recto con rayo divisor).
-  - [ ] Desarrollo guiado en 3 pasos en `StepSolver.svelte` adaptado a $90^\circ$.
-  - [ ] Pruebas unitarias de soluciones enteras y positivas en `equations.test.ts`.
-- [ ] **Variante 2 - Paralelas y Secante con Ecuaciones (Alternos Internos):**
-  - [ ] Generador procedural `generateAlternateInteriorEquationProblem` ($\alpha = \beta$).
-  - [ ] Diagrama SVG con las dos paralelas y secante destacando los ángulos cruzados.
-  - [ ] Pasos analíticos y feedback completo ($\text{Rta: } x, \alpha, \beta$).
-- [ ] **Variante 3 - Paralelas y Secante con Ecuaciones (Conjugados Internos):**
-  - [ ] Generador procedural `generateConsecutiveInteriorEquationProblem` ($\alpha + \beta = 180^\circ$).
-  - [ ] Diagrama SVG destacando los ángulos interiores del mismo lado.
-- [ ] **Selector de Categoría o Rotación en Módulo 4:**
-  - [ ] Filtro/pestañas de categoría (Todos, Pares, Paralelas) o rotación aleatoria fluida.
+### 1. 📐 Ampliación Curricular de Ecuaciones (Módulo 4) - [COMPLETADO]
+- [x] **Variante 1 - Ángulos Complementarios:**
+  - [x] Generador procedural `generateComplementaryEquationProblem` ($\alpha + \beta = 90^\circ$).
+  - [x] Representación visual en `SingleVertexDiagram.svelte` (ángulo recto con rayo divisor y símbolo de 90°).
+  - [x] Desarrollo guiado en 3 pasos en `StepSolver.svelte` con opción de suma de 90° y feedback contextual.
+  - [x] Pruebas unitarias de soluciones enteras y positivas en `equations.test.ts`.
+- [x] **Variante 2 - Paralelas y Secante con Ecuaciones (Alternos Internos):**
+  - [x] Generador procedural `generateAlternateInteriorEquationProblem` ($\alpha = \beta$).
+  - [x] Diagrama SVG en `ParallelDiagram.svelte` con dos paralelas $R_1, R_2$ y secante destacando alternos internos.
+  - [x] Pasos analíticos y feedback completo ($\text{Rta: } x, \alpha, \beta$).
+- [x] **Variante 3 - Paralelas y Secante con Ecuaciones (Conjugados Internos):**
+  - [x] Generador procedural `generateConsecutiveInteriorEquationProblem` ($\alpha + \beta = 180^\circ$).
+  - [x] Diagrama SVG en `ParallelDiagram.svelte` destacando conjugados internos (del mismo lado interno).
+  - [x] Pasos analíticos y comprobación algebraica completa.
+- [x] **Arquitectura Modular y Límites de Tamaño:**
+  - [x] `EquationDiagram.svelte`: orquestador de 36 líneas.
+  - [x] `SingleVertexDiagram.svelte`: 75 líneas.
+  - [x] `ParallelDiagram.svelte`: 68 líneas.
+  - [x] `StepSolver.svelte`: 118 líneas ($\le 130$ líneas).
+  - [x] `equations.ts`: 205 líneas ($\le 210$ líneas tope).
 
 ---
 
