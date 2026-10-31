@@ -6,8 +6,8 @@ description: >-
 
 # Skill: Generador de Ejercicios de Ecuaciones
 
-## Descripción
-Lógica para crear problemas matemáticos con números limpios (enteros positivos) aplicados a pares de ángulos (suplementarios, complementarios y opuestos por el vértice).
+## Ubicación en Arquitectura
+Todas las funciones de generación matemática de esta skill deben residir en **`src/lib/math/equations.ts`**, mientras que las plantillas de enunciados didácticos deben residir en **`src/lib/pedagogical/equationsBank.ts`**. Los componentes visuales solo consumen los datos generados.
 
 ```typescript
 export interface AngleEquationProblem {
@@ -67,4 +67,3 @@ export function generateOppositeProblem(): AngleEquationProblem {
   };
 }
 ```
-

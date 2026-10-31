@@ -99,3 +99,4 @@ pnpm run preview
 - Diseñado para funcionar de manera óptima en celulares pequeños (**360px a 420px de ancho**).
 - Todo control interactivo o botón respeta el tamaño táctil mínimo de **44px** (`touch-manipulation`).
 - Textos claros con alto contraste para proyección en pizarrón o aula escolar.
+

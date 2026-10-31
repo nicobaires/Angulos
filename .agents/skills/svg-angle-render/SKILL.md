@@ -6,8 +6,8 @@ description: >-
 
 # Skill: Generador de Arcos SVG para Ángulos
 
-## Descripción
-Código base estándar y funciones puras para calcular arcos SVG entre dos rayos partiendo de un origen común `(cx, cy)`.
+## Ubicación en Arquitectura
+Todas las funciones puras de esta skill deben ubicarse en **`src/lib/math/angles.ts`** y ser importadas por los componentes visuales (`Protractor.svelte`, `AdjacentCanvas.svelte`, etc.). **Nunca incrustar esta lógica directamente en los componentes de interfaz.**
 
 ```typescript
 export interface Point {
@@ -30,7 +30,6 @@ export function describeArc(
   startAngle: number,
   endAngle: number
 ): string {
-  // Normalizar orden si el arco se dibuja en sentido antihorario
   const start = polarToCartesian(cx, cy, radius, endAngle);
   const end = polarToCartesian(cx, cy, radius, startAngle);
   const largeArcFlag = Math.abs(endAngle - startAngle) <= 180 ? '0' : '1';
@@ -47,4 +46,3 @@ export function describeArc(
 ## Buenas Prácticas
 1. **Sistema de coordenadas SVG:** El eje Y en SVG crece hacia abajo; por ello `y = centerY - radius * Math.sin(...)` proyecta los ángulos en orientación matemática estándar (0° a la derecha, 90° arriba).
 2. **Hitbox táctil:** Para que el usuario pueda interactuar cómodamente en móvil, los puntos de arrastre deben contar con círculos invisibles con radio mínimo de 22px (`r="22"` con `fill="transparent"` y `touch-action: none`).
-
