@@ -20,35 +20,38 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
 ## 📚 Módulos de Aprendizaje
 
 1. **[x] Módulo 1: Clasificación según Medida (`/clasificacion`)**
+   - Inicio por defecto en **0°**.
    - Transportador virtual interactivo de 0° a 360° con arrastre táctil y snap magnético.
    - Clasificación en vivo: nulo, agudo, recto (con indicador perpendicular), obtuso, llano, cóncavo y completo.
-   - Modo desafío didáctico con retroalimentación en lenguaje escolar rioplatense.
+   - Modo desafío con botón explícito de **Confirmar respuesta** y retroalimentación rioplatense.
 
 2. **[x] Módulo 2: Pares de Ángulos (`/pares`)**
    - Ángulos complementarios ($90^\circ$) y suplementarios/adyacentes ($180^\circ$) con reparto interactivo en tiempo real.
    - Rectas secantes y ángulos opuestos por el vértice con congruencia visual pareada ($\hat{1} = \hat{3}$ y $\hat{2} = \hat{4}$).
-   - Modo desafío didáctico y ficha interactiva con KaTeX.
+   - Banco de desafíos deductivos (complemento de 30°, suplementario de 60°, opuestos por el vértice) con botón de confirmación.
 
 3. **[x] Módulo 3: Paralelas cortadas por una Secante (`/paralelas`)**
+   - Estado inicial neutral (sin botones seleccionados por defecto).
    - Rotación táctil de la secante con inclinación regulable entre dos paralelas fijas ($R_1 \parallel R_2$).
    - Identificación y resaltado de los 8 sectores: alternos internos/externos, correspondientes y conjugados.
-   - Ficha didáctica con fórmulas KaTeX y distinción inmediata entre pares congruentes y suplementarios.
+   - Ficha didáctica con fórmulas KaTeX y desafíos deductivos con confirmación.
 
 4. **[x] Módulo 4: Ecuaciones con Ángulos (`/ecuaciones`)**
    - Generación procedural de problemas algebraicos con soluciones enteras y limpias.
-   - Resolución guiada paso a paso: planteo geométrico, despeje numérico de $x$ y cálculo de la amplitud final.
-   - Tarjeta de validación instantánea y desarrollo analítico completo con KaTeX.
+   - Coherencia visual estricta entre etiquetas SVG ($\alpha$ y $\beta$) e insignias inferiores.
+   - Resolución guiada en 3 pasos con reseteo automático de inputs al cambiar de ejercicio.
+   - Respuesta final completa y explícita ($\text{Rta: } x, \alpha, \beta$) tanto en el banner de éxito como en el desarrollo analítico.
 
 ---
 
 ## 🏛️ Arquitectura del Proyecto
 
-El proyecto sigue una arquitectura estricta de **Responsabilidad Única (SRP)** y **Separación de Capas (SoC)** (límite de ~100-130 líneas por archivo):
+El proyecto sigue una arquitectura estricta de **Responsabilidad Única (SRP)** y **Separación de Capas (SoC)** (límite de ~100-130 líneas por archivo; ningún archivo supera las 119 líneas):
 
 ```
 ├── .agents/                      # Sistema de especificaciones, subagentes y skills nativas
 │   ├── skills/                   # Procedimientos y runbooks descubribles
-│   ├── specs/                    # Especificaciones funcionales de cada módulo
+│   ├── specs/                    # Especificaciones funcionales de cada módulo (01 al 05)
 │   └── subagents/                # Definiciones de roles especializados
 ├── src/
 │   ├── components/
@@ -58,7 +61,7 @@ El proyecto sigue una arquitectura estricta de **Responsabilidad Única (SRP)** 
 │   │       ├── pairs/            # Subcomponentes atómicos (AdjacentCanvas, OppositeCanvas, Tabs, Card)
 │   │       ├── transversal/      # Subcomponentes atómicos (TransversalCanvas, Controls, Card)
 │   │       ├── equations/        # Subcomponentes atómicos (EquationDiagram, StepSolver, Feedback)
-│   │       └── AngleClassifier.svelte # Orquestador delgado (< 120 líneas)
+│   │       └── AngleClassifier.svelte # Orquestadores delgados (< 120 líneas)
 │   ├── layouts/
 │   │   └── Layout.astro          # Contenedor responsive mobile-first con anti-FOUC
 │   ├── lib/
