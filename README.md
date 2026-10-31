@@ -33,9 +33,10 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
    - Identificación y resaltado de los 8 sectores: alternos internos/externos, correspondientes y conjugados.
    - Ficha didáctica con fórmulas KaTeX y distinción inmediata entre pares congruentes y suplementarios.
 
-4. **[ ] Módulo 4: Ecuaciones con Ángulos (`/ecuaciones`)**
-   - Generación procedural de problemas algebraicos con soluciones enteras limpias.
-   - Resolución guiada paso a paso: planteo, despeje de incógnita $x$ y valor angular final.
+4. **[x] Módulo 4: Ecuaciones con Ángulos (`/ecuaciones`)**
+   - Generación procedural de problemas algebraicos con soluciones enteras y limpias.
+   - Resolución guiada paso a paso: planteo geométrico, despeje numérico de $x$ y cálculo de la amplitud final.
+   - Tarjeta de validación instantánea y desarrollo analítico completo con KaTeX.
 
 ---
 

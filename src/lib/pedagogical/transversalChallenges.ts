@@ -53,3 +53,4 @@ export const TRANSVERSAL_CHALLENGES: TransversalChallenge[] = [
     explanation: '¡Correcto! 2̂ y 8̂ son alternos externos y tienen exactamente la misma medida (ambos son obtusos).'
   }
 ];
+

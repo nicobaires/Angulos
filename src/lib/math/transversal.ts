@@ -65,3 +65,4 @@ export const RELATIONS_MAP: Record<TransversalRelation, RelationDetails> = {
     rule: 'Siempre son suplementarios (suman 180°).'
   }
 };
+

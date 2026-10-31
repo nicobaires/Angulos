@@ -1,0 +1,35 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ModuleHeader from '../components/common/ModuleHeader.astro';
+import EquationSolver from '../components/interactive/EquationSolver.svelte';
+---
+
+<Layout title="Módulo 4: Ecuaciones con Ángulos">
+  <!-- Barra de Navegación Modular Reutilizable -->
+  <ModuleHeader
+    moduleNumber={4}
+    prevHref="/paralelas"
+    prevLabel="Paralelas"
+    nextHref="/"
+    nextLabel="Inicio"
+  />
+
+  <!-- Componente Interactivo Svelte -->
+  <main class="flex-1 flex flex-col">
+    <EquationSolver client:load />
+
+    <!-- Guía de Repaso para la carpeta escolar -->
+    <section class="p-4 mx-4 mb-6 bg-slate-50 rounded-2xl border border-slate-200 text-xs space-y-2 select-none">
+      <h4 class="font-bold text-slate-800 flex items-center gap-1.5 text-sm">
+        <span>📖</span>
+        <span>Pasos para resolver ecuaciones con ángulos</span>
+      </h4>
+      <ol class="space-y-1.5 text-slate-600 pl-1 list-decimal list-inside">
+        <li><strong>Identificar la relación:</strong> ¿Los ángulos son iguales ($\alpha = \beta$) o son suplementarios ($\alpha + \beta = 180^\circ$)?</li>
+        <li><strong>Plantear la ecuación:</strong> Escribir las expresiones algebraicas reemplazando $\alpha$ y $\beta$.</li>
+        <li><strong>Despejar la incógnita:</strong> Agrupar las "x" a la izquierda y los números a la derecha (recordá invertir los signos al trasponer términos).</li>
+        <li><strong>Hallar la amplitud real:</strong> Reemplazar el valor de $x$ obtenido en las fórmulas para verificar que los ángulos sumen o igualen según corresponda.</li>
+      </ol>
+    </section>
+  </main>
+</Layout>
