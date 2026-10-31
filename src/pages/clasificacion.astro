@@ -1,31 +1,18 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import ModuleHeader from '../components/common/ModuleHeader.astro';
 import AngleClassifier from '../components/interactive/AngleClassifier.svelte';
 ---
 
 <Layout title="Módulo 1: Clasificación de Ángulos">
-  <!-- Barra de Navegación Superior -->
-  <header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-20">
-    <a
-      href="/"
-      class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl transition active:scale-95 touch-manipulation min-h-[44px]"
-    >
-      <span>←</span>
-      <span>Inicio</span>
-    </a>
-
-    <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">
-      Módulo 1 de 4
-    </span>
-
-    <a
-      href="/pares"
-      class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-xl transition active:scale-95 touch-manipulation min-h-[44px]"
-    >
-      <span>Pares</span>
-      <span>→</span>
-    </a>
-  </header>
+  <!-- Barra de Navegación Modular Reutilizable -->
+  <ModuleHeader
+    moduleNumber={1}
+    prevHref="/"
+    prevLabel="Inicio"
+    nextHref="/pares"
+    nextLabel="Pares"
+  />
 
   <!-- Componente Interactivo Svelte -->
   <main class="flex-1 flex flex-col">

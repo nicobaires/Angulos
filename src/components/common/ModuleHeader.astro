@@ -1,0 +1,48 @@
+---
+interface Props {
+  moduleNumber: number;
+  totalModules?: number;
+  prevHref?: string;
+  prevLabel?: string;
+  nextHref?: string;
+  nextLabel?: string;
+}
+
+const {
+  moduleNumber,
+  totalModules = 4,
+  prevHref = '/',
+  prevLabel = 'Inicio',
+  nextHref,
+  nextLabel
+} = Astro.props;
+---
+
+<header class="bg-white border-b border-slate-200 px-4 py-3 flex items-center justify-between sticky top-0 z-20 select-none">
+  <a
+    href={prevHref}
+    class="inline-flex items-center gap-1.5 text-xs font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 px-3 py-2 rounded-xl transition active:scale-95 touch-manipulation min-h-[44px]"
+  >
+    <span>←</span>
+    <span>{prevLabel}</span>
+  </a>
+
+  <span class="text-xs font-bold text-slate-500 uppercase tracking-wider">
+    Módulo {moduleNumber} de {totalModules}
+  </span>
+
+  {
+    nextHref ? (
+      <a
+        href={nextHref}
+        class="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 bg-blue-50 hover:bg-blue-100 px-3 py-2 rounded-xl transition active:scale-95 touch-manipulation min-h-[44px]"
+      >
+        <span>{nextLabel || 'Siguiente'}</span>
+        <span>→</span>
+      </a>
+    ) : (
+      <div class="w-16" />
+    )
+  }
+</header>
+

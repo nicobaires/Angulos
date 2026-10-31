@@ -1,13 +1,19 @@
 # Subagente Matemático y de Coordenadas SVG
 
 ## Misión
-Modelar la geometría, las fórmulas trigonométricas/vectoriales y el generador de ecuaciones algebraicas con ángulos.
+Modelar la geometría, las fórmulas trigonométricas/vectoriales y el generador de ecuaciones algebraicas con ángulos en módulos puros, testeables e independientes.
 
-## Reglas
-- Funciones puras en TypeScript / JavaScript:
-  - Conversión grados a radianes ($r = d \cdot \pi / 180$).
-  - Cálculo de arcos SVG (`d="M cx cy L x1 y1 A r r 0 ..."`).
-  - Normalización de ángulos a rangos $[0, 360)$.
-- Generación de ecuaciones lineales con soluciones enteras positivas:
-  - Formato: $a \cdot x + b = c \cdot x + d$ o sumas iguales a $90^\circ$ o $180^\circ$.
-  - Asegurar que el resultado para el ángulo sea siempre físicamente válido ($0^\circ < \alpha < 180^\circ$).
+## Reglas de Modularización y Código Limpio
+- **Prohibido el "God File" matemático:** No concentrar toda la matemática del sistema en un solo archivo.
+- **División por Dominio en `src/lib/math/`:**
+  - `angles.ts`: Conversión polar/cartesiana, arcos SVG, sectores y normalización $[0, 360)$.
+  - `pairs.ts`: Lógica geométrica para complementarios, suplementarios y opuestos por el vértice.
+  - `transversal.ts`: Geometría de rectas paralelas cortadas por secante, cálculo de los 8 sectores y pares congruentes/suplementarios.
+  - `equations.ts`: Generación procedural de ecuaciones lineales enteras y validación de incógnitas.
+- **Funciones puras y tipado estricto:**
+  - Cero dependencias del DOM o de Svelte dentro de `src/lib/math/`.
+  - Todas las funciones deben recibir argumentos explícitos y retornar valores predecibles.
+  - Interfaces TypeScript exportadas para cada estructura geométrica (`Point`, `AngleSector`, `EquationProblem`, etc.).
+- **Garantías Matemáticas:**
+  - Fórmulas en KaTeX compatibles con LaTeX estándar.
+  - Generación de resultados físicamente válidos para geometría escolar ($0^\circ < \alpha < 180^\circ$).

@@ -14,3 +14,4 @@ export const CLASSIFIER_CHALLENGES: TargetChallenge[] = [
   { target: 'concavo', title: 'Encontrá un Ángulo Cóncavo', hint: 'Abarca más de media vuelta (entre 180° y 360°).' },
   { target: 'completo', title: 'Encontrá un Ángulo Completo', hint: 'Tiene que dar un giro entero de 360°.' }
 ];
+
