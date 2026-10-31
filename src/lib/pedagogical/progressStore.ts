@@ -34,9 +34,7 @@ const STORAGE_KEY = 'angulos_progreso_v1';
 
 export function getDefaultProgress(): ProgressData {
   return {
-    stars: 0,
-    streak: 0,
-    bestStreak: 0,
+    stars: 0, streak: 0, bestStreak: 0,
     modules: { clasificacion: [], pares: [], paralelas: [], ecuaciones: 0 },
     achievements: {}
   };
@@ -56,9 +54,7 @@ function loadFromStorage(): ProgressData {
 
 function saveToStorage(data: ProgressData) {
   if (typeof window === 'undefined') return;
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  } catch {}
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
 }
 
 export class ProgressStore {
@@ -69,9 +65,7 @@ export class ProgressStore {
     if (typeof window !== 'undefined') this.data = loadFromStorage();
   }
 
-  get state(): ProgressData {
-    return this.data;
-  }
+  get state(): ProgressData { return this.data; }
 
   subscribe(run: (value: ProgressData) => void) {
     run(this.data);
@@ -95,21 +89,27 @@ export class ProgressStore {
     if (s.modules.ecuaciones >= 3) unlock('experto_algebra');
   }
 
-  recordSuccess(mod: 'clasificacion' | 'pares' | 'paralelas' | 'ecuaciones', challengeIndex?: number) {
-    this.data.stars += 1;
-    this.data.streak += 1;
-    if (this.data.streak > this.data.bestStreak) this.data.bestStreak = this.data.streak;
-
+  recordSuccess(mod: 'clasificacion' | 'pares' | 'paralelas' | 'ecuaciones', challengeIndex?: number): { newStar: boolean } {
+    let newStar = false;
     if (mod === 'ecuaciones') {
+      newStar = true;
+      this.data.stars += 1;
+      this.data.streak += 1;
       this.data.modules.ecuaciones += 1;
     } else if (typeof challengeIndex === 'number') {
       const list = this.data.modules[mod];
-      if (!list.includes(challengeIndex)) list.push(challengeIndex);
+      if (!list.includes(challengeIndex)) {
+        list.push(challengeIndex);
+        this.data.stars += 1;
+        this.data.streak += 1;
+        newStar = true;
+      }
     }
-
-    this.checkAchievements();
+    if (this.data.streak > this.data.bestStreak) this.data.bestStreak = this.data.streak;
+    if (newStar) this.checkAchievements();
     saveToStorage(this.data);
     this.notify();
+    return { newStar };
   }
 
   recordFailure() {

@@ -56,3 +56,4 @@
     <ExamCertificate {score} onretry={startExam} />
   {/if}
 </div>
+

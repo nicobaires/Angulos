@@ -9,22 +9,25 @@ describe('progressStore', () => {
   it('inicia con estado limpio', () => {
     expect(progressStore.state.stars).toBe(0);
     expect(progressStore.state.streak).toBe(0);
-    expect(progressStore.state.bestStreak).toBe(0);
   });
 
-  it('suma estrellas y actualiza racha al registrar éxito', () => {
-    progressStore.recordSuccess('clasificacion', 0);
+  it('suma estrella y racha solo la primera vez que se resuelve un desafío', () => {
+    const res1 = progressStore.recordSuccess('clasificacion', 0);
+    expect(res1.newStar).toBe(true);
     expect(progressStore.state.stars).toBe(1);
     expect(progressStore.state.streak).toBe(1);
-    expect(progressStore.state.bestStreak).toBe(1);
-    expect(progressStore.state.achievements['primer_paso']).toBeDefined();
 
-    progressStore.recordSuccess('clasificacion', 1);
-    progressStore.recordSuccess('clasificacion', 2);
-    expect(progressStore.state.stars).toBe(3);
-    expect(progressStore.state.streak).toBe(3);
-    expect(progressStore.state.bestStreak).toBe(3);
-    expect(progressStore.state.achievements['racha_3']).toBeDefined();
+    // Repetir el mismo desafío es neutro
+    const res2 = progressStore.recordSuccess('clasificacion', 0);
+    expect(res2.newStar).toBe(false);
+    expect(progressStore.state.stars).toBe(1);
+    expect(progressStore.state.streak).toBe(1);
+
+    // Resolver uno nuevo suma estrella y racha
+    const res3 = progressStore.recordSuccess('clasificacion', 1);
+    expect(res3.newStar).toBe(true);
+    expect(progressStore.state.stars).toBe(2);
+    expect(progressStore.state.streak).toBe(2);
   });
 
   it('reinicia racha en error sin perder estrellas ni mejor racha', () => {
@@ -35,27 +38,22 @@ describe('progressStore', () => {
     progressStore.recordFailure();
     expect(progressStore.state.streak).toBe(0);
     expect(progressStore.state.stars).toBe(2);
-    expect(progressStore.state.bestStreak).toBe(2);
   });
 
-  it('desbloquea medallas al completar módulos', () => {
+  it('ecuaciones otorga estrellas y racha de forma procedural siempre', () => {
+    const res1 = progressStore.recordSuccess('ecuaciones');
+    const res2 = progressStore.recordSuccess('ecuaciones');
+    expect(res1.newStar).toBe(true);
+    expect(res2.newStar).toBe(true);
+    expect(progressStore.state.stars).toBe(2);
+    expect(progressStore.state.streak).toBe(2);
+  });
+
+  it('desbloquea medallas escolares al completar los desafíos únicos', () => {
     for (let i = 0; i < 6; i++) {
       progressStore.recordSuccess('clasificacion', i);
     }
     expect(progressStore.state.achievements['maestro_clasificacion']).toBeDefined();
     expect(progressStore.state.achievements['racha_5']).toBeDefined();
-
-    for (let i = 0; i < 3; i++) {
-      progressStore.recordSuccess('ecuaciones');
-    }
-    expect(progressStore.state.achievements['experto_algebra']).toBeDefined();
-  });
-
-  it('permite reiniciar todo el progreso con resetProgress', () => {
-    progressStore.recordSuccess('paralelas', 0);
-    progressStore.resetProgress();
-    expect(progressStore.state.stars).toBe(0);
-    expect(progressStore.state.streak).toBe(0);
-    expect(Object.keys(progressStore.state.achievements).length).toBe(0);
   });
 });

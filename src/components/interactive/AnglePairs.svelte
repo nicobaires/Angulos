@@ -17,6 +17,7 @@
   let challengeFeedback = $state<string>('');
   let challengeSuccess = $state<boolean>(false);
   let hasSubmitted = $state<boolean>(false);
+  let isNewStar = $state<boolean>(false);
 
   const presets = $derived(getPairsPresets(activeMode));
   const range = $derived(getPairsRange(activeMode));
@@ -64,7 +65,8 @@
     challengeSuccess = isCorrect;
     challengeFeedback = isCorrect ? activeChallenge.successMessage : activeChallenge.hint;
     if (isCorrect) {
-      progressStore.recordSuccess('pares', currentStep ?? 0);
+      const res = progressStore.recordSuccess('pares', currentStep ?? 0);
+      isNewStar = res.newStar;
     } else {
       progressStore.recordFailure();
     }
@@ -114,6 +116,7 @@
           {hasSubmitted}
           {challengeSuccess}
           {challengeFeedback}
+          {isNewStar}
           onconfirm={confirmAnswer}
           onskip={startOrNextChallenge}
           onnext={startOrNextChallenge}

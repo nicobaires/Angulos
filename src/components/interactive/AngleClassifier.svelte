@@ -14,6 +14,7 @@
   let challengeFeedback = $state<string>('');
   let challengeSuccess = $state<boolean>(false);
   let hasSubmitted = $state<boolean>(false);
+  let isNewStar = $state<boolean>(false);
 
   const info = $derived(getAngleClassification(angle));
   const activeChallenge = $derived(
@@ -44,12 +45,13 @@
   }
 
   function confirmAnswer() {
-    if (!activeChallenge) return;
+    if (!activeChallenge || currentStep === null) return;
     hasSubmitted = true;
     if (info.type === activeChallenge.target) {
       challengeSuccess = true;
       challengeFeedback = `¡Genial! 🎉 ${info.name}: lograste la apertura correcta.`;
-      progressStore.recordSuccess('clasificacion', currentStep ?? 0);
+      const res = progressStore.recordSuccess('clasificacion', playlist[currentStep]);
+      isNewStar = res.newStar;
     } else {
       challengeSuccess = false;
       challengeFeedback = activeChallenge.hint;
@@ -96,6 +98,7 @@
           {hasSubmitted}
           {challengeSuccess}
           {challengeFeedback}
+          {isNewStar}
           onconfirm={confirmAnswer}
           onskip={startOrNextChallenge}
           onnext={startOrNextChallenge}

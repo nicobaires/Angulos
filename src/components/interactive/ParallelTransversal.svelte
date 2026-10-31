@@ -16,6 +16,7 @@
   let challengeFeedback = $state<string>('');
   let challengeSuccess = $state<boolean>(false);
   let hasSubmitted = $state<boolean>(false);
+  let isNewStar = $state<boolean>(false);
 
   function handleRelationSelect(newRel: TransversalRelation) {
     relation = newRel;
@@ -50,7 +51,8 @@
     if (relation === cur.relation) {
       challengeSuccess = true;
       challengeFeedback = cur.explanation;
-      progressStore.recordSuccess('paralelas', challengeIndex);
+      const res = progressStore.recordSuccess('paralelas', challengeIndex);
+      isNewStar = res.newStar;
     } else {
       challengeSuccess = false;
       challengeFeedback = cur.hint;
@@ -100,6 +102,7 @@
           {hasSubmitted}
           {challengeSuccess}
           {challengeFeedback}
+          {isNewStar}
           onconfirm={confirmAnswer}
           onskip={startChallenge}
           onnext={startChallenge}

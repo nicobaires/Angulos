@@ -12,8 +12,9 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
 - **Interactividad UI:** [Svelte 5](https://svelte.dev/) utilizando la reactividad moderna con **Runes** (`$state`, `$derived`, `$props`).
 - **Diseño & Estilos:** [Tailwind CSS 3.4](https://tailwindcss.com/) con tema semántico y ergonomía táctil (zonas mínimas de 44x44 px).
 - **Modo Oscuro:** Soporte integral de tema Claro/Oscuro con persistencia en `localStorage`, script anti-FOUC y canvas SVG estilizados en modo blueprint/pizarrón técnico.
+- **Gamificación Local:** Sistema de estrellas (`⭐`), racha activa (`🔥`), vitrina de 7 medallas escolares con deduplicación justa y modal de progreso.
 - **Motor Matemático:** [KaTeX](https://katex.org/) para renderizado tipográfico seguro de fórmulas y ecuaciones.
-- **Testing Unitario:** [Vitest](https://vitest.dev/) con 32 tests automatizados de congruencia, normalización y generación procedural de ecuaciones.
+- **Testing Unitario:** [Vitest](https://vitest.dev/) con 40 tests automatizados de congruencia, normalización, regresión con snapshots y generación procedural de ecuaciones.
 - **Gráficos:** SVG interactivo nativo y reactivo (sin librerías pesadas de canvas).
 - **Gestor de Paquetes:** `pnpm` con compatibilidad universal WebAssembly para Rollup.
 - **Despliegue Continuo:** [Netlify](https://www.netlify.com/) → [https://angulos2.netlify.app/](https://angulos2.netlify.app/)
@@ -27,7 +28,7 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
    - Transportador virtual interactivo de 0° a 360° con arrastre táctil y snap magnético.
    - Clasificación en vivo: nulo, agudo, recto (con indicador perpendicular), obtuso, llano, cóncavo y completo.
    - Modo desafío con orden aleatorio barajado, botón explícito de **Confirmar respuesta** y retroalimentación rioplatense.
-   - Input numérico manual sincronizado por teclado.
+   - Input numérico manual sincronizado por teclado y deduplicación justa de estrellas.
 
 2. **[x] Módulo 2: Pares de Ángulos (`/pares`)**
    - Ángulos complementarios ($90^\circ$) y suplementarios/adyacentes ($180^\circ$) con reparto interactivo en tiempo real.
@@ -54,34 +55,42 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
    - Resolución guiada en 3 pasos con 3 opciones geométricas ($\alpha = \beta$, $\alpha + \beta = 180^\circ$, $\alpha + \beta = 90^\circ$).
    - Respuesta final completa y explícita ($\text{Rta: } x, \alpha, \beta$) tanto en el banner de éxito como en el desarrollo analítico paso a paso.
 
+5. **[x] Examen Integrador Final y Diploma (`/examen`)**
+   - 5 preguntas aleatorias y balanceadas que integran los 4 módulos temáticos.
+   - Calificación escolar automática sobre 10 puntos (escala argentina).
+   - Diploma ceremonial de aprobación imprimible y descargable vía navegador (`window.print()`).
+
 ---
 
 ## 🏛️ Arquitectura del Proyecto
 
-El proyecto sigue una arquitectura estricta de **Responsabilidad Única (SRP)** y **Separación de Capas (SoC)** (estándar deseado $\le 130$ líneas por componente; tope absoluto 210 líneas):
+El proyecto sigue una arquitectura estricta de **Responsabilidad Única (SRP)** y **Separación de Capas (SoC)** (estándar deseado $\le 130$ líneas por archivo; tope absoluto 210 líneas):
 
 ```
 ├── .agents/                      # Sistema de especificaciones, subagentes y skills nativas
 │   ├── skills/                   # Procedimientos y runbooks descubribles
-│   ├── specs/                    # Especificaciones funcionales de cada módulo (01 al 07)
+│   ├── specs/                    # Especificaciones funcionales de cada módulo (01 al 08)
 │   └── subagents/                # Definiciones de roles especializados
 ├── src/
 │   ├── components/
-│   │   ├── common/               # Componentes transversales (Math.svelte, ModuleSplit.svelte, ThemeToggle.svelte)
+│   │   ├── common/               # Componentes transversales (Math, ModuleSplit, ProgressWidget, ThemeToggle)
 │   │   └── interactive/          # Módulos interactivos en Svelte 5
 │   │       ├── classifier/       # Subcomponentes atómicos (Protractor, ProtractorTicks, Controls, Card)
 │   │       ├── pairs/            # Subcomponentes atómicos (AdjacentCanvas, OppositeCanvas, Tabs, Card)
 │   │       ├── transversal/      # Subcomponentes atómicos (TransversalCanvas, Controls, Card)
 │   │       ├── equations/        # Subcomponentes atómicos (SingleVertexDiagram, ParallelDiagram, StepSolver, Feedback)
-│   │       └── EquationSolver.svelte # Orquestadores delgados (< 120 líneas)
+│   │       ├── exam/             # Subcomponentes del examen (ExamQuiz, ExamCertificate)
+│   │       ├── ExamRunner.svelte # Orquestador del examen (58 líneas)
+│   │       └── AngleClassifier.svelte # Orquestadores delgados (< 130 líneas)
 │   ├── layouts/
 │   │   └── Layout.astro          # Contenedor responsive mobile-first con anti-FOUC y footer global
 │   ├── lib/
-│   │   ├── math/                 # Lógica matemática pura y tipada (angles, pairs, transversal, equations)
+│   │   ├── math/                 # Lógica matemática pura y tipada
+│   │   │   ├── equations/        # Módulo modularizado de ecuaciones (builders, steps, types, index)
 │   │   │   ├── angles.test.ts    # Tests unitarios Vitest
-│   │   │   └── equations.test.ts # Tests unitarios y stress testing Vitest
-│   │   └── pedagogical/          # Bancos de preguntas, desafíos y pistas desacoplados
-│   ├── pages/                    # Enrutado estático SSG (/clasificacion, /pares, /paralelas, /ecuaciones, 404)
+│   │   │   └── equationsSnapshot.test.ts # Tests de regresión con snapshot
+│   │   └── pedagogical/          # Bancos de preguntas, progreso local y generador de exámenes
+│   ├── pages/                    # Enrutado estático SSG (/clasificacion, /pares, /paralelas, /ecuaciones, /examen, 404)
 │   └── styles/                   # Configuración y directivas CSS globales
 ├── AGENTS.md                     # Regla arquitectónica del sistema multi-agente
 ├── MEMORY.md                     # Bitácora de decisiones técnicas y avance

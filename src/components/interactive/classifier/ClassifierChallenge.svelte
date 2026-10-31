@@ -8,6 +8,7 @@
     hasSubmitted: boolean;
     challengeSuccess: boolean;
     challengeFeedback: string;
+    isNewStar?: boolean;
     onconfirm: () => void;
     onskip: () => void;
     onnext: () => void;
@@ -20,6 +21,7 @@
     hasSubmitted,
     challengeSuccess,
     challengeFeedback,
+    isNewStar = false,
     onconfirm,
     onskip,
     onnext
@@ -38,7 +40,7 @@
     <p class="text-xs mt-0.5 opacity-90">{challengeFeedback}</p>
     {#if challengeSuccess}
       <div class="mt-1 text-[11px] font-black text-emerald-700 dark:text-emerald-300 flex items-center gap-1.5">
-        <span>⭐ +1 Estrella conseguida</span>
+        <span>{isNewStar ? '⭐ +1 Estrella conseguida' : '✔️ Desafío ya completado'}</span>
       </div>
     {/if}
   {:else}
@@ -56,4 +58,3 @@
     {/if}
   </div>
 </div>
-
