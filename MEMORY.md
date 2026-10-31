@@ -1,12 +1,12 @@
 # MEMORY.md - Estado del Proyecto
 
 ## Estado Actual
-- **Fase:** Módulo 1 (Clasificación de Ángulos) implementado y validado en producción. Listo para Módulo 2 (Pares de Ángulos).
+- **Fase:** Módulo 2 (Pares de Ángulos) implementado y validado en producción. Listo para Módulo 3 (Paralelas cortadas por una secante).
 - **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS, KaTeX, pnpm, Netlify.
 
 ## Módulos de Aprendizaje
 - [x] Módulo 1: Clasificación según medida (.agents/specs/01_clasificacion_angulos.md)
-- [ ] Módulo 2: Pares de ángulos (.agents/specs/02_pares_angulos.md)
+- [x] Módulo 2: Pares de ángulos (.agents/specs/02_pares_angulos.md)
 - [ ] Módulo 3: Paralelas cortadas por una secante (.agents/specs/03_paralelas_secante.md)
 - [ ] Módulo 4: Ecuaciones con ángulos (.agents/specs/04_ecuaciones_angulos.md)
 

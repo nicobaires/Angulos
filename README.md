@@ -23,9 +23,10 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
    - Clasificación en vivo: nulo, agudo, recto (con indicador perpendicular), obtuso, llano, cóncavo y completo.
    - Modo desafío didáctico con retroalimentación en lenguaje escolar rioplatense.
 
-2. **[ ] Módulo 2: Pares de Ángulos (`/pares`)**
-   - Ángulos complementarios ($90^\circ$) y suplementarios ($180^\circ$) con reparto interactivo.
-   - Rectas secantes y ángulos opuestos por el vértice con congruencia visual pareada.
+2. **[x] Módulo 2: Pares de Ángulos (`/pares`)**
+   - Ángulos complementarios ($90^\circ$) y suplementarios/adyacentes ($180^\circ$) con reparto interactivo en tiempo real.
+   - Rectas secantes y ángulos opuestos por el vértice con congruencia visual pareada ($\hat{1} = \hat{3}$ y $\hat{2} = \hat{4}$).
+   - Modo desafío didáctico y ficha interactiva con KaTeX.
 
 3. **[ ] Módulo 3: Paralelas cortadas por una Secante (`/paralelas`)**
    - Rotación libre de secante entre dos rectas horizontales fijas.
