@@ -15,3 +15,13 @@ export const CLASSIFIER_CHALLENGES: TargetChallenge[] = [
   { target: 'completo', title: 'Encontrá un Ángulo Completo', hint: 'Tiene que dar un giro entero de 360°.' }
 ];
 
+export function getShuffledClassifierIndices(rng: () => number = Math.random): number[] {
+  const indices = [0, 1, 2, 3, 4, 5];
+  for (let i = indices.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    const temp = indices[i];
+    indices[i] = indices[j];
+    indices[j] = temp;
+  }
+  return indices;
+}

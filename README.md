@@ -2,6 +2,8 @@
 
 Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de **2° Año de secundaria** (13-14 años), centrada en el aprendizaje visual y la experimentación táctil de la geometría de ángulos.
 
+🌐 **Sitio web en producción:** [https://angulos2.netlify.app/](https://angulos2.netlify.app/)
+
 ---
 
 ## 🚀 Stack Tecnológico
@@ -14,7 +16,7 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
 - **Testing Unitario:** [Vitest](https://vitest.dev/) para pruebas matemáticas automatizadas de congruencia, normalización y generación procedural de ecuaciones.
 - **Gráficos:** SVG interactivo nativo y reactivo (sin librerías pesadas de canvas).
 - **Gestor de Paquetes:** `pnpm` con compatibilidad universal WebAssembly para Rollup.
-- **Despliegue Continuo:** [Netlify](https://www.netlify.com/) (`netlify.toml`).
+- **Despliegue Continuo:** [Netlify](https://www.netlify.com/) → [https://angulos2.netlify.app/](https://angulos2.netlify.app/)
 
 ---
 

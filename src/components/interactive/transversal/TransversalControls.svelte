@@ -25,11 +25,28 @@
 </script>
 
 <div class="px-5 py-2 space-y-2 select-none">
-  <!-- Slider de inclinación -->
-  <div class="space-y-1">
-    <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-semibold">
+  <!-- Slider de inclinación con entrada manual -->
+  <div class="space-y-1.5">
+    <div class="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400 font-semibold">
       <span>30°</span>
-      <span>Inclinación: {theta}°</span>
+      <div class="flex items-center gap-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-0.5 rounded-lg shadow-2xs">
+        <label for="transversal-theta-number" class="text-[11px] font-bold text-indigo-600 dark:text-indigo-400">Inclinación:</label>
+        <input
+          id="transversal-theta-number"
+          type="number"
+          inputmode="numeric"
+          min="30"
+          max="75"
+          value={theta}
+          oninput={(e) => {
+            const v = Number((e.target as HTMLInputElement).value);
+            if (!isNaN(v)) onchange(Math.min(75, Math.max(30, Math.round(v))));
+          }}
+          class="w-12 text-center font-black text-sm bg-transparent text-slate-900 dark:text-slate-100 outline-none focus-visible:ring-1 focus-visible:ring-indigo-500 rounded"
+          aria-label="Ingresar inclinación exacta de la secante en grados"
+        />
+        <span class="text-xs font-bold text-slate-500">°</span>
+      </div>
       <span>75°</span>
     </div>
     <input

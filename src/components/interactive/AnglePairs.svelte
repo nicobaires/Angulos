@@ -1,6 +1,6 @@
 <script lang="ts">
   import { type PairType, getPairsPresets, getPairsRange } from '../../lib/math/pairs';
-  import { PAIRS_CHALLENGES } from '../../lib/pedagogical/pairsChallenges';
+  import { generatePairsChallengesDeck, type PairChallenge } from '../../lib/pedagogical/pairsChallenges';
   import ModuleSplit from '../common/ModuleSplit.svelte';
   import PairsModeTabs from './pairs/PairsModeTabs.svelte';
   import AdjacentCanvas from './pairs/AdjacentCanvas.svelte';
@@ -11,13 +11,17 @@
 
   let activeMode = $state<PairType>('complementarios');
   let alpha = $state<number>(35);
-  let challengeIndex = $state<number | null>(null);
+  let deck = $state<PairChallenge[]>([]);
+  let currentStep = $state<number | null>(null);
   let challengeFeedback = $state<string>('');
   let challengeSuccess = $state<boolean>(false);
   let hasSubmitted = $state<boolean>(false);
 
   const presets = $derived(getPairsPresets(activeMode));
   const range = $derived(getPairsRange(activeMode));
+  const activeChallenge = $derived(
+    currentStep !== null && deck[currentStep] !== undefined ? deck[currentStep] : null
+  );
 
   function handleModeSelect(mode: PairType) {
     activeMode = mode;
@@ -37,9 +41,14 @@
     }
   }
 
-  function startChallenge() {
-    challengeIndex = challengeIndex === null ? 0 : (challengeIndex + 1) % PAIRS_CHALLENGES.length;
-    const current = PAIRS_CHALLENGES[challengeIndex];
+  function startOrNextChallenge() {
+    if (currentStep === null || currentStep + 1 >= deck.length) {
+      deck = generatePairsChallengesDeck();
+      currentStep = 0;
+    } else {
+      currentStep++;
+    }
+    const current = deck[currentStep];
     activeMode = current.type;
     alpha = activeMode === 'complementarios' ? 25 : activeMode === 'suplementarios' ? 50 : 45;
     challengeSuccess = false;
@@ -48,16 +57,15 @@
   }
 
   function confirmAnswer() {
-    if (challengeIndex === null) return;
+    if (!activeChallenge) return;
     hasSubmitted = true;
-    const current = PAIRS_CHALLENGES[challengeIndex];
-    const isCorrect = activeMode === current.type && Math.abs(alpha - current.targetAlpha) <= current.tolerance;
+    const isCorrect = activeMode === activeChallenge.type && Math.abs(alpha - activeChallenge.targetAlpha) <= activeChallenge.tolerance;
     challengeSuccess = isCorrect;
-    challengeFeedback = isCorrect ? current.successMessage : current.hint;
+    challengeFeedback = isCorrect ? activeChallenge.successMessage : activeChallenge.hint;
   }
 
   function exitChallenge() {
-    challengeIndex = null;
+    currentStep = null;
     challengeFeedback = '';
     challengeSuccess = false;
     hasSubmitted = false;
@@ -72,10 +80,10 @@
       <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">Pares de Ángulos</h2>
     </div>
     <button
-      onclick={challengeIndex === null ? startChallenge : exitChallenge}
-      class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 active:scale-95 touch-manipulation min-h-[44px] focus-visible:ring-2 focus-visible:ring-blue-500 {challengeIndex === null ? 'bg-amber-100 hover:bg-amber-200 text-amber-900 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 dark:text-amber-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 font-semibold'}"
+      onclick={currentStep === null ? startOrNextChallenge : exitChallenge}
+      class="px-3 py-1.5 rounded-xl text-xs font-bold transition flex items-center gap-1 active:scale-95 touch-manipulation min-h-[44px] focus-visible:ring-2 focus-visible:ring-blue-500 {currentStep === null ? 'bg-amber-100 hover:bg-amber-200 text-amber-900 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 dark:text-amber-200' : 'bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-300 font-semibold'}"
     >
-      {challengeIndex === null ? '🎯 ¡Modo Desafío!' : 'Salir del modo'}
+      {currentStep === null ? '🎯 ¡Modo Desafío!' : 'Salir del modo'}
     </button>
   </div>
 
@@ -86,27 +94,27 @@
   <ModuleSplit>
     {#snippet visual()}
       {#if activeMode === 'opuestos'}
-        <OppositeCanvas {alpha} onchange={handleAlphaChange} />
+        <OppositeCanvas {alpha} onchange={handleAlphaChange} hideAdjacentDegrees={currentStep !== null} />
       {:else}
-        <AdjacentCanvas {alpha} totalAngle={activeMode === 'complementarios' ? 90 : 180} onchange={handleAlphaChange} />
+        <AdjacentCanvas {alpha} totalAngle={activeMode === 'complementarios' ? 90 : 180} onchange={handleAlphaChange} hideBetaDegrees={currentStep !== null} />
       {/if}
     {/snippet}
     {#snippet panel()}
-      {#if challengeIndex !== null}
+      {#if activeChallenge && currentStep !== null}
         <PairsChallenge
-          challenge={PAIRS_CHALLENGES[challengeIndex]}
-          {challengeIndex}
-          totalChallenges={PAIRS_CHALLENGES.length}
+          challenge={activeChallenge}
+          challengeIndex={currentStep}
+          totalChallenges={deck.length}
           {hasSubmitted}
           {challengeSuccess}
           {challengeFeedback}
           onconfirm={confirmAnswer}
-          onskip={startChallenge}
-          onnext={startChallenge}
+          onskip={startOrNextChallenge}
+          onnext={startOrNextChallenge}
         />
       {/if}
       <PairsControls {alpha} minAlpha={range.min} maxAlpha={range.max} {presets} onchange={handleAlphaChange} />
-      <PairsCard mode={activeMode} {alpha} />
+      <PairsCard mode={activeMode} {alpha} isChallenge={currentStep !== null} />
     {/snippet}
   </ModuleSplit>
 </div>

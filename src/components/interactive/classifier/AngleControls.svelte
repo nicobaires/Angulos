@@ -29,13 +29,28 @@
 </script>
 
 <div class="px-5 py-3 space-y-3 select-none">
-  <!-- Slider de control fino -->
-  <div class="space-y-1">
-    <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-semibold">
+  <!-- Slider de control fino con entrada manual -->
+  <div class="space-y-1.5">
+    <div class="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400 font-semibold">
       <span>0°</span>
-      <span>90°</span>
-      <span>180°</span>
-      <span>270°</span>
+      <div class="flex items-center gap-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-0.5 rounded-lg shadow-2xs">
+        <label for="angle-number" class="text-[11px] font-bold text-slate-500 dark:text-slate-400">Ingresar:</label>
+        <input
+          id="angle-number"
+          type="number"
+          inputmode="numeric"
+          min="0"
+          max="360"
+          value={angle}
+          oninput={(e) => {
+            const v = Number((e.target as HTMLInputElement).value);
+            if (!isNaN(v)) onchange?.(Math.min(360, Math.max(0, Math.round(v))));
+          }}
+          class="w-12 text-center font-black text-sm bg-transparent text-slate-900 dark:text-slate-100 outline-none focus-visible:ring-1 focus-visible:ring-blue-500 rounded"
+          aria-label="Ingresar ángulo exacto en grados"
+        />
+        <span class="text-xs font-bold text-slate-500">°</span>
+      </div>
       <span>360°</span>
     </div>
     <input

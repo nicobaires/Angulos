@@ -5,9 +5,10 @@
   interface Props {
     mode: PairType;
     alpha: number;
+    isChallenge?: boolean;
   }
 
-  let { mode, alpha }: Props = $props();
+  let { mode, alpha, isChallenge = false }: Props = $props();
 
   const beta = $derived(mode === 'complementarios' ? 90 - alpha : 180 - alpha);
 </script>
@@ -22,8 +23,10 @@
 
     <div class="my-2 p-2 bg-slate-50 dark:bg-slate-800/80 rounded-xl flex items-center justify-center gap-2 text-sm font-semibold text-slate-800 dark:text-slate-200">
       <Katex formula={`\\alpha + \\beta = 90^\\circ`} />
-      <span class="text-slate-400">→</span>
-      <Katex formula={`${alpha}^\\circ + ${beta}^\\circ = 90^\\circ`} />
+      {#if !isChallenge}
+        <span class="text-slate-400">→</span>
+        <Katex formula={`${alpha}^\\circ + ${beta}^\\circ = 90^\\circ`} />
+      {/if}
     </div>
 
     <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -44,8 +47,10 @@
 
     <div class="my-2 p-2 bg-slate-50 dark:bg-slate-800/80 rounded-xl flex items-center justify-center gap-2 text-sm font-semibold text-slate-800 dark:text-slate-200">
       <Katex formula={`\\alpha + \\beta = 180^\\circ`} />
-      <span class="text-slate-400">→</span>
-      <Katex formula={`${alpha}^\\circ + ${beta}^\\circ = 180^\\circ`} />
+      {#if !isChallenge}
+        <span class="text-slate-400">→</span>
+        <Katex formula={`${alpha}^\\circ + ${beta}^\\circ = 180^\\circ`} />
+      {/if}
     </div>
 
     <p class="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
@@ -67,11 +72,11 @@
     <div class="my-2 p-2 bg-slate-50 dark:bg-slate-800/80 rounded-xl flex flex-col items-center gap-1.5 text-sm font-semibold text-slate-800 dark:text-slate-200">
       <div class="flex items-center gap-2">
         <span class="text-xs text-blue-600 dark:text-blue-400 font-bold bg-blue-50 dark:bg-blue-950/60 px-2 py-0.5 rounded-md">Par Azul:</span>
-        <Katex formula={`\\hat{1} = \\hat{3} = ${alpha}^\\circ`} />
+        <Katex formula={isChallenge ? `\\hat{1} = \\hat{3}` : `\\hat{1} = \\hat{3} = ${alpha}^\\circ`} />
       </div>
       <div class="flex items-center gap-2">
         <span class="text-xs text-amber-700 dark:text-amber-400 font-bold bg-amber-50 dark:bg-amber-950/60 px-2 py-0.5 rounded-md">Par Ámbar:</span>
-        <Katex formula={`\\hat{2} = \\hat{4} = ${180 - alpha}^\\circ`} />
+        <Katex formula={isChallenge ? `\\hat{2} = \\hat{4}` : `\\hat{2} = \\hat{4} = ${180 - alpha}^\\circ`} />
       </div>
     </div>
 

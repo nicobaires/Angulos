@@ -5,9 +5,10 @@
     alpha: number;
     totalAngle: 90 | 180;
     onchange: (newAlpha: number) => void;
+    hideBetaDegrees?: boolean;
   }
 
-  let { alpha, totalAngle, onchange }: Props = $props();
+  let { alpha, totalAngle, onchange, hideBetaDegrees = false }: Props = $props();
 
   let isDragging = $state<boolean>(false);
   let svgElement = $state<SVGSVGElement | null>(null);
@@ -75,7 +76,7 @@
       α: {alpha}°
     </text>
     <text x={labelBetaPos.x} y={labelBetaPos.y + 4} font-size="11" font-weight="bold" class="fill-amber-700 dark:fill-amber-400 select-none" text-anchor="middle">
-      β: {beta}°
+      {hideBetaDegrees ? 'β' : `β: ${beta}°`}
     </text>
 
     <line x1={cx} y1={cy} x2={cx + radius} y2={cy} class="stroke-slate-900 dark:stroke-slate-100" stroke-width="3" stroke-linecap="round" />

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getAngleClassification } from '../../lib/math/angles';
-  import { CLASSIFIER_CHALLENGES } from '../../lib/pedagogical/classifierChallenges';
+  import { CLASSIFIER_CHALLENGES, getShuffledClassifierIndices } from '../../lib/pedagogical/classifierChallenges';
   import ModuleSplit from '../common/ModuleSplit.svelte';
   import Protractor from './classifier/Protractor.svelte';
   import AngleControls from './classifier/AngleControls.svelte';
@@ -8,12 +8,18 @@
   import ClassifierChallenge from './classifier/ClassifierChallenge.svelte';
 
   let angle = $state<number>(0);
-  let challengeIndex = $state<number | null>(null);
+  let playlist = $state<number[]>([]);
+  let currentStep = $state<number | null>(null);
   let challengeFeedback = $state<string>('');
   let challengeSuccess = $state<boolean>(false);
   let hasSubmitted = $state<boolean>(false);
 
   const info = $derived(getAngleClassification(angle));
+  const activeChallenge = $derived(
+    currentStep !== null && playlist[currentStep] !== undefined
+      ? CLASSIFIER_CHALLENGES[playlist[currentStep]]
+      : null
+  );
 
   function handleAngleChange(newAngle: number) {
     angle = newAngle;
@@ -23,8 +29,13 @@
     }
   }
 
-  function startChallenge() {
-    challengeIndex = challengeIndex === null ? 0 : (challengeIndex + 1) % CLASSIFIER_CHALLENGES.length;
+  function startOrNextChallenge() {
+    if (currentStep === null || currentStep + 1 >= playlist.length) {
+      playlist = getShuffledClassifierIndices();
+      currentStep = 0;
+    } else {
+      currentStep++;
+    }
     angle = 0;
     challengeFeedback = '';
     challengeSuccess = false;
@@ -32,20 +43,19 @@
   }
 
   function confirmAnswer() {
-    if (challengeIndex === null) return;
+    if (!activeChallenge) return;
     hasSubmitted = true;
-    const current = CLASSIFIER_CHALLENGES[challengeIndex];
-    if (info.type === current.target) {
+    if (info.type === activeChallenge.target) {
       challengeSuccess = true;
       challengeFeedback = `¡Genial! 🎉 ${info.name}: lograste la apertura correcta.`;
     } else {
       challengeSuccess = false;
-      challengeFeedback = current.hint;
+      challengeFeedback = activeChallenge.hint;
     }
   }
 
   function exitChallenge() {
-    challengeIndex = null;
+    currentStep = null;
     challengeFeedback = '';
     challengeSuccess = false;
     hasSubmitted = false;
@@ -59,8 +69,8 @@
       <span class="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wide">Módulo 1</span>
       <h2 class="text-lg font-bold text-slate-900 dark:text-slate-100">Clasificación según Medida</h2>
     </div>
-    {#if challengeIndex === null}
-      <button onclick={startChallenge} class="px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 dark:text-amber-200 rounded-xl text-xs font-bold transition flex items-center gap-1 active:scale-95 touch-manipulation min-h-[44px] focus-visible:ring-2 focus-visible:ring-amber-500">
+    {#if currentStep === null}
+      <button onclick={startOrNextChallenge} class="px-3 py-1.5 bg-amber-100 hover:bg-amber-200 text-amber-900 dark:bg-amber-950/60 dark:hover:bg-amber-900/60 dark:text-amber-200 rounded-xl text-xs font-bold transition flex items-center gap-1 active:scale-95 touch-manipulation min-h-[44px] focus-visible:ring-2 focus-visible:ring-amber-500">
         <span>🎯</span><span>¡Modo Desafío!</span>
       </button>
     {:else}
@@ -75,17 +85,17 @@
       <Protractor {angle} colorHex={info.colorHex} onchange={handleAngleChange} />
     {/snippet}
     {#snippet panel()}
-      {#if challengeIndex !== null}
+      {#if activeChallenge && currentStep !== null}
         <ClassifierChallenge
-          challenge={CLASSIFIER_CHALLENGES[challengeIndex]}
-          {challengeIndex}
-          totalChallenges={CLASSIFIER_CHALLENGES.length}
+          challenge={activeChallenge}
+          challengeIndex={currentStep}
+          totalChallenges={playlist.length}
           {hasSubmitted}
           {challengeSuccess}
           {challengeFeedback}
           onconfirm={confirmAnswer}
-          onskip={startChallenge}
-          onnext={startChallenge}
+          onskip={startOrNextChallenge}
+          onnext={startOrNextChallenge}
         />
       {/if}
       <AngleControls {angle} onchange={handleAngleChange} />

@@ -26,11 +26,28 @@
 </script>
 
 <div class="px-5 py-2 space-y-2 select-none">
-  <!-- Slider -->
-  <div class="space-y-1">
-    <div class="flex justify-between text-xs text-slate-500 dark:text-slate-400 font-semibold">
+  <!-- Slider con entrada manual -->
+  <div class="space-y-1.5">
+    <div class="flex justify-between items-center text-xs text-slate-500 dark:text-slate-400 font-semibold">
       <span>{minAlpha}°</span>
-      <span>{Math.round((minAlpha + maxAlpha) / 2)}°</span>
+      <div class="flex items-center gap-1 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-0.5 rounded-lg shadow-2xs">
+        <label for="pairs-alpha-number" class="text-[11px] font-bold text-blue-600 dark:text-blue-400">α:</label>
+        <input
+          id="pairs-alpha-number"
+          type="number"
+          inputmode="numeric"
+          min={minAlpha}
+          max={maxAlpha}
+          value={alpha}
+          oninput={(e) => {
+            const v = Number((e.target as HTMLInputElement).value);
+            if (!isNaN(v)) onchange(Math.min(maxAlpha, Math.max(minAlpha, Math.round(v))));
+          }}
+          class="w-12 text-center font-black text-sm bg-transparent text-slate-900 dark:text-slate-100 outline-none focus-visible:ring-1 focus-visible:ring-blue-500 rounded"
+          aria-label="Ingresar ángulo alfa exacto en grados"
+        />
+        <span class="text-xs font-bold text-slate-500">°</span>
+      </div>
       <span>{maxAlpha}°</span>
     </div>
     <input

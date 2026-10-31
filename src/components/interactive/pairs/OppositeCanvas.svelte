@@ -4,9 +4,10 @@
   interface Props {
     alpha: number;
     onchange: (newAlpha: number) => void;
+    hideAdjacentDegrees?: boolean;
   }
 
-  let { alpha, onchange }: Props = $props();
+  let { alpha, onchange, hideAdjacentDegrees = false }: Props = $props();
 
   let isDragging = $state<boolean>(false);
   let svgElement = $state<SVGSVGElement | null>(null);
@@ -90,8 +91,8 @@
     <!-- Etiquetas con alto contraste -->
     <text x={pos1.x} y={pos1.y + 4} font-size="11" font-weight="900" class="fill-blue-700 dark:fill-blue-400 select-none" text-anchor="middle">1̂: {alpha}°</text>
     <text x={pos3.x} y={pos3.y + 4} font-size="11" font-weight="900" class="fill-blue-700 dark:fill-blue-400 select-none" text-anchor="middle">3̂: {alpha}°</text>
-    <text x={pos2.x} y={pos2.y + 4} font-size="11" font-weight="900" class="fill-amber-700 dark:fill-amber-400 select-none" text-anchor="middle">2̂: {supplementary}°</text>
-    <text x={pos4.x} y={pos4.y + 4} font-size="11" font-weight="900" class="fill-amber-700 dark:fill-amber-400 select-none" text-anchor="middle">4̂: {supplementary}°</text>
+    <text x={pos2.x} y={pos2.y + 4} font-size="11" font-weight="900" class="fill-amber-700 dark:fill-amber-400 select-none" text-anchor="middle">{hideAdjacentDegrees ? '2̂' : `2̂: ${supplementary}°`}</text>
+    <text x={pos4.x} y={pos4.y + 4} font-size="11" font-weight="900" class="fill-amber-700 dark:fill-amber-400 select-none" text-anchor="middle">{hideAdjacentDegrees ? '4̂' : `4̂: ${supplementary}°`}</text>
 
     <!-- Vértice y Tirador de Arrastre -->
     <circle cx={cx} cy={cy} r={6} class="fill-slate-900 dark:fill-slate-100 stroke-white dark:stroke-slate-800" stroke-width="2" />
