@@ -69,6 +69,11 @@ El proyecto sigue una arquitectura estricta de **Responsabilidad Única (SRP)** 
 ```
 ├── .agents/                      # Sistema de especificaciones, subagentes y skills nativas
 │   ├── skills/                   # Procedimientos y runbooks descubribles
+│   │   ├── exercise-generator/       # Generación procedural de 5 variantes algebraicas
+│   │   ├── gamification-progress-engine/ # Motor de progreso, medallas y deduplicación justa
+│   │   ├── pwa-offline-packager/     # Estrategia de PWA offline y Service Worker
+│   │   ├── latex-equation-builder/   # Render KaTeX seguro en Svelte 5
+│   │   └── svg-angle-render/         # Trigonometría, arcos SVG y normalización
 │   ├── specs/                    # Especificaciones funcionales de cada módulo (01 al 08)
 │   └── subagents/                # Definiciones de roles especializados
 ├── src/

@@ -1,69 +1,45 @@
 ---
 name: exercise-generator
 description: >-
-  Generación procedural de problemas algebraicos sobre ángulos con soluciones enteras y limpias.
+  Generación procedural de problemas algebraicos sobre ángulos con soluciones enteras y limpias en src/lib/math/equations/.
 ---
 
-# Skill: Generador de Ejercicios de Ecuaciones
+# Skill: Generador Procedural de Ecuaciones con Ángulos
 
-## Ubicación en Arquitectura
-Todas las funciones de generación matemática de esta skill deben residir en **`src/lib/math/equations.ts`**, mientras que las plantillas de enunciados didácticos deben residir en **`src/lib/pedagogical/equationsBank.ts`**. Los componentes visuales solo consumen los datos generados.
+## Ubicación en la Arquitectura
+El motor matemático modular reside en **`src/lib/math/equations/`**:
+- **`types.ts`:** Tipos, contratos e interfaces (`EquationProblem`, `EquationProblemType`, `EquationRelationType`, `Rng`, `createSeededRng`).
+- **`steps.ts`:** Formateadores de signos y constructores analíticos KaTeX (`buildEqualitySteps`, `buildSumSteps`).
+- **`builders.ts`:** Generadores matemáticos especializados para cada variante.
+- **`index.ts`:** API pública unificada y selector aleatorio ponderado (`generateRandomProblem`).
 
-```typescript
-export interface AngleEquationProblem {
-  type: 'suplementarios' | 'complementarios' | 'opuestos';
-  relation: string;
-  equationStr: string;
-  xValue: number;
-  angle1: number;
-  angle2: number;
-}
+Todos los archivos deben respetar el límite estricto de **$\le 130$ líneas**.
 
-export function generateAdjacentProblem(): AngleEquationProblem {
-  // a*x + b + c*x + d = 180
-  const x = Math.floor(Math.random() * 15) + 10; // x entre 10 y 24
-  const a = Math.floor(Math.random() * 3) + 2;   // 2 a 4
-  const c = Math.floor(Math.random() * 3) + 1;   // 1 a 3
-  
-  const totalLinear = (a + c) * x;
-  const remainder = 180 - totalLinear;
-  const b = Math.floor(remainder / 2);
-  const d = remainder - b;
+---
 
-  const angle1 = a * x + b;
-  const angle2 = c * x + d;
+## 5 Variantes Curriculares de 2° Año
 
-  return {
-    type: 'suplementarios',
-    relation: '\\alpha + \\beta = 180^\\circ',
-    equationStr: `${a}x ${b >= 0 ? '+' : ''}${b}^\\circ + ${c}x ${d >= 0 ? '+' : ''}${d}^\\circ = 180^\\circ`,
-    xValue: x,
-    angle1,
-    angle2
-  };
-}
+| Tipo | Relación geométrica | Ecuación base | Rango $x$ | Particularidad |
+|---|---|---|---|---|
+| `opuestos` | `igualdad` | $ax + b = cx + d$ | 12 a 19 | Opuestos por el vértice ($a > c$) |
+| `suplementarios` | `suma180` | $(ax + b) + (cx + d) = 180^\circ$ | 10 a 17 | Adyacentes sobre recta plana |
+| `complementarios` | `suma90` | $(ax + b) + (cx + d) = 90^\circ$ | 6 a 11 | Ángulo recto perpendicular |
+| `paralelas_alternos` | `igualdad` | $ax + b = cx + d$ | 10 a 16 | Alternos internos entre $R_1 \parallel R_2$ |
+| `paralelas_conjugados`| `suma180` | $(ax + b) + (cx + d) = 180^\circ$ | 10 a 17 | Conjugados internos del mismo lado |
 
-export function generateOppositeProblem(): AngleEquationProblem {
-  // a*x + b = c*x + d
-  const x = Math.floor(Math.random() * 12) + 8; // x entre 8 y 19
-  const c = Math.floor(Math.random() * 2) + 1;  // 1 a 2
-  const a = c + Math.floor(Math.random() * 2) + 1; // a > c
-  
-  // a*x + b = c*x + d => (a - c)*x = d - b
-  const diff = (a - c) * x;
-  const b = Math.floor(Math.random() * 20) + 5;
-  const d = b + diff;
+---
 
-  const angle1 = a * x + b;
-  const angle2 = c * x + d;
+## Ponderación en `generateRandomProblem`
 
-  return {
-    type: 'opuestos',
-    relation: '\\alpha = \\beta',
-    equationStr: `${a}x ${b >= 0 ? '+' : ''}${b}^\\circ = ${c}x + ${d}^\\circ`,
-    xValue: x,
-    angle1,
-    angle2
-  };
-}
-```
+Para garantizar variedad didáctica equiprobable:
+- $22\%$ Complementarios (`suma90`).
+- $22\%$ Alternos internos (`igualdad`).
+- $22\%$ Conjugados internos (`suma180`).
+- $17\%$ Opuestos por el vértice (`igualdad`).
+- $17\%$ Suplementarios adyacentes (`suma180`).
+
+---
+
+## Regla de Oro: Determinismo y Regresión
+1. **Hidratación SSG:** En Astro estático, inicializar siempre con `createSeededRng(2024)` para que el HTML inicial del servidor coincida con el cliente. En `onMount()` del componente Svelte se genera un ejercicio aleatorio fresco con `generateRandomProblem()`.
+2. **Snapshot de Regresión:** Cualquier modificación matemática debe contrastarse con `src/lib/math/equationsSnapshot.test.ts`. El snapshot **no debe regenerarse**; el orden y secuencia de llamadas a `rng()` debe ser rigurosamente preservado.
