@@ -26,25 +26,8 @@ describe('generateExamDeck', () => {
     expect(deckA).toEqual(deckB);
   });
 
-  it('normaliza las opciones de Q1 sin prefijo "Ángulo" ni duplicados', () => {
-    for (let seed = 1; seed <= 30; seed++) {
-      const [q1] = generateExamDeck(createSeededRng(seed));
-      expect(q1.options.length).toBe(4);
-
-      const labels = q1.options.map((o) => o.label);
-      // Ninguna etiqueta debe contener "Ángulo"
-      for (const label of labels) {
-        expect(label.toLowerCase()).not.toContain('ángulo');
-      }
-
-      // No debe haber opciones duplicadas (e.g. "Obtuso" y "Obtuso")
-      const uniqueLabels = new Set(labels.map((l) => l.toLowerCase()));
-      expect(uniqueLabels.size).toBe(4);
-    }
-  });
-
-  it('no contiene opciones duplicadas ni campos de formula previa en ninguna pregunta', () => {
-    for (let seed = 1; seed <= 50; seed++) {
+  it('no contiene opciones duplicadas ni campos de formula previa en 500 semillas', () => {
+    for (let seed = 1; seed <= 500; seed++) {
       const deck = generateExamDeck(createSeededRng(seed));
       for (const q of deck) {
         expect((q as any).formula).toBeUndefined();
@@ -55,8 +38,46 @@ describe('generateExamDeck', () => {
     }
   });
 
+  it('cubre los 7 tipos de ángulo en Q1 y toda etiqueta correcta también aparece como distractor (sin delatar respuesta)', () => {
+    const correctTypes = new Set<string>();
+    const wrongTypes = new Set<string>();
+
+    for (let seed = 1; seed <= 500; seed++) {
+      const [q1] = generateExamDeck(createSeededRng(seed));
+      expect(q1.options.length).toBe(4);
+
+      for (const opt of q1.options) {
+        expect(opt.label.toLowerCase()).not.toContain('ángulo');
+        if (opt.isCorrect) {
+          correctTypes.add(opt.label);
+        } else {
+          wrongTypes.add(opt.label);
+        }
+      }
+    }
+
+    const expected7 = ['Nulo', 'Agudo', 'Recto', 'Obtuso', 'Llano', 'Cóncavo', 'Completo'];
+    expect(Array.from(correctTypes).sort()).toEqual([...expected7].sort());
+    // Cada tipo que aparece como correcto debe aparecer también como incorrecto (distractor) en otras semillas
+    for (const type of expected7) {
+      expect(wrongTypes.has(type)).toBe(true);
+    }
+  });
+
+  it('cubre los 4 casos de rectas paralelas en la Pregunta 3', () => {
+    const casesCovered = new Set<string>();
+    for (let seed = 1; seed <= 500; seed++) {
+      const deck = generateExamDeck(createSeededRng(seed));
+      const q3 = deck[2];
+      for (const name of ['alternos internos', 'conjugados internos', 'alternos externos', 'correspondientes']) {
+        if (q3.prompt.includes(name)) casesCovered.add(name);
+      }
+    }
+    expect(casesCovered.size).toBe(4);
+  });
+
   it('incluye el distractor dual (suplementario/complementario) en la Pregunta 2', () => {
-    for (let seed = 1; seed <= 30; seed++) {
+    for (let seed = 1; seed <= 50; seed++) {
       const deck = generateExamDeck(createSeededRng(seed));
       const q2 = deck[1];
       const match = q2.prompt.match(/ángulo (complementario|suplementario) de un ángulo de (\d+)°/);
@@ -72,18 +93,17 @@ describe('generateExamDeck', () => {
     }
   });
 
-  it('incluye el distractor de confusión de incógnita x en la Pregunta 5', () => {
-    for (let seed = 1; seed <= 30; seed++) {
+  it('obliga a plantear la ecuación en Q5 e incluye el distractor de confusión de incógnita x', () => {
+    for (let seed = 1; seed <= 50; seed++) {
       const deck = generateExamDeck(createSeededRng(seed));
       const q5 = deck[4];
-      const match = q5.prompt.match(/x = (\d+)/);
-      expect(match).not.toBeNull();
-      if (!match) continue;
-
-      const xVal = match[1];
+      // Verifica que es una ecuación de adyacentes suplementarios
+      expect(q5.prompt).toContain('Dos ángulos adyacentes suplementarios miden α = 2x + 20°');
+      
+      // Debe haber al menos una opción que corresponda al valor de x (distractor de incógnita)
       const labels = q5.options.map((o) => o.label);
-      expect(labels).toContain(`α = ${xVal}°`);
+      const xOpts = labels.filter((l) => ['α = 20°', 'α = 30°', 'α = 40°'].includes(l));
+      expect(xOpts.length).toBeGreaterThanOrEqual(1);
     }
   });
 });
-

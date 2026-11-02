@@ -35,8 +35,8 @@
     <div class="text-3xl sm:text-4xl">🏛️</div>
     <div class="space-y-1">
       <span class="text-[10px] font-extrabold tracking-widest text-amber-700 dark:text-amber-400 uppercase">Matemática • 2° Año Secundaria</span>
-      <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 uppercase tracking-tight">Certificado de Aprobación</h2>
-      <p class="text-xs text-slate-600 dark:text-slate-400">Evaluación Integradora de Geometría de Ángulos</p>
+      <h2 class="text-xl sm:text-2xl font-black text-slate-900 dark:text-slate-100 uppercase tracking-tight">Certificado de Práctica</h2>
+      <p class="text-xs text-slate-600 dark:text-slate-400">Examen de Práctica de Geometría de Ángulos</p>
     </div>
 
     <!-- Input de Nombre -->
@@ -67,7 +67,7 @@
     <div class="pt-3 border-t border-amber-200/80 dark:border-slate-800 flex justify-between items-center text-[11px] text-slate-500 dark:text-slate-400 font-semibold px-2">
       <span>📅 {formattedDate}</span>
       <span class="px-2 py-0.5 rounded-full border border-amber-300 dark:border-amber-800 bg-amber-100/50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 text-[10px]">
-        ★ Acreditación 2° Año ★
+        ★ Práctica 2° Año ★
       </span>
     </div>
   </div>
