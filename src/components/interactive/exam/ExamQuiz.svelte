@@ -1,6 +1,5 @@
 <script lang="ts">
   import type { ExamQuestion } from '../../../lib/pedagogical/examGenerator';
-  import Katex from '../../common/Math.svelte';
 
   interface Props {
     deck: ExamQuestion[];
@@ -54,11 +53,6 @@
   <!-- Consigna -->
   <div class="space-y-1.5">
     <h3 class="text-sm sm:text-base font-bold text-slate-900 dark:text-slate-100 leading-snug">{currentQ.prompt}</h3>
-    {#if currentQ.formula}
-      <div class="p-2 bg-slate-50 dark:bg-slate-800/60 rounded-xl text-center text-sm font-semibold">
-        <Katex formula={currentQ.formula} />
-      </div>
-    {/if}
   </div>
 
   <!-- Opciones de Respuesta -->

@@ -14,7 +14,7 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
 - **Modo Oscuro:** Soporte integral de tema Claro/Oscuro con persistencia en `localStorage`, script anti-FOUC y canvas SVG estilizados en modo blueprint/pizarrón técnico.
 - **Gamificación Local:** Sistema de estrellas (`⭐`), racha activa (`🔥`), vitrina de 7 medallas escolares con deduplicación justa y modal de progreso.
 - **Motor Matemático:** [KaTeX](https://katex.org/) para renderizado tipográfico seguro de fórmulas y ecuaciones.
-- **Testing Unitario:** [Vitest](https://vitest.dev/) con 40 tests automatizados de congruencia, normalización, regresión con snapshots y generación procedural de ecuaciones.
+- **Testing Unitario:** [Vitest](https://vitest.dev/) con 42 tests automatizados de congruencia, normalización, regresión con snapshots y generación procedural de exámenes y ecuaciones.
 - **Gráficos:** SVG interactivo nativo y reactivo (sin librerías pesadas de canvas).
 - **Gestor de Paquetes:** `pnpm` con compatibilidad universal WebAssembly para Rollup.
 - **Despliegue Continuo:** [Netlify](https://www.netlify.com/) → [https://angulos2.netlify.app/](https://angulos2.netlify.app/)

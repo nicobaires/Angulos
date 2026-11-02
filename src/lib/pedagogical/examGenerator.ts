@@ -13,7 +13,6 @@ export interface ExamQuestion {
   moduleName: string;
   title: string;
   prompt: string;
-  formula?: string;
   options: ExamOption[];
   explanation: string;
 }
@@ -30,8 +29,10 @@ function shuffle<T>(arr: T[], rng: Rng): T[] {
 function generateQ1(rng: Rng): ExamQuestion {
   const angles = [35, 90, 125, 180, 240];
   const deg = angles[Math.floor(rng() * angles.length)];
-  const correct = getAngleClassification(deg).name;
-  const wrongs = ['Agudo', 'Recto', 'Obtuso', 'Llano', 'Cóncavo'].filter((n) => n !== correct).slice(0, 3);
+  const rawName = getAngleClassification(deg).name;
+  const correct = rawName.replace(/^Ángulo\s+/i, '');
+  const pool = ['Agudo', 'Recto', 'Obtuso', 'Llano', 'Cóncavo'];
+  const wrongs = pool.filter((n) => n.toLowerCase() !== correct.toLowerCase()).slice(0, 3);
   return {
     id: 'q1', moduleNum: 1, moduleName: 'Clasificación', title: 'Clasificación según medida',
     prompt: `Un ángulo cuya amplitud es de ${deg}° se clasifica como:`,
@@ -49,9 +50,8 @@ function generateQ2(rng: Rng): ExamQuestion {
   return {
     id: 'q2', moduleNum: 2, moduleName: 'Pares', title: 'Cálculo de pares angulares',
     prompt: `El ángulo ${isComp ? 'complementario' : 'suplementario'} de un ángulo de ${alpha}° mide:`,
-    formula: `\\alpha + \\beta = ${total}^\\circ`,
     options: shuffle([{ id: 'c', label: `${target}°`, isCorrect: true }, ...wrongs.slice(0, 3).map((w, i) => ({ id: `w${i}`, label: `${w}°`, isCorrect: false }))], rng),
-    explanation: `El ángulo mide ${total}° - ${alpha}° = ${target}°.`
+    explanation: `Al ser ${isComp ? 'complementarios (suman 90°)' : 'suplementarios (suman 180°)'}: ${total}° - ${alpha}° = ${target}°.`
   };
 }
 
@@ -76,9 +76,13 @@ function generateQ4(rng: Rng): ExamQuestion {
   return {
     id: 'q4', moduleNum: 4, moduleName: 'Ecuaciones', title: 'Despeje algebraico de opuestos',
     prompt: `Si dos ángulos opuestos por el vértice son α = 3x + 15° y β = x + ${d}°, ¿cuánto vale x?`,
-    formula: `3x + 15^\\circ = x + ${d}^\\circ`,
-    options: shuffle([{ id: 'c', label: `x = ${x}`, isCorrect: true }, { id: 'w1', label: `x = ${x + 3}`, isCorrect: false }, { id: 'w2', label: `x = ${Math.max(1, x - 4)}`, isCorrect: false }, { id: 'w3', label: `x = ${x + 5}`, isCorrect: false }], rng),
-    explanation: `3x - x = ${d} - 15 => 2x = ${d - 15} => x = ${x}.`
+    options: shuffle([
+      { id: 'c', label: `x = ${x}`, isCorrect: true },
+      { id: 'w1', label: `x = ${x + 3}`, isCorrect: false },
+      { id: 'w2', label: `x = ${Math.max(1, x - 4)}`, isCorrect: false },
+      { id: 'w3', label: `x = ${x + 5}`, isCorrect: false }
+    ], rng),
+    explanation: `Al ser opuestos por el vértice son iguales: 3x + 15° = x + ${d}° => 2x = ${d - 15} => x = ${x}.`
   };
 }
 
@@ -88,9 +92,13 @@ function generateQ5(rng: Rng): ExamQuestion {
   return {
     id: 'q5', moduleNum: 4, moduleName: 'Ecuaciones', title: 'Amplitud de ángulo suplementario',
     prompt: `Si dos ángulos adyacentes suman 180°, con x = ${x} y α = 3x + 20°, ¿cuánto mide α?`,
-    formula: `\\alpha = 3(${x}) + 20^\\circ`,
-    options: shuffle([{ id: 'c', label: `α = ${alphaVal}°`, isCorrect: true }, { id: 'w1', label: `α = ${alphaVal + 15}°`, isCorrect: false }, { id: 'w2', label: `α = ${alphaVal - 10}°`, isCorrect: false }, { id: 'w3', label: `α = ${180 - alphaVal}°`, isCorrect: false }], rng),
-    explanation: `α = 3 · ${x} + 20° = ${alphaVal}°.`
+    options: shuffle([
+      { id: 'c', label: `α = ${alphaVal}°`, isCorrect: true },
+      { id: 'w1', label: `α = ${alphaVal + 15}°`, isCorrect: false },
+      { id: 'w2', label: `α = ${alphaVal - 10}°`, isCorrect: false },
+      { id: 'w3', label: `α = ${180 - alphaVal}°`, isCorrect: false }
+    ], rng),
+    explanation: `Reemplazando x = ${x} en la expresión: α = 3 · ${x} + 20° = ${alphaVal}°.`
   };
 }
 

@@ -25,5 +25,34 @@ describe('generateExamDeck', () => {
     const deckB = generateExamDeck(createSeededRng(100));
     expect(deckA).toEqual(deckB);
   });
+
+  it('normaliza las opciones de Q1 sin prefijo "Ángulo" ni duplicados', () => {
+    for (let seed = 1; seed <= 30; seed++) {
+      const [q1] = generateExamDeck(createSeededRng(seed));
+      expect(q1.options.length).toBe(4);
+
+      const labels = q1.options.map((o) => o.label);
+      // Ninguna etiqueta debe contener "Ángulo"
+      for (const label of labels) {
+        expect(label.toLowerCase()).not.toContain('ángulo');
+      }
+
+      // No debe haber opciones duplicadas (e.g. "Obtuso" y "Obtuso")
+      const uniqueLabels = new Set(labels.map((l) => l.toLowerCase()));
+      expect(uniqueLabels.size).toBe(4);
+    }
+  });
+
+  it('no contiene opciones duplicadas ni campos de formula previa en ninguna pregunta', () => {
+    for (let seed = 1; seed <= 20; seed++) {
+      const deck = generateExamDeck(createSeededRng(seed));
+      for (const q of deck) {
+        expect((q as any).formula).toBeUndefined();
+        const labels = q.options.map((o) => o.label.trim().toLowerCase());
+        const unique = new Set(labels);
+        expect(unique.size).toBe(4);
+      }
+    }
+  });
 });
 

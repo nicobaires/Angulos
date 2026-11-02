@@ -88,3 +88,4 @@ Los logros deben reflejar hitos curriculares y de dedicación:
   - Nueva estrella: `⭐ ¡+1 Estrella conseguida!`
   - Desafío ya superado: `✔️ ¡Muy bien! Desafío ya completado anteriormente.`
 - Mantener los componentes de gamificación (`StarCounter.svelte`, `AchievementBadge.svelte`) $\le 100$ líneas y desacoplados de la lógica de evaluación geométrica.
+

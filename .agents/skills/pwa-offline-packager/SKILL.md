@@ -152,3 +152,4 @@ Capturar el evento del navegador `beforeinstallprompt` para ofrecer un botón in
 2. Abrir DevTools -> pestaña **Application** -> comprobar registro del Service Worker y Manifest.
 3. Cambiar la pestaña **Network** a `Offline`.
 4. Recargar todas las páginas (`/`, `/clasificacion`, `/ecuaciones`, `/examen`) y comprobar navegación y renderizado matemático fluido sin alertas ni fallos.
+
