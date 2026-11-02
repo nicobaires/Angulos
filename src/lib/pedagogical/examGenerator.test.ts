@@ -44,7 +44,7 @@ describe('generateExamDeck', () => {
   });
 
   it('no contiene opciones duplicadas ni campos de formula previa en ninguna pregunta', () => {
-    for (let seed = 1; seed <= 20; seed++) {
+    for (let seed = 1; seed <= 50; seed++) {
       const deck = generateExamDeck(createSeededRng(seed));
       for (const q of deck) {
         expect((q as any).formula).toBeUndefined();
@@ -52,6 +52,37 @@ describe('generateExamDeck', () => {
         const unique = new Set(labels);
         expect(unique.size).toBe(4);
       }
+    }
+  });
+
+  it('incluye el distractor dual (suplementario/complementario) en la Pregunta 2', () => {
+    for (let seed = 1; seed <= 30; seed++) {
+      const deck = generateExamDeck(createSeededRng(seed));
+      const q2 = deck[1];
+      const match = q2.prompt.match(/ángulo (complementario|suplementario) de un ángulo de (\d+)°/);
+      expect(match).not.toBeNull();
+      if (!match) continue;
+
+      const [, type, degStr] = match;
+      const alpha = parseInt(degStr, 10);
+      const dualDeg = type === 'complementario' ? 180 - alpha : 90 - alpha;
+
+      const labels = q2.options.map((o) => o.label);
+      expect(labels).toContain(`${dualDeg}°`);
+    }
+  });
+
+  it('incluye el distractor de confusión de incógnita x en la Pregunta 5', () => {
+    for (let seed = 1; seed <= 30; seed++) {
+      const deck = generateExamDeck(createSeededRng(seed));
+      const q5 = deck[4];
+      const match = q5.prompt.match(/x = (\d+)/);
+      expect(match).not.toBeNull();
+      if (!match) continue;
+
+      const xVal = match[1];
+      const labels = q5.options.map((o) => o.label);
+      expect(labels).toContain(`α = ${xVal}°`);
     }
   });
 });

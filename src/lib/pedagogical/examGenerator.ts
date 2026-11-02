@@ -43,15 +43,32 @@ function generateQ1(rng: Rng): ExamQuestion {
 
 function generateQ2(rng: Rng): ExamQuestion {
   const isComp = rng() > 0.5;
-  const alpha = isComp ? 20 + Math.floor(rng() * 50) : 40 + Math.floor(rng() * 100);
+  const alpha = 25 + Math.floor(rng() * 51);
   const target = isComp ? 90 - alpha : 180 - alpha;
+  const dualTarget = isComp ? 180 - alpha : 90 - alpha;
+  const dualLabel = isComp ? 'suplementario' : 'complementario';
   const total = isComp ? 90 : 180;
-  const wrongs = [target + 10, Math.abs(target - 15), total - target + 5].filter((w) => w !== target && w > 0);
+
+  const candidates = [dualTarget, alpha, target > 20 ? target - 10 : target + 10, target + 15, Math.abs(target - 15)];
+  const wrongs: number[] = [];
+  for (const c of candidates) {
+    if (c !== target && c > 0 && !wrongs.includes(c)) {
+      wrongs.push(c);
+      if (wrongs.length === 3) break;
+    }
+  }
+
   return {
-    id: 'q2', moduleNum: 2, moduleName: 'Pares', title: 'Cálculo de pares angulares',
+    id: 'q2',
+    moduleNum: 2,
+    moduleName: 'Pares',
+    title: 'Cálculo de pares angulares',
     prompt: `El ángulo ${isComp ? 'complementario' : 'suplementario'} de un ángulo de ${alpha}° mide:`,
-    options: shuffle([{ id: 'c', label: `${target}°`, isCorrect: true }, ...wrongs.slice(0, 3).map((w, i) => ({ id: `w${i}`, label: `${w}°`, isCorrect: false }))], rng),
-    explanation: `Al ser ${isComp ? 'complementarios (suman 90°)' : 'suplementarios (suman 180°)'}: ${total}° - ${alpha}° = ${target}°.`
+    options: shuffle([
+      { id: 'c', label: `${target}°`, isCorrect: true },
+      ...wrongs.map((w, i) => ({ id: `w${i}`, label: `${w}°`, isCorrect: false }))
+    ], rng),
+    explanation: `Al ser ${isComp ? 'complementarios deben sumar 90°' : 'suplementarios deben sumar 180°'}: ${total}° - ${alpha}° = ${target}°. (Atención: ${dualTarget}° sería su ${dualLabel}).`
   };
 }
 
@@ -89,16 +106,20 @@ function generateQ4(rng: Rng): ExamQuestion {
 function generateQ5(rng: Rng): ExamQuestion {
   const x = 10 + Math.floor(rng() * 5);
   const alphaVal = 3 * x + 20;
+  const supVal = 180 - alphaVal;
   return {
-    id: 'q5', moduleNum: 4, moduleName: 'Ecuaciones', title: 'Amplitud de ángulo suplementario',
+    id: 'q5',
+    moduleNum: 4,
+    moduleName: 'Ecuaciones',
+    title: 'Amplitud de ángulo suplementario',
     prompt: `Si dos ángulos adyacentes suman 180°, con x = ${x} y α = 3x + 20°, ¿cuánto mide α?`,
     options: shuffle([
       { id: 'c', label: `α = ${alphaVal}°`, isCorrect: true },
-      { id: 'w1', label: `α = ${alphaVal + 15}°`, isCorrect: false },
-      { id: 'w2', label: `α = ${alphaVal - 10}°`, isCorrect: false },
-      { id: 'w3', label: `α = ${180 - alphaVal}°`, isCorrect: false }
+      { id: 'w1', label: `α = ${x}°`, isCorrect: false },
+      { id: 'w2', label: `α = ${supVal}°`, isCorrect: false },
+      { id: 'w3', label: `α = ${alphaVal - 10}°`, isCorrect: false }
     ], rng),
-    explanation: `Reemplazando x = ${x} en la expresión: α = 3 · ${x} + 20° = ${alphaVal}°.`
+    explanation: `Reemplazando x = ${x} en la expresión: α = 3 · (${x}) + 20° = ${alphaVal}°. (Atención: x = ${x} es el valor de la incógnita, no la amplitud del ángulo).`
   };
 }
 
