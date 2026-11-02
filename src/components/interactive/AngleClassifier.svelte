@@ -1,5 +1,6 @@
 <script lang="ts">
   import { getAngleClassification } from '../../lib/math/angles';
+  import { getAngleStyle } from '../../lib/pedagogical/angleStyles';
   import { CLASSIFIER_CHALLENGES, getShuffledClassifierIndices } from '../../lib/pedagogical/classifierChallenges';
   import { progressStore } from '../../lib/pedagogical/progressStore';
   import ModuleSplit from '../common/ModuleSplit.svelte';
@@ -17,6 +18,7 @@
   let isNewStar = $state<boolean>(false);
 
   const info = $derived(getAngleClassification(angle));
+  const style = $derived(getAngleStyle(info.type));
   const activeChallenge = $derived(
     currentStep !== null && playlist[currentStep] !== undefined
       ? CLASSIFIER_CHALLENGES[playlist[currentStep]]
@@ -87,7 +89,7 @@
 
   <ModuleSplit>
     {#snippet visual()}
-      <Protractor {angle} colorHex={info.colorHex} onchange={handleAngleChange} />
+      <Protractor {angle} colorHex={style.colorHex} onchange={handleAngleChange} />
     {/snippet}
     {#snippet panel()}
       {#if activeChallenge && currentStep !== null}
@@ -105,7 +107,7 @@
         />
       {/if}
       <AngleControls {angle} onchange={handleAngleChange} />
-      <AngleCard {info} />
+      <AngleCard {info} {style} />
     {/snippet}
   </ModuleSplit>
 </div>

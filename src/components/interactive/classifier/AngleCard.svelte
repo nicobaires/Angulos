@@ -1,19 +1,21 @@
 <script lang="ts">
   import type { AngleClassificationInfo } from '../../../lib/math/angles';
+  import type { AngleStyle } from '../../../lib/pedagogical/angleStyles';
   import Katex from '../../common/Math.svelte';
 
   interface Props {
     info: AngleClassificationInfo;
+    style: AngleStyle;
   }
 
-  let { info }: Props = $props();
+  let { info, style }: Props = $props();
 </script>
 
-<div class="p-4 mx-4 mb-4 rounded-2xl border shadow-sm transition-all select-none {info.badgeClass}">
+<div class="p-4 mx-4 mb-4 rounded-2xl border shadow-sm transition-all select-none {style.badgeClass}">
   <div class="flex items-center justify-between mb-1.5">
     <span class="text-xs font-bold uppercase tracking-wider">Clasificación</span>
     <span class="text-xs px-2 py-0.5 rounded-full font-bold bg-white/70 dark:bg-slate-900/70 shadow-xs">
-      {info.colorName}
+      {style.colorName}
     </span>
   </div>
 

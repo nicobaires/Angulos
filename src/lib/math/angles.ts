@@ -16,10 +16,6 @@ export interface AngleClassificationInfo {
   type: AngleClassification;
   name: string;
   description: string;
-  colorName: string;
-  colorHex: string;
-  bgClass: string;
-  badgeClass: string;
 }
 
 /**
@@ -117,11 +113,7 @@ export function getAngleClassification(deg: number): AngleClassificationInfo {
     return {
       type: 'nulo',
       name: 'Ángulo Nulo',
-      description: 'Mide exactamente 0°. Los dos rayos coinciden y no hay apertura.',
-      colorName: 'Gris',
-      colorHex: '#64748b',
-      bgClass: 'bg-slate-500',
-      badgeClass: 'bg-slate-100 text-slate-700 border-slate-300 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700'
+      description: 'Mide exactamente 0°. Los dos rayos coinciden y no hay apertura.'
     };
   }
 
@@ -129,11 +121,7 @@ export function getAngleClassification(deg: number): AngleClassificationInfo {
     return {
       type: 'agudo',
       name: 'Ángulo Agudo',
-      description: 'Mide más de 0° y menos de 90°. Es más cerrado que una esquina recta.',
-      colorName: 'Ámbar',
-      colorHex: '#f59e0b',
-      bgClass: 'bg-amber-500',
-      badgeClass: 'bg-amber-50 text-amber-800 border-amber-300 dark:bg-amber-950/40 dark:text-amber-300 dark:border-amber-800/60'
+      description: 'Mide más de 0° y menos de 90°. Es más cerrado que una esquina recta.'
     };
   }
 
@@ -141,11 +129,7 @@ export function getAngleClassification(deg: number): AngleClassificationInfo {
     return {
       type: 'recto',
       name: 'Ángulo Recto',
-      description: 'Mide exactamente 90°. Forma una esquina perpendicular perfecta (como en un cuadrado).',
-      colorName: 'Esmeralda',
-      colorHex: '#10b981',
-      bgClass: 'bg-emerald-500',
-      badgeClass: 'bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-800/60'
+      description: 'Mide exactamente 90°. Forma una esquina perpendicular perfecta (como en un cuadrado).'
     };
   }
 
@@ -153,11 +137,7 @@ export function getAngleClassification(deg: number): AngleClassificationInfo {
     return {
       type: 'obtuso',
       name: 'Ángulo Obtuso',
-      description: 'Mide más de 90° y menos de 180°. Es más abierto que un ángulo recto.',
-      colorName: 'Violeta',
-      colorHex: '#8b5cf6',
-      bgClass: 'bg-violet-500',
-      badgeClass: 'bg-violet-50 text-violet-800 border-violet-300 dark:bg-violet-950/40 dark:text-violet-300 dark:border-violet-800/60'
+      description: 'Mide más de 90° y menos de 180°. Es más abierto que un ángulo recto.'
     };
   }
 
@@ -165,11 +145,7 @@ export function getAngleClassification(deg: number): AngleClassificationInfo {
     return {
       type: 'llano',
       name: 'Ángulo Llano',
-      description: 'Mide exactamente 180°. Los rayos forman una línea recta continua.',
-      colorName: 'Rosa',
-      colorHex: '#ec4899',
-      bgClass: 'bg-pink-500',
-      badgeClass: 'bg-pink-50 text-pink-800 border-pink-300 dark:bg-pink-950/40 dark:text-pink-300 dark:border-pink-800/60'
+      description: 'Mide exactamente 180°. Los rayos forman una línea recta continua.'
     };
   }
 
@@ -177,22 +153,14 @@ export function getAngleClassification(deg: number): AngleClassificationInfo {
     return {
       type: 'concavo',
       name: 'Ángulo Cóncavo',
-      description: 'Mide más de 180° y menos de 360°. Abarca más de media vuelta.',
-      colorName: 'Cian',
-      colorHex: '#06b6d4',
-      bgClass: 'bg-cyan-500',
-      badgeClass: 'bg-cyan-50 text-cyan-800 border-cyan-300 dark:bg-cyan-950/40 dark:text-cyan-300 dark:border-cyan-800/60'
+      description: 'Mide más de 180° y menos de 360°. Abarca más de media vuelta.'
     };
   }
 
   return {
     type: 'completo',
     name: 'Ángulo Completo',
-    description: 'Mide exactamente 360°. Da una vuelta entera alrededor del vértice.',
-    colorName: 'Azul',
-    colorHex: '#2563eb',
-    bgClass: 'bg-blue-600',
-    badgeClass: 'bg-blue-50 text-blue-800 border-blue-300 dark:bg-blue-950/40 dark:text-blue-300 dark:border-blue-800/60'
+    description: 'Mide exactamente 360°. Da una vuelta entera alrededor del vértice.'
   };
 }
 
