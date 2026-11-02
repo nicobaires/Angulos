@@ -47,3 +47,4 @@ export const ANGLE_STYLES: Record<AngleClassification, AngleStyle> = {
 export function getAngleStyle(type: AngleClassification): AngleStyle {
   return ANGLE_STYLES[type];
 }
+

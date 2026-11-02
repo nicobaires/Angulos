@@ -28,3 +28,4 @@ describe('angleStyles', () => {
     expect(Object.keys(ANGLE_STYLES).sort()).toEqual(allTypes.sort());
   });
 });
+
