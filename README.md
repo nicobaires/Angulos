@@ -13,8 +13,8 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
 - **Diseño & Estilos:** [Tailwind CSS 3.4](https://tailwindcss.com/) con tema semántico y ergonomía táctil (zonas mínimas de 44x44 px).
 - **Modo Oscuro:** Soporte integral de tema Claro/Oscuro con persistencia en `localStorage`, script anti-FOUC y canvas SVG estilizados en modo blueprint/pizarrón técnico.
 - **Gamificación Local:** Sistema de estrellas (`⭐`), racha activa (`🔥`), vitrina de 7 medallas escolares con deduplicación justa y modal de progreso.
-- **Motor Matemático:** [KaTeX](https://katex.org/) para renderizado tipográfico seguro de fórmulas y ecuaciones.
-- **Testing Unitario:** [Vitest](https://vitest.dev/) con 44 tests automatizados de congruencia, normalización, regresión con snapshots y generación procedural de exámenes y ecuaciones.
+- **Motor Matemático:** [KaTeX](https://katex.org/) empaquetado 100% local (sin dependencias de CDNs externas ni jsdelivr) para renderizado tipográfico seguro offline.
+- **Testing Unitario:** [Vitest](https://vitest.dev/) con 47 tests automatizados de congruencia, normalización, regresión con snapshots y generación procedural sin sesgos de exámenes y ecuaciones.
 - **Gráficos:** SVG interactivo nativo y reactivo (sin librerías pesadas de canvas).
 - **Gestor de Paquetes:** `pnpm` con compatibilidad universal WebAssembly para Rollup.
 - **Despliegue Continuo:** [Netlify](https://www.netlify.com/) → [https://angulos2.netlify.app/](https://angulos2.netlify.app/)
@@ -95,7 +95,7 @@ El proyecto sigue una arquitectura estricta de **Responsabilidad Única (SRP)** 
 │   │   │   ├── equations/        # Módulo modularizado de ecuaciones (builders, steps, types, index)
 │   │   │   ├── angles.test.ts    # Tests unitarios Vitest
 │   │   │   └── equationsSnapshot.test.ts # Tests de regresión con snapshot
-│   │   └── pedagogical/          # Bancos de preguntas, progreso local y generador de exámenes
+│   │   └── pedagogical/          # Bancos de preguntas, estilos visuales (angleStyles), progreso local y generador de exámenes
 │   ├── pages/                    # Enrutado estático SSG (/clasificacion, /pares, /paralelas, /ecuaciones, /examen, 404)
 │   └── styles/                   # Configuración y directivas CSS globales
 ├── AGENTS.md                     # Regla arquitectónica del sistema multi-agente

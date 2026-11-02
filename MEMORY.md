@@ -1,9 +1,9 @@
 # MEMORY.md - Estado del Proyecto
 
 ## Estado Actual
-- **Fase:** Todos los 4 módulos temáticos interactivos completados, modulares, validados en producción con Modo Oscuro, correcciones pedagógicas (Spec 05), ampliación curricular de Ecuaciones (Spec 07 / Módulo 4), refactor de modularidad y deduplicación justa de estrellas (Spec 08), sistema de Gamificación y Progreso Escolar Local (Hito 2), Examen Integrador Final con Diploma Escolar Imprimible (Hito 3), suite de pruebas unitarias y regresión con Vitest (40/40 tests pasando) y catálogo de 5 AGY Skills documentadas.
-- **Rama Activa:** `dev` (Gobernanza estricta: merge a `main` solo con orden explícita del Arquitecto Principal).
-- **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX, Vitest, pnpm, Netlify.
+- **Fase:** Todos los 4 módulos temáticos interactivos completados, modulares, validados en producción con Modo Oscuro, correcciones pedagógicas (Spec 05), ampliación curricular de Ecuaciones (Spec 07 / Módulo 4), refactor de modularidad y deduplicación justa de estrellas (Spec 08), sistema de Gamificación y Progreso Escolar Local (Hito 2), Examen Integrador Final con Diploma Escolar Imprimible (Hito 3), implementación del Spec 09 (KaTeX 100% local sin CDN, examen sin sesgos de opciones y metadatos de presentación desacoplados a `angleStyles.ts`), suite de pruebas unitarias y regresión con Vitest (47/47 tests pasando) y catálogo de 5 AGY Skills documentadas.
+- **Rama Activa:** `chore/spec-09` (Gobernanza estricta: merge a `main` solo con orden explícita del Arquitecto Principal).
+- **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX (empaquetado localmente), Vitest, pnpm, Netlify.
 
 ## Módulos de Aprendizaje
 - [x] Módulo 1: Clasificación según medida (.agents/specs/01_clasificacion_angulos.md)
@@ -18,9 +18,11 @@
 - [x] Soporte Global: Modo Oscuro con persistencia en localStorage y switch accesible en encabezados.
 - [x] Gamificación y Progreso Escolar Local: Store con suscriptores (`progressStore.ts`), persistencia en `localStorage`, contador de estrellas (`⭐`), racha (`🔥`), vitrina de 7 medallas escolares (`ProgressWidget.svelte`) y badges de avance en la portada (`ProgressBadge.svelte`).
 - [x] Deduplicación Justa de Estrellas (Spec 08): Primer éxito otorga estrella y racha; reintentos de retos ya superados son pedagógicamente neutrales (`✔️ Desafío ya completado`); retos de ecuaciones y exámenes siempre otorgan estrellas.
-- [x] Examen Integrador Final y Diploma: Ruta `/examen` (`examen.astro`), generador procedural (`examGenerator.ts`), quiz dinámico de 5 preguntas (`ExamQuiz.svelte`), diploma escolar con calificación 1-10 y botón de impresión optimizado para papel o PDF (`ExamCertificate.svelte`). Corrección pedagógica: normalización estricta de opciones en Q1, eliminación de fórmulas/pistas previas en Q2, Q4 y Q5, y diseño de distractores diagnósticos conceptuales (relación dual complementario/suplementario en Q2 y confusión de incógnita en Q5).
+- [x] Examen Integrador Final y Diploma: Ruta `/examen` (`examen.astro`), generador procedural (`examGenerator.ts`), quiz dinámico de 5 preguntas (`ExamQuiz.svelte`), diploma escolar con calificación 1-10 y botón de impresión optimizado para papel o PDF (`ExamCertificate.svelte`). Corrección pedagógica y psicométrica (Spec 09): normalización estricta de opciones en Q1 con sorteo de distractores sobre los 7 tipos de ángulo, 4 casos en Q3 de paralelas, despeje de ecuación en Q5 y certificado de práctica.
+- [x] Desacople de Presentación (Spec 09): `angles.ts` reducido a 166 líneas de matemáticas puras sin clases de Tailwind ni colores; extracción a `src/lib/pedagogical/angleStyles.ts`.
+- [x] KaTeX 100% Local (Spec 09): Empaquetado de CSS y fuentes tipográficas WOFF2 en el bundle local; eliminación de dependencias de `cdn.jsdelivr.net`.
 - [x] Refinamiento Didáctico: Correcciones de desafíos, botón de confirmación y coherencia espacial de respuestas (.agents/specs/05_correcciones_desafios.md).
-- [x] Testing y Calidad: Vitest con 44 tests unitarios y de snapshot en `angles.test.ts`, `pairsChallenges.test.ts`, `equations.test.ts`, `equationsSnapshot.test.ts`, `progressStore.test.ts` y `examGenerator.test.ts`, PRNG mulberry32 inyectable y prevención de mismatch de hidratación en SSG.
+- [x] Testing y Calidad: Vitest con 47 tests unitarios y de snapshot en `angles.test.ts`, `angleStyles.test.ts`, `pairsChallenges.test.ts`, `equations.test.ts`, `equationsSnapshot.test.ts`, `progressStore.test.ts` y `examGenerator.test.ts`, PRNG mulberry32 inyectable y prevención de mismatch de hidratación en SSG.
 - [x] Catálogo de Skills AGY (.agents/skills/): 5 skills nativas documentadas (`exercise-generator`, `gamification-progress-engine`, `pwa-offline-packager`, `latex-equation-builder`, `svg-angle-render`).
 - [x] Vista de Escritorio: Adaptación aditiva a 2 columnas para pantallas grandes (`lg:`, $\ge 1024\text{ px}$) con `ModuleSplit.svelte`, escalado visual a 480px y cero regresión mobile (.agents/specs/06_vista_escritorio.md).
 - [x] Despliegue en Netlify: Publicado y operativo en producción en https://angulos2.netlify.app/
@@ -30,6 +32,10 @@
 
 ## Registro de Decisiones Técnicas
 - **Refactorización Modular de Ecuaciones y Snapshot Testing (Spec 08):** `src/lib/math/equations.ts` (que tenía 205 líneas) fue dividido limpiamente en la carpeta `src/lib/math/equations/` (`types.ts`, `steps.ts`, `builders.ts`, `index.ts`), manteniendo todos los archivos bajo las 130 líneas. Se añadió `equationsSnapshot.test.ts` con 20 semillas de control para garantizar idéntico output algebraico y cero regresión.
+- **Spec 09: KaTeX Local, Examen sin Sesgos y Separación de Capas:**
+  - *Parte A:* Se reemplazó el `<link>` a `cdn.jsdelivr.net` por `import 'katex/dist/katex.min.css'` en `Layout.astro`. Vite empaqueta el CSS y copia las tipografías WOFF2 directamente a `dist/_astro/`, garantizando funcionamiento 100% offline y preparando el terreno para la PWA.
+  - *Parte B:* Se corrigió el sesgo de Q1 en `examGenerator.ts`: se eliminó el `.slice(0, 3)` estático y se reemplazó por un sorteo aleatorio con RNG de los distractores entre los 7 tipos curriculares (incluyendo Nulo 0° y Completo 360°), protegiéndolo con tests sobre 500 semillas donde ningún distractor delata la respuesta. Se ampliaron a 4 los casos de paralelas en Q3, se estructuró una ecuación con despeje real en Q5 y se ajustó el diploma como "Certificado de Práctica".
+  - *Parte C:* Se extrajeron los metadatos visuales de Tailwind (`badgeClass`, `colorHex`, `colorName`) de `src/lib/math/angles.ts` a `src/lib/pedagogical/angleStyles.ts`, reduciendo `angles.ts` a 166 líneas de lógica matemática pura sin estilos y agregando suite de tests `angleStyles.test.ts`.
 - **Skills Nativas Especializadas (.agents/skills/):**
   - `exercise-generator`: Actualizado con los 5 generadores algebraicos, distribución ponderada, inyección de PRNG determinista para SSG y protocolo de testing con snapshots.
   - `gamification-progress-engine`: Documenta la arquitectura de `progressStore.ts`, patrón reactivo por suscripción, deduplicación justa, lista de insignias y SSR safety.
