@@ -3,6 +3,7 @@
 Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de **2° Año de secundaria** (13-14 años), centrada en el aprendizaje visual y la experimentación táctil de la geometría de ángulos.
 
 🌐 **Sitio web en producción:** [https://angulos2.netlify.app/](https://angulos2.netlify.app/)
+![Licencia MIT](https://img.shields.io/badge/license-MIT-green.svg)
 
 ---
 
