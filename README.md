@@ -1,3 +1,4 @@
+[![Ángulos - Laboratorio Interactivo de Geometría](./.github/assets/banner.webp)](https://angulos2.netlify.app/)
 # Geometría de Ángulos • 2° Año Secundaria
 
 Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de **2° Año de secundaria** (13-14 años), centrada en el aprendizaje visual y la experimentación táctil de la geometría de ángulos.
