@@ -15,7 +15,7 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
 - **Modo Oscuro:** Soporte integral de tema Claro/Oscuro con persistencia en `localStorage`, script anti-FOUC y canvas SVG estilizados en modo blueprint/pizarrón técnico.
 - **Gamificación Local:** Sistema de estrellas (`⭐`), racha activa (`🔥`), vitrina de 7 medallas escolares con deduplicación justa y modal de progreso.
 - **Motor Matemático:** [KaTeX](https://katex.org/) empaquetado 100% local (sin dependencias de CDNs externas ni jsdelivr) para renderizado tipográfico seguro offline.
-- **Testing Unitario:** [Vitest](https://vitest.dev/) con 47 tests automatizados de congruencia, normalización, regresión con snapshots y generación procedural sin sesgos de exámenes y ecuaciones.
+- **Testing Unitario:** [Vitest](https://vitest.dev/) con 56 tests automatizados de congruencia, normalización, regresión con snapshots, generación procedural de ángulos y conversión analítica de números decimales a fracción.
 - **Gráficos:** SVG interactivo nativo y reactivo (sin librerías pesadas de canvas).
 - **Gestor de Paquetes:** `pnpm` con compatibilidad universal WebAssembly para Rollup.
 - **Despliegue Continuo:** [Netlify](https://www.netlify.com/) → [https://angulos2.netlify.app/](https://angulos2.netlify.app/)
@@ -61,6 +61,20 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
    - Distractores pedagógicos diagnósticos (relación dual complementario/suplementario, congruencia y error de incógnita en ecuaciones).
    - Calificación escolar automática sobre 10 puntos (escala argentina).
    - Diploma ceremonial de aprobación imprimible y descargable vía navegador (`window.print()`).
+
+---
+
+## 🍰 Unidad 2: Números Racionales y Fracciones
+
+1. **[x] Módulo 1: Pasaje de Decimal a Fracción (`/decimal-a-fraccion`)**
+   - Soporte para tres tipos de números decimales:
+     - **Exacto / Finito:** Potencias de 10 en el denominador.
+     - **Periódico Puro:** Arquito $\widehat{\dots}$ sobre todo el período decimal, nueves en el denominador ($10^k - 1$).
+     - **Periódico Mixto:** Parte no periódica seguida de período, nueves seguidos de ceros ($10^{k+m} - 10^m$).
+   - Desglose analítico paso a paso de la regla escolar argentina con sustracción en numerador y simplificación por máximo común divisor (MCD / GCD).
+   - Visualizador semántico con códigos de color diferenciados (entero, anteperíodo y período con arco KaTeX).
+   - Modo Desafío interactivo con 12 retos equilibrados, barajado Fisher-Yates, validación con feedback pedagógico y gamificación (estrellas y racha).
+   - Controles manuales accesibles y responsive a 2 columnas en desktop (`ModuleSplit.svelte`).
 
 ---
 

@@ -3,6 +3,7 @@ export interface ModuleProgress {
   pares: number[];
   paralelas: number[];
   ecuaciones: number;
+  fracciones: number[];
 }
 
 export interface Achievement {
@@ -19,7 +20,8 @@ export const ACHIEVEMENTS: Achievement[] = [
   { id: 'maestro_clasificacion', title: 'Explorador', description: 'Completá los 6 desafíos de Clasificación', icon: '🧭' },
   { id: 'maestro_pares', title: 'Dúo Geométrico', description: 'Completá los 4 desafíos de Pares', icon: '👥' },
   { id: 'maestro_paralelas', title: 'Secante Ninja', description: 'Completá los 4 desafíos de Paralelas', icon: '🛤️' },
-  { id: 'experto_algebra', title: 'Mente Algebraica', description: 'Resolvé 3 ecuaciones con ángulos', icon: '🧮' }
+  { id: 'experto_algebra', title: 'Mente Algebraica', description: 'Resolvé 3 ecuaciones con ángulos', icon: '🧮' },
+  { id: 'maestro_fracciones', title: 'Poder Racional', description: 'Resolvé desafíos de Decimales a Fracción', icon: '🍕' }
 ];
 
 export interface ProgressData {
@@ -35,7 +37,7 @@ const STORAGE_KEY = 'angulos_progreso_v1';
 export function getDefaultProgress(): ProgressData {
   return {
     stars: 0, streak: 0, bestStreak: 0,
-    modules: { clasificacion: [], pares: [], paralelas: [], ecuaciones: 0 },
+    modules: { clasificacion: [], pares: [], paralelas: [], ecuaciones: 0, fracciones: [] },
     achievements: {}
   };
 }
@@ -87,9 +89,10 @@ export class ProgressStore {
     if (s.modules.pares.length >= 4) unlock('maestro_pares');
     if (s.modules.paralelas.length >= 4) unlock('maestro_paralelas');
     if (s.modules.ecuaciones >= 3) unlock('experto_algebra');
+    if ((s.modules.fracciones?.length || 0) >= 4) unlock('maestro_fracciones');
   }
 
-  recordSuccess(mod: 'clasificacion' | 'pares' | 'paralelas' | 'ecuaciones', challengeIndex?: number): { newStar: boolean } {
+  recordSuccess(mod: 'clasificacion' | 'pares' | 'paralelas' | 'ecuaciones' | 'fracciones', challengeIndex?: number): { newStar: boolean } {
     let newStar = false;
     if (mod === 'ecuaciones') {
       newStar = true;
@@ -97,6 +100,7 @@ export class ProgressStore {
       this.data.streak += 1;
       this.data.modules.ecuaciones += 1;
     } else if (typeof challengeIndex === 'number') {
+      if (!this.data.modules[mod]) this.data.modules[mod] = [];
       const list = this.data.modules[mod];
       if (!list.includes(challengeIndex)) {
         list.push(challengeIndex);
@@ -112,17 +116,8 @@ export class ProgressStore {
     return { newStar };
   }
 
-  recordFailure() {
-    this.data.streak = 0;
-    saveToStorage(this.data);
-    this.notify();
-  }
-
-  resetProgress() {
-    this.data = getDefaultProgress();
-    saveToStorage(this.data);
-    this.notify();
-  }
+  recordFailure() { this.data.streak = 0; saveToStorage(this.data); this.notify(); }
+  resetProgress() { this.data = getDefaultProgress(); saveToStorage(this.data); this.notify(); }
 }
 
 export const progressStore = new ProgressStore();
