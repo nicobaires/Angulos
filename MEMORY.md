@@ -61,7 +61,7 @@
   - *Orquestador y Ruta:*
     - `DecimalToFraction.svelte` (120 líneas): orquestador delgado con soporte para desktop split de 2 columnas (`ModuleSplit.svelte`).
     - `src/pages/decimal-a-fraccion.astro` (37 líneas): ruta estática SSG con layout, toggle de tema y guía de estudio.
-    - `src/pages/index.astro` (164 líneas): actualización del home con la sección Unidad 2 y badge interactivo de progreso.
+    - `src/pages/index.astro`: refactorizado a 56 líneas (reducción del 72%) mediante la extracción de `modulesCatalog.ts` (67 líneas), `ModuleCard.astro` (38 líneas) y `ExamBanner.astro` (26 líneas), cumpliendo con holgura el estándar SRP de ≤ 130 líneas.
   - Todos los archivos respetan la regla $\le 130$ líneas (y con tope absoluto inferior a 165 líneas para páginas/layouts).
 - **Refactorización Modular de Ecuaciones y Snapshot Testing (Spec 08):** `src/lib/math/equations.ts` (que tenía 205 líneas) fue dividido limpiamente en la carpeta `src/lib/math/equations/` (`types.ts`, `steps.ts`, `builders.ts`, `index.ts`), manteniendo todos los archivos bajo las 130 líneas. Se añadió `equationsSnapshot.test.ts` con 20 semillas de control para garantizar idéntico output algebraico y cero regresión.
 - **Spec 09: KaTeX Local, Examen sin Sesgos y Separación de Capas:**

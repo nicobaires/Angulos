@@ -2,73 +2,9 @@
 import Layout from '../layouts/Layout.astro';
 import ThemeToggle from '../components/common/ThemeToggle.svelte';
 import ProgressWidget from '../components/common/ProgressWidget.svelte';
-import ProgressBadge from '../components/common/ProgressBadge.svelte';
-
-interface ModuleItem {
-  num: string;
-  title: string;
-  desc: string;
-  href: string;
-  color: string;
-  tag: string;
-  moduleId: 'clasificacion' | 'pares' | 'paralelas' | 'ecuaciones' | 'fracciones';
-  total?: number;
-}
-
-const angleModules: ModuleItem[] = [
-  {
-    num: '1',
-    title: 'Clasificación de Ángulos',
-    desc: 'Agudos, rectos, obtusos, llanos y cóncavos con transportador interactivo.',
-    href: '/clasificacion',
-    color: 'bg-amber-500',
-    tag: '0° a 360°',
-    moduleId: 'clasificacion',
-    total: 6
-  },
-  {
-    num: '2',
-    title: 'Pares de Ángulos',
-    desc: 'Complementarios, suplementarios y opuestos por el vértice.',
-    href: '/pares',
-    color: 'bg-emerald-500',
-    tag: 'Suma y congruencia',
-    moduleId: 'pares',
-    total: 4
-  },
-  {
-    num: '3',
-    title: 'Paralelas y Secante',
-    desc: 'Alternos, conjugados y correspondientes con rayos interactivos.',
-    href: '/paralelas',
-    color: 'bg-indigo-500',
-    tag: '8 ángulos clave',
-    moduleId: 'paralelas',
-    total: 4
-  },
-  {
-    num: '4',
-    title: 'Ecuaciones con Ángulos',
-    desc: 'Resolución de problemas algebraicos paso a paso.',
-    href: '/ecuaciones',
-    color: 'bg-violet-500',
-    tag: 'Álgebra aplicada',
-    moduleId: 'ecuaciones'
-  }
-];
-
-const fractionModules: ModuleItem[] = [
-  {
-    num: '1',
-    title: 'Pasaje de Decimal a Fracción',
-    desc: 'Exactos, periódicos puros y mixtos paso a paso con fracción irreducible.',
-    href: '/decimal-a-fraccion',
-    color: 'bg-teal-600',
-    tag: 'Exactos y Periódicos',
-    moduleId: 'fracciones',
-    total: 12
-  }
-];
+import ModuleCard from '../components/common/ModuleCard.astro';
+import ExamBanner from '../components/common/ExamBanner.astro';
+import { angleModules, fractionModules } from '../lib/pedagogical/modulesCatalog';
 ---
 
 <Layout title="Inicio">
@@ -97,62 +33,10 @@ const fractionModules: ModuleItem[] = [
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4">
-        {
-          angleModules.map((m) => (
-            <a
-              href={m.href}
-              class="group block p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-md transition active:scale-[0.98] touch-manipulation"
-            >
-              <div class="flex items-start gap-3.5">
-                <div class={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-sm ${m.color}`}>
-                  {m.num}
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center justify-between gap-1 mb-1.5 flex-wrap">
-                    <h3 class="font-bold text-slate-900 dark:text-slate-100 text-base group-hover:text-blue-600 dark:group-hover:text-blue-400 transition">
-                      {m.title}
-                    </h3>
-                    <div class="flex items-center gap-1.5 shrink-0">
-                      <ProgressBadge client:load moduleId={m.moduleId} total={m.total} />
-                      <span class="text-[11px] font-medium px-2 py-0.5 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-full">
-                        {m.tag}
-                      </span>
-                    </div>
-                  </div>
-                  <p class="text-slate-600 dark:text-slate-400 text-xs line-clamp-2 leading-relaxed">
-                    {m.desc}
-                  </p>
-                </div>
-              </div>
-            </a>
-          ))
-        }
+        {angleModules.map((m) => <ModuleCard module={m} />)}
       </div>
 
-      <!-- Banner Examen Integrador -->
-      <a
-        href="/examen"
-        class="group block p-3.5 bg-gradient-to-r from-amber-500/10 via-indigo-500/10 to-blue-500/10 dark:from-amber-950/30 dark:via-indigo-950/30 dark:to-blue-950/30 rounded-2xl border border-dashed border-indigo-300 dark:border-indigo-700 hover:border-indigo-500 hover:shadow-md transition active:scale-[0.98] touch-manipulation"
-      >
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-amber-500 to-indigo-600 text-white font-black text-xl flex items-center justify-center shrink-0 shadow-sm">
-            🎓
-          </div>
-          <div class="flex-1 min-w-0">
-            <div class="flex items-center justify-between gap-1 mb-0.5 flex-wrap">
-              <h3 class="font-bold text-slate-900 dark:text-slate-100 text-sm group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">
-                Examen Integrador de Ángulos
-              </h3>
-              <span class="text-[10px] font-bold px-2 py-0.5 bg-amber-100 dark:bg-amber-950/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700 rounded-full shrink-0">
-                Diploma Escolar 📜
-              </span>
-            </div>
-            <p class="text-slate-600 dark:text-slate-400 text-xs line-clamp-1">
-              5 preguntas mixtas para evaluar tus conocimientos y obtener tu certificado descargable.
-            </p>
-          </div>
-        </div>
-      </a>
+      <ExamBanner />
     </section>
 
     <!-- Unidad 2 -->
@@ -165,36 +49,7 @@ const fractionModules: ModuleItem[] = [
       </div>
 
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-3 lg:gap-4">
-        {
-          fractionModules.map((m) => (
-            <a
-              href={m.href}
-              class="group block p-4 bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 hover:border-teal-400 dark:hover:border-teal-500 hover:shadow-md transition active:scale-[0.98] touch-manipulation"
-            >
-              <div class="flex items-start gap-3.5">
-                <div class={`w-10 h-10 rounded-xl flex items-center justify-center text-white font-bold text-lg shrink-0 shadow-sm ${m.color}`}>
-                  {m.num}
-                </div>
-                <div class="flex-1 min-w-0">
-                  <div class="flex items-center justify-between gap-1 mb-1.5 flex-wrap">
-                    <h3 class="font-bold text-slate-900 dark:text-slate-100 text-base group-hover:text-teal-600 dark:group-hover:text-teal-400 transition">
-                      {m.title}
-                    </h3>
-                    <div class="flex items-center gap-1.5 shrink-0">
-                      <ProgressBadge client:load moduleId={m.moduleId} total={m.total} />
-                      <span class="text-[11px] font-medium px-2 py-0.5 bg-teal-50 dark:bg-teal-950/60 text-teal-700 dark:text-teal-300 rounded-full border border-teal-200 dark:border-teal-800">
-                        {m.tag}
-                      </span>
-                    </div>
-                  </div>
-                  <p class="text-slate-600 dark:text-slate-400 text-xs line-clamp-2 leading-relaxed">
-                    {m.desc}
-                  </p>
-                </div>
-              </div>
-            </a>
-          ))
-        }
+        {fractionModules.map((m) => <ModuleCard module={m} />)}
       </div>
     </section>
   </main>
