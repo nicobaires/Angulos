@@ -15,7 +15,7 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
 - **Modo Oscuro:** Soporte integral de tema Claro/Oscuro con persistencia en `localStorage`, script anti-FOUC y canvas SVG estilizados en modo blueprint/pizarrón técnico.
 - **Gamificación Local:** Sistema de estrellas (`⭐`), racha activa (`🔥`), vitrina de 7 medallas escolares con deduplicación justa y modal de progreso.
 - **Motor Matemático:** [KaTeX](https://katex.org/) empaquetado 100% local (sin dependencias de CDNs externas ni jsdelivr) para renderizado tipográfico seguro offline.
-- **Testing Unitario:** [Vitest](https://vitest.dev/) con 58 tests automatizados de congruencia, normalización, regresión con snapshots, generación procedural de ángulos y conversión analítica de números decimales a fracción.
+- **Testing Unitario:** [Vitest](https://vitest.dev/) con 65 tests automatizados de congruencia, normalización, regresión con snapshots, generación procedural de ángulos, conversión analítica y simplificación progresiva encadenada de fracciones.
 - **Gráficos:** SVG interactivo nativo y reactivo (sin librerías pesadas de canvas).
 - **Gestor de Paquetes:** `pnpm` con compatibilidad universal WebAssembly para Rollup.
 - **Despliegue Continuo:** [Netlify](https://www.netlify.com/) → [https://angulos2.netlify.app/](https://angulos2.netlify.app/)
@@ -73,7 +73,7 @@ Aplicación web didáctica, interactiva y móvil diseñada para estudiantes de *
      - **Periódico Mixto:** Parte no periódica seguida de período, nueves seguidos de ceros ($10^{k+m} - 10^m$).
    - Desglose analítico paso a paso de la regla escolar argentina con sustracción en numerador y simplificación por máximo común divisor (MCD / GCD).
    - Visualizador semántico con códigos de color diferenciados (entero, anteperíodo y período con arco KaTeX).
-   - Modo Desafío interactivo con 12 retos equilibrados, barajado Fisher-Yates, validación con feedback pedagógico y gamificación (estrellas y racha).
+   - Modo Desafío interactivo con 12 retos equilibrados, simplificación progresiva encadenada ($\frac{4}{8} = \frac{2}{4} = \frac{1}{2}$) sin penalizar equivalencias reducibles, barajado Fisher-Yates y gamificación (estrellas y racha).
    - Controles manuales accesibles y responsive a 2 columnas en desktop (`ModuleSplit.svelte`).
 
 ---

@@ -1,7 +1,7 @@
 # MEMORY.md - Estado del Proyecto
 
 ## Estado Actual
-- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción con modo desafío y gamificación). Corrección crítica de estrellas y confirmación aplicada vía patch, integración de `svelte-check`, suite de 58 tests unitarios en Vitest pasando al 100%, build de Astro estático impecable y catálogo de 5 AGY Skills.
+- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción con simplificación progresiva encadenada y gamificación justa). Suite de 65 tests unitarios en Vitest pasando al 100%, validación dual sin fallas con `astro check` y `svelte-check`, build de Astro estático impecable y catálogo de 5 AGY Skills.
 - **Rama Activa:** `feature/fracciones-decimales` (Gobernanza estricta: merge a `main` o `dev` solo con orden explícita del Arquitecto Principal).
 - **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX (empaquetado localmente), Vitest, pnpm, Netlify.
 
@@ -43,6 +43,11 @@
 - [x] Límite de Líneas Flexible con Justificación: Estándar deseado fijado en $\le 130$ líneas. Excepciones justificadas y aprobadas por el Arquitecto con un tope máximo absoluto e inviolable de 210 líneas.
 
 ## Registro de Decisiones Técnicas
+- **Simplificación Progresiva Encadenada en Fracciones (Opción 2 Pedagógica):**
+  - Se implementó la validación progresiva de fracciones equivalentes en `src/lib/math/fractions/equivalence.ts` (59 líneas): distingue entre fracciones irreducibles (`correct`), equivalentes reducibles (`reducible`), repeticiones (`repeated`), amplificaciones (`amplified`) y no equivalentes (`incorrect`).
+  - No penaliza la racha del alumno ante una fracción matemáticamente equivalente pero reducible: el estudiante puede encadenar simplificaciones sucesivas (ej. $\frac{4}{8} = \frac{2}{4} = \frac{1}{2}$) hasta llegar a la irreducible.
+  - Se crearon componentes atómicos `FractionChain.svelte` (29 líneas) para renderizar la igualdad progresiva y `FractionFeedback.svelte` (31 líneas) para los mensajes didácticos por color, manteniendo `FractionChallenge.svelte` en 121 líneas ($\le 130$ líneas requeridas por `AGENTS.md`).
+  - Se agregaron 7 pruebas unitarias en `equivalence.test.ts`, alcanzando 65 tests pasando al 100%.
 - **Corrección de Estrellas, Inputs y Verificación con Svelte-Check (`fix-fracciones-estrellas.patch`):**
   - Se corrigió en `DecimalToFraction.svelte` el llamado al store pasando `'fracciones'` y el índice numérico `playlist[currentStep]`, permitiendo el cómputo correcto de estrellas, racha y el desbloqueo del logro *"Poder Racional"*.
   - Se corrigió en `FractionChallenge.svelte` el tipo de los inputs a `type="text"` con `inputmode="numeric"`, eliminando la coerción automática de Svelte 5 a `number` que provocaba un `TypeError` fatal en `.trim()`.
