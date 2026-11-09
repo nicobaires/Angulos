@@ -1,8 +1,8 @@
 # MEMORY.md - Estado del Proyecto
 
 ## Estado Actual
-- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción con simplificación progresiva encadenada, desacople modular SRP en desafío, modo desafío enfocado con paso a paso pedagógico post-acierto y gamificación justa). Suite de 69 tests unitarios en Vitest pasando al 100%, validación dual sin fallas con `astro check` y `svelte-check`, build de Astro estático impecable y catálogo de 5 AGY Skills.
-- **Rama Activa:** `main` (Integración exitosa de `dev` y `fix/fracciones-modo-desafio-enfocado` en `main` autorizada explícitamente por el Arquitecto Principal).
+- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción). Corrección de hallazgos críticos de auditoría (deduplicación canónica en Pares, zoom accesible en viewport y puerta de calidad 'verify' en Netlify). Suite de 70 tests unitarios en Vitest pasando al 100%, validación dual sin fallas con `astro check` y `svelte-check`, build de Astro estático impecable y catálogo de AGY Skills.
+- **Rama Activa:** `fix/auditoria-criticos` (en desarrollo sobre `main`).
 - **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX (empaquetado localmente), Vitest, pnpm, Netlify.
 
 ## Módulos de Aprendizaje
@@ -43,6 +43,10 @@
 - [x] Límite de Líneas Flexible con Justificación: Estándar deseado fijado en $\le 130$ líneas. Excepciones justificadas y aprobadas por el Arquitecto con un tope máximo absoluto e inviolable de 210 líneas.
 
 ## Registro de Decisiones Técnicas
+- **Corrección de Hallazgos Críticos de Auditoría (`fix/auditoria-criticos`):**
+  - **Identidad Canónica en Desafíos de Pares (COR-01 / H-01):** Se implementó `getPairChallengeIndex(challenge)` en `src/lib/pedagogical/pairsChallenges.ts`, mapeando cada desafío a un índice estable [0..3] por tipo geométrico (`comp-`, `comp-equal-45`, `supp-`, `opp-`). `AnglePairs.svelte` ahora acredita este índice canónico en lugar de la posición del array barajado (`currentStep`), garantizando deduplicación justa de estrellas y otorgamiento confiable de la medalla *"Dúo Geométrico"*. Test unitario añadido cubriendo 50 tiradas aleatorias (70 tests totales en Vitest).
+  - **Zoom de Usuario Restablecido (ACC-01 / H-04):** Se eliminó `maximum-scale=1.0, user-scalable=no` de `src/layouts/Layout.astro:17`, restaurando la accesibilidad táctil para alumnos con baja visión según pautas WCAG 1.4.4.
+  - **Puerta de Calidad en Netlify (DEP-01 / H-02) y Privacidad:** Se agregó el script `"verify": "npm run check && npm test && npm run build"` en `package.json` y se configuró `command = "pnpm run verify"` en `netlify.toml`, asegurando que Netlify nunca despliegue código con errores de tipos o pruebas rotas. Se agregaron cabeceras HTTP de privacidad `Referrer-Policy: strict-origin-when-cross-origin` y `Permissions-Policy`.
 - **Desacople Modular de Lógica en `FractionChallenge.svelte` (SRP & SoC):**
   - Se extrajo la máquina de evaluación y formateo de mensajes a `src/lib/pedagogical/fractions/challengeSession.ts` (85 líneas) y su suite de tests `challengeSession.test.ts` (74 líneas, 4 tests).
   - Se extrajo el bloque atómico de inputs numéricos a `FractionInput.svelte` (33 líneas) con bindings `$bindable`.
