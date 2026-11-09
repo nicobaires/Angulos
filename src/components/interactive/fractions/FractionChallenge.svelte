@@ -1,8 +1,10 @@
 <script lang="ts">
   import type { DecimalChallenge } from '../../../lib/pedagogical/fractions/decimalChallenges';
-  import { validateFractionAnswer, type FractionStep } from '../../../lib/math/fractions';
+  import { evaluateChallengeAttempt } from '../../../lib/pedagogical/fractions/challengeSession';
+  import type { FractionStep } from '../../../lib/math/fractions';
   import Katex from '../../common/Math.svelte';
   import FractionChain from './FractionChain.svelte';
+  import FractionInput from './FractionInput.svelte';
   import FractionFeedback from './FractionFeedback.svelte';
 
   interface Props {
@@ -31,31 +33,17 @@
   });
 
   function handleConfirm() {
-    const rawNum = inputNum.trim(), rawDen = inputDen.trim();
-    if (!/^\d+$/.test(rawNum) || !/^\d+$/.test(rawDen)) return;
-    const num = parseInt(rawNum, 10), den = parseInt(rawDen, 10);
-
-    const res = validateFractionAnswer(num, den, challenge.targetNum, challenge.targetDen, history);
-    if (res.status === 'correct') {
-      history = [...history, { num, den }];
-      isComplete = true;
-      feedbackType = 'success';
-      feedbackMessage = isNewStar ? '⭐ ¡Excelente! +1 Estrella conseguida' : '✔️ ¡Muy bien! Desafío ya completado';
-      inputNum = ''; inputDen = '';
-      oncomplete(true);
-    } else if (res.status === 'reducible') {
-      history = [...history, { num, den }];
-      feedbackType = 'warning';
-      feedbackMessage = `${res.message} (Podés simplificar por ${res.gcd})`;
-      inputNum = ''; inputDen = '';
-    } else if (res.status === 'repeated' || res.status === 'amplified') {
-      feedbackType = 'warning';
-      feedbackMessage = res.message;
-    } else {
-      feedbackType = 'error';
-      feedbackMessage = `${res.message} 💡 Pista: ${challenge.hint}`;
-      oncomplete(false);
-    }
+    const outcome = evaluateChallengeAttempt({
+      rawNum: inputNum, rawDen: inputDen,
+      challenge, history, isNewStar
+    });
+    if (!outcome.valid) return;
+    history = outcome.nextHistory;
+    isComplete = outcome.isComplete;
+    feedbackType = outcome.feedbackType;
+    feedbackMessage = outcome.feedbackMessage;
+    if (outcome.clearsInput) { inputNum = ''; inputDen = ''; }
+    if (outcome.notify !== undefined) oncomplete(outcome.notify);
   }
 </script>
 
@@ -79,19 +67,7 @@
   <div class="flex items-center justify-center gap-2 py-1 flex-wrap">
     <FractionChain {history} {isComplete} />
     {#if !isComplete}
-      <div class="flex flex-col items-center gap-1">
-        <input
-          type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Numerador" placeholder="Num"
-          bind:value={inputNum}
-          class="w-20 p-2 text-center text-sm font-black bg-slate-50 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:border-blue-500 focus:outline-none"
-        />
-        <div class="w-20 h-0.5 bg-slate-400 dark:bg-slate-600 rounded-full"></div>
-        <input
-          type="text" inputmode="numeric" pattern="[0-9]*" aria-label="Denominador" placeholder="Den"
-          bind:value={inputDen}
-          class="w-20 p-2 text-center text-sm font-black bg-slate-50 dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-700 rounded-xl focus:border-blue-500 focus:outline-none"
-        />
-      </div>
+      <FractionInput bind:num={inputNum} bind:den={inputDen} />
     {/if}
   </div>
 

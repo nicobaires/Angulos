@@ -1,7 +1,7 @@
 # MEMORY.md - Estado del Proyecto
 
 ## Estado Actual
-- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción con simplificación progresiva encadenada y gamificación justa). Suite de 65 tests unitarios en Vitest pasando al 100%, validación dual sin fallas con `astro check` y `svelte-check`, build de Astro estático impecable y catálogo de 5 AGY Skills.
+- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción con simplificación progresiva encadenada, desacople modular SRP en desafío y gamificación justa). Suite de 69 tests unitarios en Vitest pasando al 100%, validación dual sin fallas con `astro check` y `svelte-check`, build de Astro estático impecable y catálogo de 5 AGY Skills.
 - **Rama Activa:** `feature/fracciones-decimales` (Gobernanza estricta: merge a `main` o `dev` solo con orden explícita del Arquitecto Principal).
 - **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX (empaquetado localmente), Vitest, pnpm, Netlify.
 
@@ -43,6 +43,11 @@
 - [x] Límite de Líneas Flexible con Justificación: Estándar deseado fijado en $\le 130$ líneas. Excepciones justificadas y aprobadas por el Arquitecto con un tope máximo absoluto e inviolable de 210 líneas.
 
 ## Registro de Decisiones Técnicas
+- **Desacople Modular de Lógica en `FractionChallenge.svelte` (SRP & SoC):**
+  - Se extrajo la máquina de evaluación y formateo de mensajes a `src/lib/pedagogical/fractions/challengeSession.ts` (85 líneas) y su suite de tests `challengeSession.test.ts` (74 líneas, 4 tests).
+  - Se extrajo el bloque atómico de inputs numéricos a `FractionInput.svelte` (33 líneas) con bindings `$bindable`.
+  - `FractionChallenge.svelte` se redujo de 140/151 líneas a solo **97 líneas** puramente declarativas, alineándose con `ClassifierChallenge` y `PairsChallenge`.
+  - Suite de tests incrementada a 69 pruebas unitarias pasando al 100%.
 - **Simplificación Progresiva Encadenada en Fracciones (Opción 2 Pedagógica):**
   - Se implementó la validación progresiva de fracciones equivalentes en `src/lib/math/fractions/equivalence.ts` (59 líneas): distingue entre fracciones irreducibles (`correct`), equivalentes reducibles (`reducible`), repeticiones (`repeated`), amplificaciones (`amplified`) y no equivalentes (`incorrect`).
   - No penaliza la racha del alumno ante una fracción matemáticamente equivalente pero reducible: el estudiante puede encadenar simplificaciones sucesivas (ej. $\frac{4}{8} = \frac{2}{4} = \frac{1}{2}$) hasta llegar a la irreducible.
