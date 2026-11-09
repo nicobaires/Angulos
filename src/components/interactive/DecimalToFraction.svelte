@@ -1,15 +1,9 @@
 <script lang="ts">
   import {
-    type DecimalParts,
-    type DecimalType,
-    convertExactToFraction,
-    convertPurePeriodicToFraction,
-    convertMixedPeriodicToFraction
+    type DecimalParts, type DecimalType,
+    convertExactToFraction, convertPurePeriodicToFraction, convertMixedPeriodicToFraction
   } from '../../lib/math/fractions';
-  import {
-    DECIMAL_CHALLENGES,
-    getShuffledChallengeIndices
-  } from '../../lib/pedagogical/fractions/decimalChallenges';
+  import { DECIMAL_CHALLENGES, getShuffledChallengeIndices } from '../../lib/pedagogical/fractions/decimalChallenges';
   import { progressStore } from '../../lib/pedagogical/progressStore';
   import ModuleSplit from '../common/ModuleSplit.svelte';
   import DecimalVisualizer from './fractions/DecimalVisualizer.svelte';
@@ -62,9 +56,10 @@
   }
 
   function handleChallengeComplete(isCorrect: boolean) {
-    if (!activeChallenge) return;
+    if (!activeChallenge || currentStep === null) return;
     if (isCorrect) {
-      const res = progressStore.recordSuccess('fracciones_decimal', activeChallenge.id);
+      // El store deduplica por índice numérico del banco (no por id de texto)
+      const res = progressStore.recordSuccess('fracciones', playlist[currentStep]);
       isNewStar = res.newStar;
     } else {
       progressStore.recordFailure();

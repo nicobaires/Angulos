@@ -29,9 +29,12 @@
   });
 
   function handleConfirm() {
-    const num = parseInt(inputNum.trim(), 10);
-    const den = parseInt(inputDen.trim(), 10);
-    if (isNaN(num) || isNaN(den) || den === 0) return;
+    const rawNum = inputNum.trim();
+    const rawDen = inputDen.trim();
+    if (!/^\d+$/.test(rawNum) || !/^\d+$/.test(rawDen)) return;
+    const num = parseInt(rawNum, 10);
+    const den = parseInt(rawDen, 10);
+    if (den === 0) return;
 
     hasSubmitted = true;
     isCorrect = num === challenge.targetNum && den === challenge.targetDen;
@@ -62,8 +65,10 @@
   <div class="flex items-center justify-center gap-2 py-1">
     <div class="flex flex-col items-center gap-1">
       <input
-        type="number"
+        type="text"
         inputmode="numeric"
+        pattern="[0-9]*"
+        aria-label="Numerador"
         placeholder="Num"
         bind:value={inputNum}
         disabled={hasSubmitted && isCorrect}
@@ -71,8 +76,10 @@
       />
       <div class="w-20 h-0.5 bg-slate-400 dark:bg-slate-600 rounded-full"></div>
       <input
-        type="number"
+        type="text"
         inputmode="numeric"
+        pattern="[0-9]*"
+        aria-label="Denominador"
         placeholder="Den"
         bind:value={inputDen}
         disabled={hasSubmitted && isCorrect}

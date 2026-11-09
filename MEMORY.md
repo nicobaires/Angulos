@@ -1,7 +1,7 @@
 # MEMORY.md - Estado del Proyecto
 
 ## Estado Actual
-- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) inaugurada con Módulo 1 (Pasaje de Decimal a Fracción: exactos, periódicos puros y mixtos con paso a paso y desafíos interactivos gamificados). Suite de 56 tests unitarios en Vitest pasando al 100%, build de Astro estático impecable y catálogo de 5 AGY Skills.
+- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción con modo desafío y gamificación). Corrección crítica de estrellas y confirmación aplicada vía patch, integración de `svelte-check`, suite de 58 tests unitarios en Vitest pasando al 100%, build de Astro estático impecable y catálogo de 5 AGY Skills.
 - **Rama Activa:** `feature/fracciones-decimales` (Gobernanza estricta: merge a `main` o `dev` solo con orden explícita del Arquitecto Principal).
 - **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX (empaquetado localmente), Vitest, pnpm, Netlify.
 
@@ -43,6 +43,12 @@
 - [x] Límite de Líneas Flexible con Justificación: Estándar deseado fijado en $\le 130$ líneas. Excepciones justificadas y aprobadas por el Arquitecto con un tope máximo absoluto e inviolable de 210 líneas.
 
 ## Registro de Decisiones Técnicas
+- **Corrección de Estrellas, Inputs y Verificación con Svelte-Check (`fix-fracciones-estrellas.patch`):**
+  - Se corrigió en `DecimalToFraction.svelte` el llamado al store pasando `'fracciones'` y el índice numérico `playlist[currentStep]`, permitiendo el cómputo correcto de estrellas, racha y el desbloqueo del logro *"Poder Racional"*.
+  - Se corrigió en `FractionChallenge.svelte` el tipo de los inputs a `type="text"` con `inputmode="numeric"`, eliminando la coerción automática de Svelte 5 a `number` que provocaba un `TypeError` fatal en `.trim()`.
+  - Se corrigieron los nombres de importación de tipos en `ClassifierChallenge.svelte` (`TargetChallenge`) y `PairsChallenge.svelte` (`PairChallenge`).
+  - Se integró `svelte-check` v4.7.8 en devDependencies y en el script `pnpm run check` para asegurar typechecking exhaustivo en componentes `.svelte`.
+  - Se sumaron 2 tests en `progressStore.test.ts` elevando la suite a 58 tests automatizados.
 - **Spec 10: Pasaje de Números Decimales a Fracción (Unidad 2):**
   - Se estructuró la nueva unidad temática curricular de Números Racionales $\mathbb{Q}$ para 2° año.
   - *Capa Matemática (`src/lib/math/fractions/`):*

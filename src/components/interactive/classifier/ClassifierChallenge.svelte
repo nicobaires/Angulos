@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { ClassifierChallenge as ChallengeType } from '../../../lib/pedagogical/classifierChallenges';
+  import type { TargetChallenge as ChallengeType } from '../../../lib/pedagogical/classifierChallenges';
 
   interface Props {
     challenge: ChallengeType;
