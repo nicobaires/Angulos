@@ -8,16 +8,18 @@
 ## Principios Arquitectónicos Obligatorios (Estándares del Proyecto)
 1. **Modularidad y Responsabilidad Única (SRP):**
    - Prohibidos los archivos monolíticos o multifuncionales ("God Files").
-   - **Estándar Deseado (~100 a 130 líneas):** Ningún componente Svelte u orquestador debe superar las **130 líneas** como regla general de diseño limpio y desacoplado.
-   - **Excepciones Justificadas y Aprobadas:** Solo si en ocasiones muy puntuales el código o la cohesión lógica lo requieren estrictamente, se podrá superar el estándar de 130 líneas. En tales casos, se debe **explicar muy detalladamente** al Arquitecto por qué es mejor que el archivo sea más largo y el Arquitecto debe aprobarlo expresamente antes de consolidar el cambio.
+   - **Estándar Deseado (~100 a 130 líneas):** Aplica a **todo archivo dentro de `src/`** (`.svelte`, `.astro`, `.ts`), excluyendo únicamente los tests (`*.test.ts`). Ningún archivo debe superar las **130 líneas** como regla general de diseño limpio y desacoplado.
+   - **Regla de Parada y Excepciones:** Si para cumplir una tarea un archivo va a superar las 130 líneas, **es obligatorio detenerse y consultar al Arquitecto antes de escribirlo**, explicando el motivo técnico. Solo con aprobación explícita del Arquitecto se podrá superar el estándar, quedando la excepción registrada en `.agents/size-exceptions.json`.
    - **Límite Máximo Absoluto:** Bajo ninguna circunstancia ningún archivo podrá superar las **210 líneas**. Si un archivo roza o alcanza ese límite, es mandatorio extraer subcomponentes o módulos atómicos.
 2. **Separación Estricta de Capas (SoC):**
-   - **Lógica Matemática (`src/lib/math/`):** Funciones puras, tipadas y testeables por dominio (`angles.ts`, `pairs.ts`, `transversal.ts`, `equations.ts`). Cero JSX/HTML.
-   - **Contenidos Pedagógicos (`src/lib/pedagogical/`):** Bancos de preguntas, desafíos, pistas y retroalimentaciones desacoplados del marcado visual.
+   - **Lógica Matemática (`src/lib/math/`):** Funciones puras, tipadas y testeables por dominio (`angles.ts`, `pairs.ts`, `transversal.ts`, `equations/`, `fractions/`). Cero JSX/HTML/Tailwind.
+   - **Contenidos Pedagógicos (`src/lib/pedagogical/`):** Bancos de preguntas, desafíos, pistas, estilos visuales de ángulos (`angleStyles.ts`), descripciones (`angleDescriptions.ts`), catálogo modular (`modulesCatalog.ts`), motor de progreso local (`progressStore.ts`), generador de examen (`examGenerator.ts`) y desafíos de fracciones (`fractions/`).
    - **Componentes UI Atómicos (`src/components/interactive/<modulo>/`):** Piezas visuales especializadas (Canvas SVG, Controles, Fichas informativas).
-   - **Orquestador de Módulo (`Angle<Modulo>.svelte`):** Contenedor delgado (~60-100 líneas) que solo enlaza estado y compone los subcomponentes.
+   - **Orquestador de Módulo (`Angle<Modulo>.svelte`, `DecimalToFraction.svelte`):** Contenedor delgado (~60-100 líneas) que solo enlaza estado y compone los subcomponentes.
 3. **Reutilización y Escalabilidad:**
-   - Todo elemento común (KaTeX wrapper, barras de navegación de módulos, botones táctiles) debe residir en `src/components/common/`.
+   - Todo elemento común (KaTeX wrapper `Math.svelte`, `ModuleHeader.astro`, `ModuleCard.astro`, `ProgressWidget.svelte`, `ProgressBadge.svelte`, `ThemeToggle.svelte`, botones táctiles de $\ge 44$ px) debe residir en `src/components/common/`.
+4. **Números Calculables:**
+   - Prohibido escribir a mano conteos de líneas en `MEMORY.md` o `README.md`. Todo conteo se valida y cita con la salida oficial de `npm run check:size`.
 
 ## Mapa de Subagentes
 - **Dominio Curricular:** `.agents/subagents/pedagogical_agent.md` (Contenidos 2° año, lenguaje escolar argentino, banco de desafíos desacoplado).
@@ -25,13 +27,14 @@
 - **Estructura Web:** `.agents/subagents/astro_core_agent.md` (Rutas, layouts reutilizables, carga de islas).
 - **Interactividad:** `.agents/subagents/svelte_ui_agent.md` (Componentes atómicos en Svelte 5 con Runes, orquestadores delgados).
 - **Estética & Layout:** `.agents/subagents/tailwind_theme_agent.md` (Diseño mobile-first, paleta didáctica, accesibilidad táctil 44px).
-- **Producción:** `.agents/subagents/deployment_agent.md` (Builds sin fallas, `netlify.toml`, bundle optimizado).
+- **Producción:** `.agents/subagents/deployment_agent.md` (Builds sin fallas, `netlify.toml`, bundle optimizado, `npm run verify`).
 
 ## Protocolo de Respuesta
 1. Leer `MEMORY.md` para conocer el avance actual.
 2. Identificar qué subagente debe asumir la tarea solicitada (adoptando sus directrices o delegando con `define_subagent` / `invoke_subagent`).
 3. Verificar que la propuesta respete los límites de tamaño y modularidad antes de escribir código.
 4. Entregar siempre archivos completos o diffs claros, listos para aplicar sin código incompleto (`// TODO` o stubs vacíos están prohibidos).
-5. Actualizar `MEMORY.md` tras completar cada módulo o refactorización.
-6. Mantener `README.md` actualizado en cada avance relevante (módulos terminados, cambios en el stack o nueva arquitectura).
-7. Trabajar en ramas de desarrollo independientes. El merge hacia `main` solo será una opción cuando el Arquitecto lo exprese explícitamente.
+5. Ejecutar la verificación completa obligatoria con `npm run verify` antes de dar por cerrada la tarea y reportar el resultado.
+6. Actualizar `MEMORY.md` tras completar cada módulo o refactorización, sin escribir conteos manuales de líneas.
+7. Mantener `README.md` actualizado en cada avance relevante (módulos terminados, cambios en el stack o nueva arquitectura).
+8. Trabajar en ramas de desarrollo independientes. El merge hacia `main` solo será una opción cuando el Arquitecto lo exprese explícitamente.

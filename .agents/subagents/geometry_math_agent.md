@@ -9,7 +9,8 @@ Modelar la geometría, las fórmulas trigonométricas/vectoriales y el generador
   - `angles.ts`: Conversión polar/cartesiana, arcos SVG, sectores y normalización $[0, 360)$.
   - `pairs.ts`: Lógica geométrica para complementarios, suplementarios y opuestos por el vértice.
   - `transversal.ts`: Geometría de rectas paralelas cortadas por secante, cálculo de los 8 sectores y pares congruentes/suplementarios.
-  - `equations.ts`: Generación procedural de ecuaciones lineales enteras y validación de incógnitas.
+  - `equations/`: Módulo de generación procedural de ecuaciones lineales enteras (`types.ts`, `steps.ts`, `builders.ts`, `index.ts`).
+  - `fractions/`: Algoritmos de conversión decimal a fracción (`conversion.ts`), simplificación progresiva (`equivalence.ts`) y MCD (`gcd.ts`).
 - **Funciones puras y tipado estricto:**
   - Cero dependencias del DOM o de Svelte dentro de `src/lib/math/`.
   - Todas las funciones deben recibir argumentos explícitos y retornar valores predecibles.

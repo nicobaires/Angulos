@@ -7,8 +7,7 @@ export function generateOppositeEquationProblem(rng: Rng = Math.random): Equatio
   const a = c + Math.floor(rng() * 2) + 1;
   const b = Math.floor(rng() * 15) + 5;
   const d = b + (a - c) * x;
-  const alpha = a * x + b;
-  const beta = c * x + d;
+  const alpha = a * x + b, beta = c * x + d;
 
   return {
     id: `opp_${Math.floor(rng() * 1e9)}`,
@@ -33,8 +32,7 @@ export function generateSupplementaryEquationProblem(rng: Rng = Math.random): Eq
   const remainder = 180 - (a + c) * x;
   const b = Math.floor(remainder / 2);
   const d = remainder - b;
-  const alpha = a * x + b;
-  const beta = c * x + d;
+  const alpha = a * x + b, beta = c * x + d;
 
   return {
     id: `sup_${Math.floor(rng() * 1e9)}`,
@@ -59,8 +57,7 @@ export function generateComplementaryEquationProblem(rng: Rng = Math.random): Eq
   const remainder = 90 - (a + c) * x;
   const b = Math.floor(remainder / 2);
   const d = remainder - b;
-  const alpha = a * x + b;
-  const beta = c * x + d;
+  const alpha = a * x + b, beta = c * x + d;
 
   return {
     id: `comp_${Math.floor(rng() * 1e9)}`,
@@ -84,8 +81,7 @@ export function generateAlternateInteriorEquationProblem(rng: Rng = Math.random)
   const a = c + Math.floor(rng() * 2) + 1;
   const b = Math.floor(rng() * 12) + 8;
   const d = b + (a - c) * x;
-  const alpha = a * x + b;
-  const beta = c * x + d;
+  const alpha = a * x + b, beta = c * x + d;
 
   return {
     id: `alt_${Math.floor(rng() * 1e9)}`,
@@ -110,8 +106,7 @@ export function generateConsecutiveInteriorEquationProblem(rng: Rng = Math.rando
   const remainder = 180 - (a + c) * x;
   const b = Math.floor(remainder / 2);
   const d = remainder - b;
-  const alpha = a * x + b;
-  const beta = c * x + d;
+  const alpha = a * x + b, beta = c * x + d;
 
   return {
     id: `conj_${Math.floor(rng() * 1e9)}`,

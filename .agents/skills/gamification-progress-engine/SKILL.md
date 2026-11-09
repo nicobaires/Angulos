@@ -7,85 +7,78 @@ description: >-
 # Skill: Motor de Gamificación y Progreso Local
 
 ## Propósito
-Gestionar de manera robusta, pedagógica y desacoplada el progreso del estudiante (estrellas, rachas, desafíos completados y medallas) sin penalizaciones cognitivas ni frustración, operando 100% del lado del cliente en `localStorage` y siendo compatible con SSR de Astro 5 y testing en Vitest.
+Gestionar de manera robusta, pedagógica y desacoplada el progreso del estudiante (estrellas, racha, desafíos completados por módulo y medallas escolares) sin penalizaciones cognitivas ni frustración, operando 100% del lado del cliente en `localStorage` y siendo compatible con SSR de Astro 5 y testing en Vitest.
 
 ---
 
 ## 1. Principios Pedagógicos
-1. **Pedagogía Positiva:** No hay penalización por error (no se pierden estrellas ni vidas). El error es una instancia de aprendizaje.
-2. **Deduplicación Justa:** 
-   - Resolver un desafío predeterminado por primera vez otorga `+1 estrella` y aumenta la racha (`streak`).
-   - Repetir un desafío ya completado muestra retroalimentación de éxito (`✔️ Desafío ya completado`), pero **no** vuelve a sumar estrellas ni inflar la racha artificialmente (comportamiento neutral).
-   - Los retos con generación procedural o exámenes integradores (`exam-*`, `eq-*`) siempre otorgan estrella al resolverse correctamente.
-3. **Resiliencia de Racha:** La racha se evalúa por día de actividad o hitos continuos sin reset punitivo abrupto.
+1. **Pedagogía Positiva:** No se pierden estrellas ganadas. El error solo reinicia la racha momentánea (`recordFailure()`), funcionando como instancia de aprendizaje sin frustración punitiva.
+2. **Deduplicación Justa:**
+   - La primera vez que el alumno resuelve un desafío de un módulo, recibe `+1 estrella` (`newStar: true`) e incrementa la racha.
+   - Si repite un desafío ya superado, la respuesta correcta es pedagógicamente neutral (`newStar: false`): refuerza el conocimiento sin duplicar estrellas artificialmente.
+   - Los retos procedurales infinitos (como las ecuaciones de Módulo 4) siempre otorgan estrella al resolverse con éxito.
+3. **Vitrina de Logros:** Desbloqueo automático por hitos de estrellas, racha y dominio curricular integral.
 
 ---
 
-## 2. Arquitectura de `progressStore.ts`
+## 2. API y Contratos de `src/lib/pedagogical/progressStore.ts`
 
-El store debe ser agnóstico del compilador Svelte en tests unitarios puros (patrón `subscribe(run)`), permitiendo suscripciones con `$progressStore` en componentes Svelte y lecturas directas en Node/Vitest.
+El store opera mediante la instancia singleton `progressStore`:
 
 ```typescript
-export interface UserProgress {
+export interface ModuleProgress {
+  clasificacion: number[]; // Índices resueltos
+  pares: number[];         // Índices canónicos [0..3]
+  paralelas: number[];     // Índices resueltos [0..3]
+  ecuaciones: number;      // Contador acumulado
+  fracciones: number[];    // Índices resueltos [0..11]
+}
+
+export interface Achievement {
+  id: string;
+  title: string;
+  description: string;
+  icon: string;
+}
+
+export interface ProgressData {
   stars: number;
-  completedChallenges: string[]; // Set de IDs de desafíos completados
-  unlockedAchievements: string[]; // IDs de medallas obtenidas
   streak: number;
-  lastActiveDate: string;
+  bestStreak: number;
+  modules: ModuleProgress;
+  achievements: Record<string, number>; // id -> timestamp
 }
 
-// Interfaz del Store
-export interface ProgressStore {
-  subscribe: (run: (value: UserProgress) => void) => () => void;
-  recordSuccess: (challengeId?: string) => { newStar: boolean };
-  recordExamCompletion: (score: number, total: number) => { newStar: boolean };
-  resetProgress: () => void;
-  getState: () => UserProgress;
-}
+// Métodos del singleton progressStore:
+progressStore.state: ProgressData;
+progressStore.subscribe(run: (data: ProgressData) => void): () => void;
+progressStore.recordSuccess(
+  mod: 'clasificacion' | 'pares' | 'paralelas' | 'ecuaciones' | 'fracciones',
+  challengeIndex?: number
+): { newStar: boolean };
+progressStore.recordFailure(): void;
+progressStore.resetProgress(): void;
 ```
 
 ---
 
-## 3. Manejo Seguro de SSR y LocalStorage
+## 3. Catálogo de Medallas (`ACHIEVEMENTS`)
 
-Para evitar desincronizaciones e hidrataciones fallidas en Astro:
-1. Verificar siempre `typeof window !== 'undefined'` antes de acceder a `localStorage`.
-2. Proporcionar un estado por defecto válido para renderizado en servidor.
-3. Cargar el estado real en el cliente inmediatamente en la inicialización o en `onMount()`.
-4. Manejar excepciones con `try/catch` para entornos con cookies/almacenamiento bloqueado (modo incógnito estricto).
-
-```typescript
-const STORAGE_KEY = 'angulos_student_progress_v1';
-
-function loadState(): UserProgress {
-  if (typeof window === 'undefined') return DEFAULT_STATE;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? { ...DEFAULT_STATE, ...JSON.parse(raw) } : DEFAULT_STATE;
-  } catch {
-    return DEFAULT_STATE;
-  }
-}
-```
+Las 8 medallas escolares registradas en `progressStore.ts`:
+- `primer_paso` (🎯 Primer Paso): Resolvé tu primer desafío (stars $\ge 1$).
+- `racha_3` (🔥 ¡En Llamas!): 3 aciertos consecutivos.
+- `racha_5` (⚡ Mente Imparable): 5 aciertos consecutivos.
+- `maestro_clasificacion` (🧭 Explorador): Completá los 6 desafíos de Clasificación.
+- `maestro_pares` (👥 Dúo Geométrico): Completá los 4 desafíos de Pares.
+- `maestro_paralelas` (🛤️ Secante Ninja): Completá los 4 desafíos de Paralelas.
+- `experto_algebra` (🧮 Mente Algebraica): Resolvé 3 ecuaciones con ángulos.
+- `maestro_fracciones` (🍕 Poder Racional): Resolvé desafíos de Decimales a Fracción.
 
 ---
 
-## 4. Banco de Logros e Insignias (`ACHIEVEMENTS_LIST`)
+## 4. Componentes UI de Gamificación
 
-Los logros deben reflejar hitos curriculares y de dedicación:
-- `first_star`: "Primer Paso" (1 estrella).
-- `three_streak`: "En Racha" (3 aciertos consecutivos).
-- `classifier_master`: "Ojo Geométrico" (Todos los desafíos del clasificador).
-- `pairs_master`: "Dúo Dinámico" (Desafíos de pares de ángulos).
-- `transversal_master`: "Líneas Paralelas" (Desafíos de rectas paralelas y transversal).
-- `equation_pro`: "Álgebra Geométrica" (5 ecuaciones resueltas).
-- `diploma_earned`: "Graduado en Geometría" (Examen integrador aprobado).
-
----
-
-## 5. Buenas Prácticas en Componentes UI
-- Notificar al alumno de forma diferenciada:
-  - Nueva estrella: `⭐ ¡+1 Estrella conseguida!`
-  - Desafío ya superado: `✔️ ¡Muy bien! Desafío ya completado anteriormente.`
-- Mantener los componentes de gamificación (`StarCounter.svelte`, `AchievementBadge.svelte`) $\le 100$ líneas y desacoplados de la lógica de evaluación geométrica.
-
+- **Píldora y Modal de Progreso (`src/components/common/ProgressWidget.svelte`):**
+  Muestra estrellas, fuego de racha y abre el modal accesible con la vitrina completa de las 8 medallas y opción de reinicio.
+- **Insignia por Módulo (`src/components/common/ProgressBadge.svelte`):**
+  Muestra el avance específico del módulo (ej.: `⭐ 3/4` o `⭐ Completado`) en el catálogo y cabeceras.
