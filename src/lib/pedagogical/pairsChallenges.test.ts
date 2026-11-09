@@ -1,7 +1,9 @@
 import { describe, it, expect } from 'vitest';
 import {
   generatePairsChallengesDeck,
+  getPairChallengeIndex,
   createComplementChallenge,
+  createEqualComplementChallenge,
   createSupplementChallenge,
   createOppositeChallenge,
   PAIRS_CHALLENGES
@@ -65,6 +67,19 @@ describe('Pedagogical Challenges', () => {
     expect(ch.targetAlpha).toBe(50);
     expect(ch.givenAngle).toBe(130);
     expect(ch.prompt).toContain('130°');
+  });
+
+  it('getPairChallengeIndex identifies canonical indices [0, 1, 2, 3] regardless of deck order', () => {
+    expect(getPairChallengeIndex(createComplementChallenge(30))).toBe(0);
+    expect(getPairChallengeIndex(createEqualComplementChallenge())).toBe(1);
+    expect(getPairChallengeIndex(createSupplementChallenge(60))).toBe(2);
+    expect(getPairChallengeIndex(createOppositeChallenge(110))).toBe(3);
+
+    for (let i = 0; i < 50; i++) {
+      const deck = generatePairsChallengesDeck();
+      const indices = deck.map(getPairChallengeIndex);
+      expect(indices.sort()).toEqual([0, 1, 2, 3]);
+    }
   });
 });
 

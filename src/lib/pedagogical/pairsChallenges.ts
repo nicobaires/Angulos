@@ -84,6 +84,14 @@ export function createOppositeChallenge(adjacentAngle: number = 110): PairChalle
   };
 }
 
+export function getPairChallengeIndex(challenge: PairChallenge): number {
+  if (challenge.id === 'comp-equal-45') return 1;
+  if (challenge.id.startsWith('comp-')) return 0;
+  if (challenge.id.startsWith('supp-')) return 2;
+  if (challenge.id.startsWith('opp-')) return 3;
+  return 0;
+}
+
 export function generatePairsChallengesDeck(rng: () => number = Math.random): PairChallenge[] {
   const compBase = pickRandom(COMPLEMENT_BASES, rng);
   const suppBase = pickRandom(SUPPLEMENT_BASES, rng);

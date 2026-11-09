@@ -1,6 +1,6 @@
 <script lang="ts">
   import { type PairType, getPairsPresets, getPairsRange } from '../../lib/math/pairs';
-  import { generatePairsChallengesDeck, type PairChallenge } from '../../lib/pedagogical/pairsChallenges';
+  import { generatePairsChallengesDeck, getPairChallengeIndex, type PairChallenge } from '../../lib/pedagogical/pairsChallenges';
   import { progressStore } from '../../lib/pedagogical/progressStore';
   import ModuleSplit from '../common/ModuleSplit.svelte';
   import PairsModeTabs from './pairs/PairsModeTabs.svelte';
@@ -65,7 +65,7 @@
     challengeSuccess = isCorrect;
     challengeFeedback = isCorrect ? activeChallenge.successMessage : activeChallenge.hint;
     if (isCorrect) {
-      const res = progressStore.recordSuccess('pares', currentStep ?? 0);
+      const res = progressStore.recordSuccess('pares', getPairChallengeIndex(activeChallenge));
       isNewStar = res.newStar;
     } else {
       progressStore.recordFailure();
