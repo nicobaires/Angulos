@@ -1,8 +1,8 @@
 # MEMORY.md - Estado del Proyecto
 
 ## Estado Actual
-- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción con simplificación progresiva encadenada, desacople modular SRP en desafío y gamificación justa). Suite de 69 tests unitarios en Vitest pasando al 100%, validación dual sin fallas con `astro check` y `svelte-check`, build de Astro estático impecable y catálogo de 5 AGY Skills.
-- **Rama Activa:** `main` (Integración exitosa de `feature/fracciones-decimales` en `dev` y `main` autorizada explícitamente por el Arquitecto Principal).
+- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción con simplificación progresiva encadenada, desacople modular SRP en desafío, modo desafío enfocado con paso a paso pedagógico post-acierto y gamificación justa). Suite de 69 tests unitarios en Vitest pasando al 100%, validación dual sin fallas con `astro check` y `svelte-check`, build de Astro estático impecable y catálogo de 5 AGY Skills.
+- **Rama Activa:** `main` (Integración exitosa de `dev` y `fix/fracciones-modo-desafio-enfocado` en `main` autorizada explícitamente por el Arquitecto Principal).
 - **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX (empaquetado localmente), Vitest, pnpm, Netlify.
 
 ## Módulos de Aprendizaje
