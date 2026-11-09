@@ -1,11 +1,12 @@
 # MEMORY.md - Estado del Proyecto
 
 ## Estado Actual
-- **Fase:** Todos los 4 módulos temáticos interactivos completados, modulares, validados en producción con Modo Oscuro, correcciones pedagógicas (Spec 05), ampliación curricular de Ecuaciones (Spec 07 / Módulo 4), refactor de modularidad y deduplicación justa de estrellas (Spec 08), sistema de Gamificación y Progreso Escolar Local (Hito 2), Examen Integrador Final con Diploma Escolar Imprimible (Hito 3), implementación del Spec 09 (KaTeX 100% local sin CDN, examen sin sesgos de opciones y metadatos de presentación desacoplados a `angleStyles.ts`), suite de pruebas unitarias y regresión con Vitest (47/47 tests pasando) y catálogo de 5 AGY Skills documentadas.
-- **Rama Activa:** `chore/spec-09` (Gobernanza estricta: merge a `main` solo con orden explícita del Arquitecto Principal).
+- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción con simplificación progresiva encadenada, desacople modular SRP en desafío y gamificación justa). Suite de 69 tests unitarios en Vitest pasando al 100%, validación dual sin fallas con `astro check` y `svelte-check`, build de Astro estático impecable y catálogo de 5 AGY Skills.
+- **Rama Activa:** `feature/fracciones-decimales` (Gobernanza estricta: merge a `main` o `dev` solo con orden explícita del Arquitecto Principal).
 - **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX (empaquetado localmente), Vitest, pnpm, Netlify.
 
 ## Módulos de Aprendizaje
+### Unidad 1: Geometría de Ángulos
 - [x] Módulo 1: Clasificación según medida (.agents/specs/01_clasificacion_angulos.md)
 - [x] Módulo 2: Pares de ángulos (.agents/specs/02_pares_angulos.md)
 - [x] Módulo 3: Paralelas cortadas por una secante (.agents/specs/03_paralelas_secante.md)
@@ -15,6 +16,17 @@
   - [x] Variante complementarios con símbolo de 90° ($\alpha + \beta = 90^\circ$)
   - [x] Variante paralelas con alternos internos ($\alpha = \beta$)
   - [x] Variante paralelas con conjugados internos ($\alpha + \beta = 180^\circ$)
+- [x] Examen Integrador Final y Diploma escolar imprimible (`/examen`)
+
+### Unidad 2: Números Racionales y Fracciones
+- [x] Módulo 1: Pasaje de Decimal a Fracción (.agents/specs/10_fracciones_decimales_a_fraccion.md)
+  - [x] Números decimales exactos / finitos ($10^k$ en denominador)
+  - [x] Números periódicos puros ($\widehat{\dots}$ con nueves en denominador)
+  - [x] Números periódicos mixtos (anteperíodo y período con nueves seguidos de ceros)
+  - [x] Algoritmo euclidiano de MCD y simplificación a fracción irreducible
+  - [x] Visualizador semántico con desglose visual por colores y arco KaTeX
+  - [x] Explicación paso a paso de la regla escolar argentina con sustracción
+  - [x] Modo Desafío interactivo con 12 retos equilibrados y gamificación (estrellas y racha)
 - [x] Soporte Global: Modo Oscuro con persistencia en localStorage y switch accesible en encabezados.
 - [x] Gamificación y Progreso Escolar Local: Store con suscriptores (`progressStore.ts`), persistencia en `localStorage`, contador de estrellas (`⭐`), racha (`🔥`), vitrina de 7 medallas escolares (`ProgressWidget.svelte`) y badges de avance en la portada (`ProgressBadge.svelte`).
 - [x] Deduplicación Justa de Estrellas (Spec 08): Primer éxito otorga estrella y racha; reintentos de retos ya superados son pedagógicamente neutrales (`✔️ Desafío ya completado`); retos de ecuaciones y exámenes siempre otorgan estrellas.
@@ -31,6 +43,42 @@
 - [x] Límite de Líneas Flexible con Justificación: Estándar deseado fijado en $\le 130$ líneas. Excepciones justificadas y aprobadas por el Arquitecto con un tope máximo absoluto e inviolable de 210 líneas.
 
 ## Registro de Decisiones Técnicas
+- **Desacople Modular de Lógica en `FractionChallenge.svelte` (SRP & SoC):**
+  - Se extrajo la máquina de evaluación y formateo de mensajes a `src/lib/pedagogical/fractions/challengeSession.ts` (85 líneas) y su suite de tests `challengeSession.test.ts` (74 líneas, 4 tests).
+  - Se extrajo el bloque atómico de inputs numéricos a `FractionInput.svelte` (33 líneas) con bindings `$bindable`.
+  - `FractionChallenge.svelte` se redujo de 140/151 líneas a solo **97 líneas** puramente declarativas, alineándose con `ClassifierChallenge` y `PairsChallenge`.
+  - Suite de tests incrementada a 69 pruebas unitarias pasando al 100%.
+- **Simplificación Progresiva Encadenada en Fracciones (Opción 2 Pedagógica):**
+  - Se implementó la validación progresiva de fracciones equivalentes en `src/lib/math/fractions/equivalence.ts` (59 líneas): distingue entre fracciones irreducibles (`correct`), equivalentes reducibles (`reducible`), repeticiones (`repeated`), amplificaciones (`amplified`) y no equivalentes (`incorrect`).
+  - No penaliza la racha del alumno ante una fracción matemáticamente equivalente pero reducible: el estudiante puede encadenar simplificaciones sucesivas (ej. $\frac{4}{8} = \frac{2}{4} = \frac{1}{2}$) hasta llegar a la irreducible.
+  - Se crearon componentes atómicos `FractionChain.svelte` (29 líneas) para renderizar la igualdad progresiva y `FractionFeedback.svelte` (31 líneas) para los mensajes didácticos por color, manteniendo `FractionChallenge.svelte` en 121 líneas ($\le 130$ líneas requeridas por `AGENTS.md`).
+  - Se agregaron 7 pruebas unitarias en `equivalence.test.ts`, alcanzando 65 tests pasando al 100%.
+- **Corrección de Estrellas, Inputs y Verificación con Svelte-Check (`fix-fracciones-estrellas.patch`):**
+  - Se corrigió en `DecimalToFraction.svelte` el llamado al store pasando `'fracciones'` y el índice numérico `playlist[currentStep]`, permitiendo el cómputo correcto de estrellas, racha y el desbloqueo del logro *"Poder Racional"*.
+  - Se corrigió en `FractionChallenge.svelte` el tipo de los inputs a `type="text"` con `inputmode="numeric"`, eliminando la coerción automática de Svelte 5 a `number` que provocaba un `TypeError` fatal en `.trim()`.
+  - Se corrigieron los nombres de importación de tipos en `ClassifierChallenge.svelte` (`TargetChallenge`) y `PairsChallenge.svelte` (`PairChallenge`).
+  - Se integró `svelte-check` v4.7.8 en devDependencies y en el script `pnpm run check` para asegurar typechecking exhaustivo en componentes `.svelte`.
+  - Se sumaron 2 tests en `progressStore.test.ts` elevando la suite a 58 tests automatizados.
+- **Spec 10: Pasaje de Números Decimales a Fracción (Unidad 2):**
+  - Se estructuró la nueva unidad temática curricular de Números Racionales $\mathbb{Q}$ para 2° año.
+  - *Capa Matemática (`src/lib/math/fractions/`):*
+    - `types.ts` (28 líneas): interfaces para tipos decimales (`exact`, `pure_periodic`, `mixed_periodic`), partes componentes y resultados de conversión.
+    - `gcd.ts` (34 líneas): algoritmo de Euclides para MCD y reducción a fracciones irreducibles.
+    - `conversion.ts` (73 líneas): implementación de los 3 algoritmos de conversión escolar argentina con cálculo de numerador, denominador, simplificación paso a paso y validación de entradas.
+    - `conversion.test.ts` (89 líneas): 6 pruebas completas en Vitest cubriendo exactos ($0{,}75$, $1{,}25$), periódicos puros ($0{,}\widehat{3}$, $1{,}\widehat{6}$) y periódicos mixtos ($0{,}1\widehat{6}$, $1{,}2\widehat{3}$).
+  - *Capa Pedagógica (`src/lib/pedagogical/fractions/`):*
+    - `decimalChallenges.ts` (98 líneas): banco de 12 desafíos representativos con 4 de cada tipo, pistas pedagógicas y barajado Fisher-Yates.
+    - `decimalChallenges.test.ts` (34 líneas): 3 tests verificando integridad del banco, soluciones irreducibles y barajado.
+  - *Capa UI Atómica (`src/components/interactive/fractions/`):*
+    - `DecimalVisualizer.svelte` (46 líneas): desglose semántico por colores del número decimal (azul para enteros, ámbar para no periódicos, rosa para períodos con arco KaTeX $\widehat{\dots}$).
+    - `ConversionSteps.svelte` (59 líneas): desarrollo algebraico KaTeX paso a paso mostrando regla nemotécnica, resta en numerador, composición del denominador y simplificación por MCD.
+    - `DecimalControls.svelte` (112 líneas): pestañas de selección de tipo, presets escolares y cajas de texto numéricas accesibles.
+    - `FractionChallenge.svelte` (118 líneas): modo desafío con casillas de numerador y denominador, botón explícito de confirmación, pistas y entrega justa de estrellas.
+  - *Orquestador y Ruta:*
+    - `DecimalToFraction.svelte` (120 líneas): orquestador delgado con soporte para desktop split de 2 columnas (`ModuleSplit.svelte`).
+    - `src/pages/decimal-a-fraccion.astro` (37 líneas): ruta estática SSG con layout, toggle de tema y guía de estudio.
+    - `src/pages/index.astro`: refactorizado a 56 líneas (reducción del 72%) mediante la extracción de `modulesCatalog.ts` (67 líneas), `ModuleCard.astro` (38 líneas) y `ExamBanner.astro` (26 líneas), cumpliendo con holgura el estándar SRP de ≤ 130 líneas.
+  - Todos los archivos respetan la regla $\le 130$ líneas (y con tope absoluto inferior a 165 líneas para páginas/layouts).
 - **Refactorización Modular de Ecuaciones y Snapshot Testing (Spec 08):** `src/lib/math/equations.ts` (que tenía 205 líneas) fue dividido limpiamente en la carpeta `src/lib/math/equations/` (`types.ts`, `steps.ts`, `builders.ts`, `index.ts`), manteniendo todos los archivos bajo las 130 líneas. Se añadió `equationsSnapshot.test.ts` con 20 semillas de control para garantizar idéntico output algebraico y cero regresión.
 - **Spec 09: KaTeX Local, Examen sin Sesgos y Separación de Capas:**
   - *Parte A:* Se reemplazó el `<link>` a `cdn.jsdelivr.net` por `import 'katex/dist/katex.min.css'` en `Layout.astro`. Vite empaqueta el CSS y copia las tipografías WOFF2 directamente a `dist/_astro/`, garantizando funcionamiento 100% offline y preparando el terreno para la PWA.

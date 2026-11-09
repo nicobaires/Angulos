@@ -3,7 +3,7 @@
   import { progressStore, type ProgressData, getDefaultProgress } from '../../lib/pedagogical/progressStore';
 
   interface Props {
-    moduleId: 'clasificacion' | 'pares' | 'paralelas' | 'ecuaciones';
+    moduleId: 'clasificacion' | 'pares' | 'paralelas' | 'ecuaciones' | 'fracciones';
     total?: number;
   }
 

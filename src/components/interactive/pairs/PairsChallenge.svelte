@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { PairsChallenge as ChallengeType } from '../../../lib/pedagogical/pairsChallenges';
+  import type { PairChallenge as ChallengeType } from '../../../lib/pedagogical/pairsChallenges';
 
   interface Props {
     challenge: ChallengeType;

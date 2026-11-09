@@ -56,4 +56,24 @@ describe('progressStore', () => {
     expect(progressStore.state.achievements['maestro_clasificacion']).toBeDefined();
     expect(progressStore.state.achievements['racha_5']).toBeDefined();
   });
+
+  it('fracciones: otorga estrella la primera vez y no al repetir el mismo desafío', () => {
+    const first = progressStore.recordSuccess('fracciones', 3);
+    expect(first.newStar).toBe(true);
+    expect(progressStore.state.stars).toBe(1);
+    expect(progressStore.state.streak).toBe(1);
+    expect(progressStore.state.modules.fracciones).toEqual([3]);
+
+    const repeat = progressStore.recordSuccess('fracciones', 3);
+    expect(repeat.newStar).toBe(false);
+    expect(progressStore.state.stars).toBe(1);
+    expect(progressStore.state.streak).toBe(1);
+  });
+
+  it('fracciones: desbloquea "Poder Racional" al resolver 4 desafíos distintos', () => {
+    for (let i = 0; i < 3; i++) progressStore.recordSuccess('fracciones', i);
+    expect(progressStore.state.achievements['maestro_fracciones']).toBeUndefined();
+    progressStore.recordSuccess('fracciones', 3);
+    expect(progressStore.state.achievements['maestro_fracciones']).toBeDefined();
+  });
 });
