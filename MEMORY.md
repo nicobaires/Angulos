@@ -1,7 +1,7 @@
 # MEMORY.md - Estado del Proyecto
 
 ## Estado Actual
-- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción). Corrección de hallazgos críticos de auditoría (deduplicación canónica en Pares, zoom accesible en viewport y puerta de calidad 'verify' en Netlify). Suite de 70 tests unitarios en Vitest pasando al 100%, validación dual sin fallas con `astro check` y `svelte-check`, build de Astro estático impecable y catálogo de AGY Skills.
+- **Fase:** Unidad 1 (Geometría de Ángulos) completa con 4 módulos y Examen Integrador con diploma. Unidad 2 (Números Racionales y Fracciones) con Módulo 1 (Pasaje de Decimal a Fracción). Corrección completa de auditoría técnica independiente (hallazgos críticos + refinamientos de áreas táctiles 44px, des-sesgo de examen, test de transversal y RNG reproducible). Suite de 76 tests unitarios en Vitest pasando al 100%, validación dual sin fallas con `astro check` y `svelte-check`, guarda `check:size` con 100% de archivos en src $\le 130$ líneas y build de Astro estático impecable.
 - **Rama Activa:** `fix/auditoria-criticos` (en desarrollo sobre `main`).
 - **Stack seleccionado:** Astro 5, Svelte 5 (Runes), Tailwind CSS (darkMode: 'class'), KaTeX (empaquetado localmente), Vitest, pnpm, Netlify.
 
@@ -43,6 +43,11 @@
 - [x] Límite de Líneas Flexible con Justificación: Estándar deseado fijado en $\le 130$ líneas. Excepciones justificadas y aprobadas por el Arquitecto con un tope máximo absoluto e inviolable de 210 líneas.
 
 ## Registro de Decisiones Técnicas
+- **Cierre Integral de Auditoría y Refinamientos Menores (`fix/auditoria-criticos`):**
+  - **Zonas Táctiles de 44 px (ACC-02):** Se añadió `min-h-[44px]` a todos los botones de controles y desafíos (`ProgressWidget.svelte`, `AngleControls.svelte`, `PairsControls.svelte`, `TransversalControls.svelte`, `ClassifierChallenge.svelte`, `PairsChallenge.svelte`, `TransversalChallenge.svelte`), asegurando cumplimiento estricto con WCAG Target Size y regla escolar mobile-first.
+  - **Des-sesgo Estadístico y Simetría en Examen Integrador Q3 (PED-01):** Se corrigió la generación de casos en `examGenerator.ts:66-85`, garantizando una distribución equitativa de 50% congruentes y 50% suplementarios, con opciones simétricas que eliminan la pista involuntaria ("Son iguales" vs "Suman 180°"). Test estadístico validado sobre 500 semillas.
+  - **Pruebas de Transversal (TST-01):** Se incorporó `src/lib/math/transversal.test.ts` con cobertura de los 5 tipos de relaciones, congruencia y mapeo de pares.
+  - **Determinismo y RNG en Fracciones (H-10):** Se añadió parámetro opcional `rng: () => number = Math.random` a `getShuffledChallengeIndices()` en `decimalChallenges.ts` junto con su test de reproducibilidad determinista.
 - **Spec 11: Auditoría Periódica y Guardas Automáticas (`scripts/check-size.mjs` y `scripts/check-docs.mjs`):**
   - **Guardas de Tamaño Ejecutables (`check:size`):** Se implementó `scripts/check-size.mjs` para verificar de forma automatizada que todo archivo en `src/` respete el estándar de $\le 130$ líneas y el tope absoluto de 210 líneas, leyendo excepciones autorizadas en `.agents/size-exceptions.json`.
   - **Modularización Matemática de `angles.ts`:** Se extrajeron los nombres y textos descriptivos pedagógicos a `src/lib/pedagogical/angleDescriptions.ts`, dejando `src/lib/math/angles.ts` en 122 líneas de geometría y trigonometría pura sin dependencias de textos curriculares.

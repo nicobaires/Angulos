@@ -48,11 +48,11 @@
   {/if}
   <div class="mt-2.5 flex justify-end">
     {#if !hasSubmitted || !challengeSuccess}
-      <button onclick={onconfirm} class="px-3.5 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95 touch-manipulation min-h-[38px] focus-visible:ring-2 focus-visible:ring-blue-500">
+      <button onclick={onconfirm} class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95 touch-manipulation min-h-[44px] focus-visible:ring-2 focus-visible:ring-blue-500">
         Confirmar respuesta
       </button>
     {:else}
-      <button onclick={onnext} class="px-3.5 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95 touch-manipulation min-h-[38px] focus-visible:ring-2 focus-visible:ring-emerald-500">
+      <button onclick={onnext} class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl text-xs font-bold shadow-xs transition active:scale-95 touch-manipulation min-h-[44px] focus-visible:ring-2 focus-visible:ring-emerald-500">
         Siguiente Desafío ➔
       </button>
     {/if}

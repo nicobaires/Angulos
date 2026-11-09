@@ -20,7 +20,7 @@
 <!-- Píldora de Progreso en Header -->
 <button
   onclick={() => (showModal = true)}
-  class="flex items-center gap-2 px-2.5 py-1.5 bg-white/15 hover:bg-white/25 active:scale-95 border border-white/20 rounded-full text-white text-xs font-bold transition shadow-xs touch-manipulation min-h-[36px]"
+  class="flex items-center gap-2 px-3 py-2 bg-white/15 hover:bg-white/25 active:scale-95 border border-white/20 rounded-full text-white text-xs font-bold transition shadow-xs touch-manipulation min-h-[44px]"
   title="Ver progreso y medallas"
   aria-label="Progreso escolar"
 >

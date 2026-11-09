@@ -106,4 +106,27 @@ describe('generateExamDeck', () => {
       expect(xOpts.length).toBeGreaterThanOrEqual(1);
     }
   });
+
+  it('equilibra las respuestas de Q3 entre congruentes y suplementarios sin delatar respuesta', () => {
+    let congruentes = 0;
+    const n = 500;
+    for (let seed = 1; seed <= n; seed++) {
+      const deck = generateExamDeck(createSeededRng(seed));
+      const q3 = deck[2];
+      const correct = q3.options.find((o) => o.isCorrect)!;
+      if (correct.label.includes('iguales')) congruentes++;
+
+      const labels = q3.options.map((o) => o.label).sort();
+      expect(labels).toEqual([
+        'Son iguales (congruentes)',
+        'Suman 180° (suplementarios)',
+        'Suman 360°',
+        'Suman 90°'
+      ]);
+    }
+    const ratio = congruentes / n;
+    // Ratio cercano al 50% (entre 42% y 58%), eliminando el sesgo previo del 76%
+    expect(ratio).toBeGreaterThan(0.42);
+    expect(ratio).toBeLessThan(0.58);
+  });
 });

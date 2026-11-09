@@ -88,10 +88,10 @@ export const DECIMAL_CHALLENGES: DecimalChallenge[] = [
 /**
  * Baraja los índices de los desafíos para partidas aleatorias.
  */
-export function getShuffledChallengeIndices(): number[] {
+export function getShuffledChallengeIndices(rng: () => number = Math.random): number[] {
   const indices = DECIMAL_CHALLENGES.map((_, i) => i);
   for (let i = indices.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(rng() * (i + 1));
     [indices[i], indices[j]] = [indices[j], indices[i]];
   }
   return indices;

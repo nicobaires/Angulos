@@ -29,4 +29,17 @@ describe('decimalChallenges', () => {
     const set = new Set(indices);
     expect(set.size).toBe(DECIMAL_CHALLENGES.length);
   });
+
+  it('permite inyectar un RNG determinista para reproducibilidad', () => {
+    // Generador determinista de prueba
+    let seed = 42;
+    const fakeRng = () => {
+      seed = (seed * 9301 + 49297) % 233280;
+      return seed / 233280;
+    };
+    const res1 = getShuffledChallengeIndices(fakeRng);
+    seed = 42;
+    const res2 = getShuffledChallengeIndices(fakeRng);
+    expect(res1).toEqual(res2);
+  });
 });

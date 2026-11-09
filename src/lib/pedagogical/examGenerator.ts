@@ -64,29 +64,28 @@ function generateQ2(rng: Rng): ExamQuestion {
 }
 
 function generateQ3(rng: Rng): ExamQuestion {
-  const cases = [
-    { name: 'alternos internos', rel: 'Son iguales (congruentes)', exp: 'Están a distinto lado de la secante entre paralelas: son iguales.' },
-    { name: 'conjugados internos', rel: 'Suman 180° (suplementarios)', exp: 'Están al mismo lado de la secante entre paralelas: suman 180°.' },
-    { name: 'alternos externos', rel: 'Son iguales (congruentes)', exp: 'Están a distinto lado de la secante en la zona exterior: son iguales.' },
-    { name: 'correspondientes', rel: 'Son iguales (congruentes)', exp: 'Ocupan la misma posición relativa en cada intersección: son iguales.' }
-  ];
+  const isCongruent = rng() > 0.5;
+  const cases = isCongruent
+    ? [{ n: 'alternos internos', e: 'Están a distinto lado de la secante entre paralelas: son iguales.' },
+       { n: 'alternos externos', e: 'Están a distinto lado de la secante en la zona exterior: son iguales.' },
+       { n: 'correspondientes', e: 'Ocupan la misma posición relativa en cada intersección: son iguales.' }]
+    : [{ n: 'conjugados internos', e: 'Están al mismo lado de la secante entre paralelas: suman 180°.' },
+       { n: 'conjugados externos', e: 'Están al mismo lado de la secante en la zona exterior: suman 180°.' }];
   const item = cases[Math.floor(rng() * cases.length)];
-  const poolWrongs = item.rel.includes('iguales')
-    ? ['Suman 180° (suplementarios)', 'Suman 90°', 'No guardan relación']
-    : ['Son iguales (congruentes)', 'Suman 90°', 'Suman 360°'];
+  const correct = isCongruent ? 'Son iguales (congruentes)' : 'Suman 180° (suplementarios)';
+  const pool = ['Son iguales (congruentes)', 'Suman 180° (suplementarios)', 'Suman 90°', 'Suman 360°'];
+  const wrongs = pool.filter((p) => p !== correct);
   return {
     id: 'q3', moduleNum: 3, moduleName: 'Paralelas', title: 'Propiedad geométrica entre paralelas',
-    prompt: `Entre dos rectas paralelas cortadas por una secante, los ángulos ${item.name}:`,
-    options: shuffle([{ id: 'c', label: item.rel, isCorrect: true }, ...poolWrongs.map((w, i) => ({ id: `w${i}`, label: w, isCorrect: false }))], rng),
-    explanation: item.exp
+    prompt: `Entre dos rectas paralelas cortadas por una secante, los ángulos ${item.n}:`,
+    options: shuffle([{ id: 'c', label: correct, isCorrect: true }, ...wrongs.map((w, i) => ({ id: `w${i}`, label: w, isCorrect: false }))], rng),
+    explanation: item.e
   };
 }
 
 function generateQ4(rng: Rng): ExamQuestion {
-  const x = 12 + Math.floor(rng() * 6);
-  const d = 15 + 2 * x;
-  const errSigno = Math.round((d + 15) / 2);
-  const errSup = Math.max(2, Math.round((180 - 15 - d) / 4));
+  const x = 12 + Math.floor(rng() * 6), d = 15 + 2 * x;
+  const errSigno = Math.round((d + 15) / 2), errSup = Math.max(2, Math.round((180 - 15 - d) / 4));
   const candidates = [errSigno, 3 * x + 15, errSup, x + 4, x - 3];
   const wrongs: number[] = [];
   for (const c of candidates) {
