@@ -1,37 +1,15 @@
 <script lang="ts">
-  import {
-    type DecimalParts, type DecimalType,
-    convertExactToFraction, convertPurePeriodicToFraction, convertMixedPeriodicToFraction
-  } from '../../lib/math/fractions';
   import { DECIMAL_CHALLENGES, getShuffledChallengeIndices } from '../../lib/pedagogical/fractions/decimalChallenges';
   import { progressStore } from '../../lib/pedagogical/progressStore';
-  import ModuleSplit from '../common/ModuleSplit.svelte';
-  import DecimalVisualizer from './fractions/DecimalVisualizer.svelte';
+  import FractionExplorer from './fractions/FractionExplorer.svelte';
   import ConversionSteps from './fractions/ConversionSteps.svelte';
-  import DecimalControls from './fractions/DecimalControls.svelte';
   import FractionChallenge from './fractions/FractionChallenge.svelte';
 
-  let currentType = $state<DecimalType>('exact');
-  let currentParts = $state<DecimalParts>({ whole: 0, nonPeriodic: '75', periodic: '' });
-
-  // Modo Desafío
+  // Modo Desafío: pantalla enfocada (solo el desafío; los pasos se muestran al acertar)
   let playlist = $state<number[]>([]);
   let currentStep = $state<number | null>(null);
   let isNewStar = $state<boolean>(false);
-
-  const conversion = $derived.by(() => {
-    if (currentType === 'exact') {
-      return convertExactToFraction(currentParts.whole, currentParts.nonPeriodic || '0');
-    }
-    if (currentType === 'pure_periodic') {
-      return convertPurePeriodicToFraction(currentParts.whole, currentParts.periodic || '3');
-    }
-    return convertMixedPeriodicToFraction(
-      currentParts.whole,
-      currentParts.nonPeriodic || '1',
-      currentParts.periodic || '6'
-    );
-  });
+  let solved = $state<boolean>(false);
 
   const activeChallenge = $derived(
     currentStep !== null && playlist[currentStep] !== undefined
@@ -39,14 +17,8 @@
       : null
   );
 
-  function handleTypeChange(newType: DecimalType) {
-    currentType = newType;
-    if (newType === 'exact') currentParts = { whole: 0, nonPeriodic: '75', periodic: '' };
-    else if (newType === 'pure_periodic') currentParts = { whole: 1, nonPeriodic: '', periodic: '6' };
-    else currentParts = { whole: 1, nonPeriodic: '2', periodic: '3' };
-  }
-
   function startOrNextChallenge() {
+    solved = false;
     if (currentStep === null || currentStep + 1 >= playlist.length) {
       playlist = getShuffledChallengeIndices();
       currentStep = 0;
@@ -55,12 +27,18 @@
     }
   }
 
+  function exitChallengeMode() {
+    currentStep = null;
+    solved = false;
+  }
+
   function handleChallengeComplete(isCorrect: boolean) {
     if (!activeChallenge || currentStep === null) return;
     if (isCorrect) {
       // El store deduplica por índice numérico del banco (no por id de texto)
       const res = progressStore.recordSuccess('fracciones', playlist[currentStep]);
       isNewStar = res.newStar;
+      solved = true;
     } else {
       progressStore.recordFailure();
     }
@@ -87,7 +65,7 @@
       </button>
     {:else}
       <button
-        onclick={() => (currentStep = null)}
+        onclick={exitChallengeMode}
         class="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-300 rounded-xl text-xs font-semibold transition active:scale-95 touch-manipulation min-h-[44px]"
       >
         Salir del modo
@@ -95,33 +73,26 @@
     {/if}
   </div>
 
-  <ModuleSplit>
-    {#snippet visual()}
-      <div class="space-y-4 p-4">
-        <DecimalVisualizer type={currentType} parts={currentParts} latexDisplay={conversion.latexDisplay} />
-        <ConversionSteps {conversion} />
-      </div>
-    {/snippet}
-
-    {#snippet panel()}
-      <div class="space-y-4 p-4">
-        {#if activeChallenge && currentStep !== null}
-          <FractionChallenge
-            challenge={activeChallenge}
-            currentIndex={currentStep}
-            total={playlist.length}
-            {isNewStar}
-            oncomplete={handleChallengeComplete}
-            onnext={startOrNextChallenge}
-          />
-        {/if}
-        <DecimalControls
-          type={currentType}
-          parts={currentParts}
-          ontypechange={handleTypeChange}
-          onpartschange={(newParts) => (currentParts = newParts)}
-        />
-      </div>
-    {/snippet}
-  </ModuleSplit>
+  {#if activeChallenge && currentStep !== null}
+    <div class="w-full max-w-xl mx-auto p-4 space-y-4">
+      <FractionChallenge
+        challenge={activeChallenge}
+        currentIndex={currentStep}
+        total={playlist.length}
+        {isNewStar}
+        oncomplete={handleChallengeComplete}
+        onnext={startOrNextChallenge}
+      />
+      {#if solved}
+        <div class="space-y-2">
+          <h3 class="text-xs font-extrabold uppercase tracking-wide text-emerald-700 dark:text-emerald-400">
+            📖 Así se resuelve
+          </h3>
+          <ConversionSteps conversion={activeChallenge.conversion} />
+        </div>
+      {/if}
+    </div>
+  {:else}
+    <FractionExplorer />
+  {/if}
 </div>

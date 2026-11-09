@@ -59,6 +59,11 @@
   - Se corrigieron los nombres de importación de tipos en `ClassifierChallenge.svelte` (`TargetChallenge`) y `PairsChallenge.svelte` (`PairChallenge`).
   - Se integró `svelte-check` v4.7.8 en devDependencies y en el script `pnpm run check` para asegurar typechecking exhaustivo en componentes `.svelte`.
   - Se sumaron 2 tests en `progressStore.test.ts` elevando la suite a 58 tests automatizados.
+- **Modo Desafío Enfocado de Fracciones (`fix/fracciones-modo-desafio-enfocado`):**
+  - En modo desafío (móvil y escritorio) la pantalla muestra solo el recuadro del desafío debajo de la cabecera; se ocultan el visualizador, el paso a paso del ejemplo y los controles de exploración. Antes el desafío quedaba a ~1.280 px de una página de ~2.250 px y se veía resuelto otro número arriba.
+  - Al acertar se muestra "Así se resuelve" con `ConversionSteps` del número del desafío (devolución pedagógica); al pasar al siguiente desafío se oculta.
+  - `FractionExplorer.svelte` (54 líneas) encapsula el modo exploración; `DecimalToFraction.svelte` bajó a 98 líneas. El estado del explorador se reinicia al volver del modo desafío.
+  - `FractionFeedback.svelte` renderiza con KaTeX la igualdad de éxito (antes se veía `0,\widehat{3} = 1/3` como texto crudo).
 - **Spec 10: Pasaje de Números Decimales a Fracción (Unidad 2):**
   - Se estructuró la nueva unidad temática curricular de Números Racionales $\mathbb{Q}$ para 2° año.
   - *Capa Matemática (`src/lib/math/fractions/`):*
